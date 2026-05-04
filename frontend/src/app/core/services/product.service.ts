@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../../shared/models/product.model';
 import { environment } from '../../../environments/environment';
@@ -10,9 +10,16 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * GET /api/products
+   * El backend acepta opcionalmente ?search= para filtrar por nombre o SKU.
+   */
   getProducts(search?: string): Observable<{ data: Product[] }> {
-    const params: Record<string, string> = {};
-    if (search) params['search'] = search;
+    const q = search?.trim() ?? '';
+    let params = new HttpParams();
+    if (q.length > 0) {
+      params = params.set('search', q);
+    }
     return this.http.get<{ data: Product[] }>(this.apiUrl, { params });
   }
 

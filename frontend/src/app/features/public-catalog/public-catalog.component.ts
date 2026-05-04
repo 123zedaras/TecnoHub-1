@@ -1,15 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from '../../../shared/models/product.model';
-import { ProductService } from '../../../core/services/product.service';
-import { CartService } from '../../../core/services/cart.service';
+import { Product } from '../../shared/models/product.model';
+import { ProductService } from '../../core/services/product.service';
+import { CartService } from '../../core/services/cart.service';
+import { AuthService } from '../../core/services/auth.service';
+import { GuestCartStorageService } from '../../core/services/guest-cart-storage.service';
 
+/**
+ * Catálogo visible sin iniciar sesión: misma API que /recambios.
+ * Invitados guardan líneas en localStorage; con sesión se usa el carrito del API.
+ */
 @Component({
-  selector: 'app-catalog',
-  templateUrl: './catalog.component.html',
-  styleUrls: ['./catalog.component.scss'],
+  selector: 'app-public-catalog',
+  templateUrl: './public-catalog.component.html',
+  styleUrls: ['./public-catalog.component.scss'],
 })
-export class CatalogComponent implements OnInit, OnDestroy {
+export class PublicCatalogComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   loading = true;
   error: string | null = null;
@@ -24,12 +30,16 @@ export class CatalogComponent implements OnInit, OnDestroy {
   private readonly searchDebounceMs = 400;
 
   get cartCount(): number {
-    return this.cartService.itemCount();
+    return this.auth.isAuthenticated()
+      ? this.cartService.itemCount()
+      : this.guestCart.guestUnitCount();
   }
 
   constructor(
     private productService: ProductService,
     private cartService: CartService,
+    private auth: AuthService,
+    private guestCart: GuestCartStorageService,
     private router: Router,
   ) {}
 
@@ -93,7 +103,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
         this.products = [];
         this.error =
           err.status === 0
-            ? 'No hay conexión con el servidor. Comprueba que la API esté en marcha.'
+            ? 'No hay conexión con el servidor!!'
             : 'No se pudo cargar el catálogo. Inténtalo de nuevo.';
         this.loading = false;
       },
@@ -105,6 +115,22 @@ export class CatalogComponent implements OnInit, OnDestroy {
       return;
     }
     this.addingProductId = product.id;
+
+    if (!this.auth.isAuthenticated()) {
+      // Sin token no existe carrito en API: guardamos en localStorage. Nombre y precio permiten
+      // mostrar el resumen en el header y en /cesta sin volver a pedir el catálogo al servidor.
+      this.guestCart.addOrMergeLine({
+        product_id: product.id,
+        quantity: 1,
+        product_name: product.name,
+        unit_price: product.price,
+      });
+      this.addingProductId = null;
+      this.successMessage = `"${product.name}" guardado en tu cesta (inicia sesión para sincronizar).`;
+      setTimeout(() => (this.successMessage = null), 3000);
+      return;
+    }
+
     this.cartService.addItem({ product_id: product.id, quantity: 1 }).subscribe({
       next: () => {
         this.addingProductId = null;
@@ -119,8 +145,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** El botón cesta lleva a la vista de cesta pública (misma que el icono del header). */
   goToCart(): void {
-    void this.router.navigate(['/recambios/carrito']);
+    void this.router.navigate(['/cesta']);
   }
 
   formatPrice(amount: number): string {

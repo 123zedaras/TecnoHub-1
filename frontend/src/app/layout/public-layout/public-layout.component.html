@@ -1,0 +1,114 @@
+<!--
+  Menú fijo compartido por todas las rutas públicas (inicio, login, etc.).
+  El contenido que cambia por URL va en el router-outlet de abajo.
+-->
+<div class="public-shell">
+  <header class="public-topnav">
+    <div class="public-topnav__inner">
+      <div class="public-topnav__left">
+        <a routerLink="/" class="public-brand">TecnoHub</a>
+      </div>
+
+      <div class="public-topnav__center">
+        <nav class="public-topnav__desktop-nav" aria-label="Secciones principales">
+          <a routerLink="/productos" routerLinkActive="public-navlink--active" class="public-navlink">Productos</a>
+          <a routerLink="/" fragment="software" class="public-navlink">Software</a>
+          <a routerLink="/" fragment="documentacion" class="public-navlink">Documentación</a>
+          <a routerLink="/" fragment="faq" class="public-navlink">FAQ</a>
+        </nav>
+
+        <button
+          type="button"
+          class="public-menu-toggle"
+          [class.public-menu-toggle--open]="mobileNavOpen"
+          (click)="toggleMobileNav(); $event.stopPropagation()"
+          [attr.aria-expanded]="mobileNavOpen"
+          aria-controls="public-mobile-menu"
+          aria-label="Menú de secciones"
+        >
+          <span class="public-menu-toggle__bar" aria-hidden="true"></span>
+          <span class="public-menu-toggle__bar" aria-hidden="true"></span>
+          <span class="public-menu-toggle__bar" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="public-topnav__right">
+        <!--
+          Cesta invitado en el header: clic abre/cierra panel con resumen.
+          Los datos vienen de GuestCartStorageService (signals), solo si hay líneas.
+        -->
+        <div class="public-cart-wrap" [class.public-cart-wrap--open]="cartDropdownOpen">
+          <button
+            type="button"
+            class="public-iconbtn public-cart-trigger"
+            (click)="toggleCartDropdown($event)"
+            [attr.aria-expanded]="cartDropdownOpen"
+            aria-haspopup="true"
+            aria-controls="public-cart-panel"
+            aria-label="Cesta"
+            title="Ver cesta"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span class="public-cart-trigger__badge" *ngIf="guestCart.guestUnitCount() > 0">{{ guestCart.guestUnitCount() }}</span>
+          </button>
+          <div
+            id="public-cart-panel"
+            class="public-cart-panel"
+            [class.public-cart-panel--visible]="cartDropdownOpen"
+            role="region"
+            aria-label="Resumen de la cesta"
+            (click)="$event.stopPropagation()"
+          >
+            <!-- stopPropagation: clics dentro del panel no deben disparar document:click del layout y cerrarlo -->
+            <div class="public-cart-panel__inner">
+              <p class="public-cart-empty" *ngIf="guestCart.guestLines().length === 0">
+                No has añadido ningún artículo aún.
+              </p>
+              <ul class="public-cart-list" *ngIf="guestCart.guestLines().length > 0">
+                <li class="public-cart-line" *ngFor="let line of guestCart.guestLines(); trackBy: trackByProductId">
+                  <span class="public-cart-line__name">{{ displayLineName(line) }}</span>
+                  <span class="public-cart-line__qty">×{{ line.quantity }}</span>
+                  <span class="public-cart-line__price" *ngIf="line.unit_price != null">{{ formatPrice(lineSubtotal(line)) }}</span>
+                  <span class="public-cart-line__price public-cart-line__price--muted" *ngIf="line.unit_price == null">—</span>
+                </li>
+              </ul>
+              <a
+                *ngIf="guestCart.guestLines().length > 0"
+                routerLink="/cesta"
+                class="public-cart-cta"
+                (click)="closeCartDropdown()"
+              >Ver cesta</a>
+            </div>
+          </div>
+        </div>
+        <a routerLink="/login" class="public-profilebtn">
+          <svg class="public-profilebtn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Mi perfil</span>
+        </a>
+      </div>
+    </div>
+
+    <nav
+      *ngIf="mobileNavOpen"
+      id="public-mobile-menu"
+      class="public-mobile-dropdown"
+      aria-label="Secciones principales"
+    >
+      <a routerLink="/productos" routerLinkActive="public-mobile-dropdown__link--active" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
+      <a routerLink="/cesta" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Cesta</a>
+      <a routerLink="/" fragment="software" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Software</a>
+      <a routerLink="/" fragment="documentacion" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Documentación</a>
+      <a routerLink="/" fragment="faq" class="public-mobile-dropdown__link" (click)="closeMobileNav()">FAQ</a>
+    </nav>
+  </header>
+
+  <main class="public-outlet-wrap">
+    <router-outlet></router-outlet>
+  </main>
+</div>

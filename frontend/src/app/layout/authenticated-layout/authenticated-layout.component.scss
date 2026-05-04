@@ -1,0 +1,21 @@
+/* Shell con sidebar + área de contenido (rutas hijas lazy). */
+:host {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* min-width: 0 evita que el flex item del main colapse el contenido junto al sidebar. */
+.main-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-y: auto;
+  background: var(--bg);
+}
