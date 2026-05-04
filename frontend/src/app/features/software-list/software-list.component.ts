@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoftwareService } from '../../services/software.service';
+import { SoftwareService } from '../services/software.service';
 
 @Component({
   selector: 'app-software-list',
