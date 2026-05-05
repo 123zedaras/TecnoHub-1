@@ -10,7 +10,6 @@
     </div>
     <div class="logo-text">
       <span class="logo-title">TecnoHub</span>
-      <span class="logo-subtitle">Industrial</span>
     </div>
   </div>
 
@@ -25,6 +24,20 @@
       <!-- Dashboard -->
       <svg *ngIf="item.icon === 'grid'" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
         <path d="M2 4a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm9 0a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3a2 2 0 01-2-2V4zM2 13a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H4a2 2 0 01-2-2v-3zm9 0a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3a2 2 0 01-2-2v-3z"/>
+      </svg>
+      <!-- Mis datos -->
+      <svg *ngIf="item.icon === 'user'" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM3 17a7 7 0 1114 0v1H3v-1z"/>
+      </svg>
+      <!-- Mi documentación -->
+      <svg *ngIf="item.icon === 'docs'" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 1.414L14.586 7H12a1 1 0 01-1-1V3.414z"/>
+        <path d="M7 10h6v1H7v-1zM7 13h6v1H7v-1z"/>
+      </svg>
+      <!-- Software -->
+      <svg *ngIf="item.icon === 'software'" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M3 4a2 2 0 012-2h10a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V4zm2 0v7h10V4H5z"/>
+        <path d="M7 15h6a1 1 0 110 2H7a1 1 0 110-2z"/>
       </svg>
       <!-- Recambios -->
       <svg *ngIf="item.icon === 'cart'" class="nav-icon" viewBox="0 0 20 20" fill="currentColor">

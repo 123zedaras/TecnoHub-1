@@ -18,6 +18,15 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Forzamos tipografía consistente en todos los controles nativos */
+button,
+input,
+select,
+textarea,
+a {
+  font: inherit;
+}
+
 /* ── Variables CSS ─────────────────────────────────────────────── */
 :root {
   /* Colores principales */

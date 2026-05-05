@@ -89,7 +89,7 @@
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <span>Mi perfil</span>
+          <span>Iniciar sesión</span>
         </a>
       </div>
     </div>
@@ -111,4 +111,52 @@
   <main class="public-outlet-wrap">
     <router-outlet></router-outlet>
   </main>
+
+  <footer class="public-footer" aria-label="Pie de página principal">
+    <div class="public-footer__inner">
+      <div class="public-footer__brand">
+        <div class="public-footer__logo">TECNOHUB</div>
+        <p class="public-footer__tagline">
+          Espacio para una breve descripción de marca o propuesta de valor.
+        </p>
+        <div class="public-footer__visual" aria-hidden="true">
+          <span class="public-footer__plate public-footer__plate--one"></span>
+          <span class="public-footer__plate public-footer__plate--two"></span>
+          <span class="public-footer__plate public-footer__plate--three"></span>
+        </div>
+      </div>
+
+      <div class="public-footer__columns">
+        <section class="public-footer__column">
+          <h3>Contacto</h3>
+          <p>Tel: +34 XXX XXX XXX</p>
+          <p>WhatsApp: +34 XXX XXX XXX</p>
+          <p>Email: </p>
+        </section>
+
+        <section class="public-footer__column">
+          <h3>Horario</h3>
+          <p>Lunes a Jueves: 08:00 - 18:00</p>
+          <p>Viernes: 08:00 - 15:00</p>
+          <p>Soporte: 24/7 (placeholder)</p>
+        </section>
+
+        <section class="public-footer__column">
+          <h3>Enlaces</h3>
+          <a routerLink="/">Aviso legal</a>
+          <a routerLink="/">Política de privacidad</a>
+          <a routerLink="/">Condiciones de uso</a>
+        </section>
+      </div>
+    </div>
+
+    <div class="public-footer__bottom">
+      <span>2026 © TecnoHub. Todos los derechos reservados.</span>
+      <div class="public-footer__social" aria-label="Redes sociales">
+        <a routerLink="/" aria-label="Instagram">IG</a>
+        <a routerLink="/" aria-label="LinkedIn">IN</a>
+        <a routerLink="/" aria-label="YouTube">YT</a>
+      </div>
+    </div>
+  </footer>
 </div>

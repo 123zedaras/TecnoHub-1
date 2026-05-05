@@ -17,6 +17,9 @@ interface NavItem {
 export class SidebarComponent {
   navItems: NavItem[] = [
     { label: 'Dashboard',   route: '/dashboard',   icon: 'grid' },
+    { label: 'Mis datos',   route: '/mis-datos',   icon: 'user' },
+    { label: 'Mi documentación', route: '/mi-documentacion', icon: 'docs' },
+    { label: 'Software',    route: '/software',   icon: 'software' },
     { label: 'Recambios',   route: '/recambios',   icon: 'cart' },
     { label: 'Incidencias', route: '/incidencias', icon: 'ticket' },
     { label: 'SCADA',       route: '/scada',       icon: 'scada', roles: ['technician', 'admin'] },
