@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Route;
 // ── Webhook Stripe (sin autenticación) ──────────────────────────────────────
 Route::post('/webhooks/stripe', [PaymentController::class, 'handleWebhook']);
 
+ // Catálogo de productos. lo he sacado de la ruta protegida por Sanctum para que sea publico 
+ Route::get('/products',          [ProductController::class, 'index']);
+ Route::get('/products/{product}', [ProductController::class, 'show']);
+
+
 // ── Rutas protegidas con Sanctum ─────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
-
-    // Catálogo de productos
-    Route::get('/products',          [ProductController::class, 'index']);
-    Route::get('/products/{product}', [ProductController::class, 'show']);
 
     // Carrito
     Route::prefix('cart')->group(function () {

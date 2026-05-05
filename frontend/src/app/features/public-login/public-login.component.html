@@ -1,0 +1,115 @@
+<section class="auth-shell">
+  <div class="auth-card">
+    <h1>Accede a tu cuenta</h1>
+
+    <div class="tab-actions" role="tablist" aria-label="Elegir formulario">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab === 'login'"
+        (click)="setTab('login')"
+      >
+        Iniciar sesión
+      </button>
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab === 'register'"
+        (click)="setTab('register')"
+      >
+        Regístrate
+      </button>
+    </div>
+
+    <form *ngIf="activeTab === 'login'" class="auth-form" (ngSubmit)="onLoginSubmit()">
+      <label for="login-username">Usuario</label>
+      <input
+        id="login-username"
+        name="username"
+        type="text"
+        autocomplete="username"
+        [(ngModel)]="loginForm.username"
+        required
+      />
+      <small class="error" *ngIf="loginSubmitted && !loginForm.username.trim()">
+        El usuario es obligatorio.
+      </small>
+
+      <label for="login-password">Contraseña</label>
+      <input
+        id="login-password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        [(ngModel)]="loginForm.password"
+        required
+      />
+      <small class="error" *ngIf="loginSubmitted && !loginForm.password">
+        La contraseña es obligatoria.
+      </small>
+
+      <a href="#" class="forgot-link" (click)="onForgotPassword($event)">¿Has olvidado tu contraseña?</a>
+
+      <button type="submit" class="submit-btn">Iniciar sesión</button>
+      <button type="button" class="test-btn" (click)="loginDePruebas()">Pruebas</button>
+    </form>
+
+    <form *ngIf="activeTab === 'register'" class="auth-form" (ngSubmit)="onRegisterSubmit()">
+      <label for="register-email">Email</label>
+      <input
+        id="register-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        [(ngModel)]="registerForm.email"
+        required
+      />
+      <small class="error" *ngIf="registerSubmitted && !registerForm.email.trim()">
+        El email es obligatorio.
+      </small>
+
+      <label for="register-name">Nombre</label>
+      <input
+        id="register-name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        [(ngModel)]="registerForm.name"
+        required
+      />
+      <small class="error" *ngIf="registerSubmitted && !registerForm.name.trim()">
+        El nombre es obligatorio.
+      </small>
+
+      <label for="register-password">Contraseña</label>
+      <input
+        id="register-password"
+        name="password"
+        type="password"
+        autocomplete="new-password"
+        [(ngModel)]="registerForm.password"
+        required
+      />
+      <small class="error" *ngIf="registerSubmitted && registerForm.password.length > 0 && registerForm.password.length < 6">
+        La contraseña debe tener al menos 6 caracteres.
+      </small>
+
+      <label for="register-confirm-password">Repetir contraseña</label>
+      <input
+        id="register-confirm-password"
+        name="confirmPassword"
+        type="password"
+        autocomplete="new-password"
+        [(ngModel)]="registerForm.confirmPassword"
+        required
+      />
+      <small class="error" *ngIf="passwordsDoNotMatch">
+        Las contraseñas no coinciden.
+      </small>
+
+      <button type="submit" class="submit-btn">Crear cuenta</button>
+    </form>
+
+    <a routerLink="/" class="back-link">← Volver al inicio</a>
+  </div>
+</section>

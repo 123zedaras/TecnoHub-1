@@ -1,0 +1,131 @@
+.auth-shell {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+
+.auth-card {
+  width: min(100%, 32rem);
+  border: 1px solid rgba(11, 17, 32, 0.2);
+  border-radius: 14px;
+  padding: 1.5rem;
+  background: #fff;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+}
+
+h1 {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  color: #1e3158;
+}
+
+.tab-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  border: 1px solid rgba(11, 17, 32, 0.2);
+  background: #f8fbff;
+  color: #5b6b88;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &.active {
+    border-color: #0b1120;
+    background: rgba(11, 17, 32, 0.08);
+    color: #1e3158;
+  }
+}
+
+.auth-form {
+  display: grid;
+  gap: 0.45rem;
+
+  label {
+    margin-top: 0.55rem;
+    font-weight: 600;
+    color: #1e3158;
+  }
+
+  input {
+    border: 1px solid rgba(11, 17, 32, 0.2);
+    border-radius: 10px;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.95rem;
+
+    background: #fff;
+    color: #1e3158;
+
+    &:focus {
+      outline: none;
+      border-color: #0b1120;
+      box-shadow: 0 0 0 3px rgba(11, 17, 32, 0.16);
+    }
+  }
+}
+
+.forgot-link,
+.back-link {
+  color: #0b1120;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.forgot-link {
+  margin-top: 0.65rem;
+  font-size: 0.92rem;
+}
+
+.submit-btn {
+  margin-top: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.72rem 0.95rem;
+  font-weight: 700;
+  background: #0b1120;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: #fff;
+    color: #0b1120;
+    border-color: #0b1120;
+  }
+}
+//para el boton d prueba de la sesion autenticada.
+.test-btn {
+  margin-top: 0.55rem;
+  border-radius: 10px;
+  padding: 0.72rem 0.95rem;
+  font-weight: 700;
+  background: #fff;
+  color: #0b1120;
+  cursor: pointer;
+  border: 1px solid #0b1120;
+
+  &:hover {
+    background: #0b1120;
+    color: #fff;
+  }
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.8rem;
+}
+
+.back-link {
+  margin-top: 1rem;
+  display: inline-block;
+}

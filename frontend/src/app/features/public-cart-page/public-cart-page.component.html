@@ -1,0 +1,86 @@
+<!--
+  Vista «Ver cesta» pública: solo datos locales (GuestCartStorageService).
+  El bloque de login sustituye al checkout de la cesta autenticada (cart-page).
+-->
+<div class="cart-page public-cart-page">
+
+  <div class="empty-state" *ngIf="lines().length === 0">
+    <div class="empty-icon">🛒</div>
+    <h2>Tu cesta está vacía</h2>
+    <p>No has añadido ningún artículo aún.</p>
+    <a routerLink="/productos" class="btn-primary">Ir al catálogo</a>
+  </div>
+
+  <div class="cart-layout" *ngIf="lines().length > 0">
+
+    <div class="cart-col">
+      <div class="cart-header">
+        <span class="cart-title">Tu cesta</span>
+        <span class="cart-badge">{{ totalUnits() }} artículos</span>
+      </div>
+
+      <p class="guest-hint" *ngIf="hasUnknownPrices()">
+        Algunos artículos se añadieron antes de guardar el precio en el navegador; revisa cantidades o vuelve a añadirlos desde el catálogo.
+      </p>
+
+      <div class="cart-item" *ngFor="let line of lines(); trackBy: trackByProductId">
+        <div class="item-info item-info--wide">
+          <p class="item-name">{{ displayName(line) }}</p>
+        </div>
+
+        <div class="item-right">
+          <span class="item-price" *ngIf="line.unit_price != null">{{ formatPrice(lineSubtotal(line)) }}</span>
+          <span class="item-price item-price--muted" *ngIf="line.unit_price == null">—</span>
+
+          <div class="qty-box">
+            <button
+              type="button"
+              class="qty-btn"
+              (click)="updateQuantity(line, line.quantity - 1)"
+              [disabled]="line.quantity <= 1">−</button>
+            <span class="qty-num">{{ line.quantity }}</span>
+            <button
+              type="button"
+              class="qty-btn"
+              (click)="updateQuantity(line, line.quantity + 1)"
+              [disabled]="line.quantity >= 99">+</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn-remove" (click)="removeLine(line)" title="Quitar">✕</button>
+      </div>
+    </div>
+
+    <div class="summary-col">
+      <div class="summary-card">
+        <h3 class="summary-title">Resumen</h3>
+        <div class="divider"></div>
+
+        <div class="sum-row">
+          <span class="sum-label">Subtotal ({{ totalUnits() }} uds.)</span>
+          <span class="sum-value">{{ formatPrice(subtotal()) }}</span>
+        </div>
+
+        <div class="sum-row">
+          <span class="sum-label">IVA (21%)</span>
+          <span class="sum-value">{{ formatPrice(tax()) }}</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sum-row total-row">
+          <span class="total-label">Total incl. IVA</span>
+          <span class="total-amount">{{ formatPrice(total()) }}</span>
+        </div>
+
+        <p class="login-notice">
+          Para completar la compra, debes iniciar sesión. Tus artículos se sincronizarán con tu cesta al entrar.
+        </p>
+
+        <a routerLink="/login" class="btn-login-cta">Iniciar sesión para completar la compra</a>
+
+        <a routerLink="/productos" class="link-back">← Seguir comprando</a>
+      </div>
+    </div>
+  </div>
+</div>

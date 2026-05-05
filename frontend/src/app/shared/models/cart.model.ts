@@ -23,6 +23,19 @@ export interface AddToCartRequest {
   quantity: number;
 }
 
+/**
+ * Línea de la cesta de invitado (solo navegador, ver GuestCartStorageService).
+ * Incluye product_id + quantity (lo que el backend espera al fusionar tras el login)
+ * y de forma opcional nombre y precio para pintar el desplegable del header y /cesta
+ * sin llamar al API de carrito (el invitado no tiene sesión).
+ */
+export interface GuestCartLine {
+  product_id: number;
+  quantity: number;
+  product_name?: string;
+  unit_price?: number;
+}
+
 export interface UpdateCartItemRequest {
   quantity: number;
 }

@@ -1,11 +1,11 @@
-$primary:      #4F46E5;
-$dark:         #1E293B;
-$bg:           #F8FAFC;
-$text-dark:    #1E293B;
-$text-mid:     #64748B;
-$text-light:   #94A3B8;
-$border:       #E2E8F0;
-$white:        #FFFFFF;
+$primary:      #4f46e5;
+$dark:         #0b1120;
+$bg:           #ffffff;
+$text-dark:    #1e293b;
+$text-mid:     #64748b;
+$text-light:   #94a3b8;
+$border:       #e2e8f0;
+$white:        #ffffff;
 $success:      #10B981;
 $error:        #EF4444;
 $warning:      #F59E0B;
@@ -123,7 +123,7 @@ $warning:      #F59E0B;
   font-size: 13px;
 
   thead {
-    background: #F3F4F6;
+    background: #f3f4f6;
     border-bottom: 1px solid $border;
   }
 
@@ -140,7 +140,7 @@ $warning:      #F59E0B;
     transition: background 0.1s;
 
     &:hover {
-      background: #F9FAFB;
+      background: #f9fafb;
     }
 
     &.resultado-success {
@@ -163,12 +163,12 @@ $warning:      #F59E0B;
   }
 
   code {
-    background: #F3F4F6;
+    background: #f3f4f6;
     border-radius: 4px;
     padding: 2px 6px;
     font-family: 'Courier New', monospace;
     font-size: 12px;
-    color: #111827;
+    color: $text-dark;
   }
 }
 
@@ -263,7 +263,7 @@ $warning:      #F59E0B;
 
   &:hover:not(:disabled) {
     background: $primary;
-    color: $white;
+    color: #fff;
     border-color: $primary;
   }
 
@@ -291,7 +291,7 @@ $warning:      #F59E0B;
 
   &.active {
     background: $primary;
-    color: $white;
+    color: #fff;
     border-color: $primary;
     font-weight: 600;
   }
