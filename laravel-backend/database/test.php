@@ -1,2 +1,2 @@
 <?php
-namespace App\Mail;
+namespace \Mail;
