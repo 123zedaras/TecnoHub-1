@@ -1,0 +1,23 @@
+<div class="card">
+  <img [src]="software.imagen" alt="{{ software.nombre }}" class="card-img">
+
+  <h3>{{ software.nombre }}</h3>
+  <p>{{ software.descripcion }}</p>
+
+  <label>Versión:</label>
+  <select [(ngModel)]="selectedVersion">
+    <option value="">Selecciona una versión</option>
+    <option *ngFor="let v of software.version.split(',')" [value]="v">
+      {{ v }}
+    </option>
+  </select>
+
+  <div class="buttons">
+    <button (click)="comprar()" [disabled]="!isLogged()">Comprar</button>
+    <button (click)="descargar()" [disabled]="!isLogged()">Descargar</button>
+  </div>
+
+  <p *ngIf="!isLogged()" class="login-warning">
+    Debes iniciar sesión para comprar o descargar
+  </p>
+</div>
