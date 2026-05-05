@@ -1,6 +1,6 @@
 <?php
 class NodeRedClient {
-    private $baseUrl = "http://127.0.0.1:1880";
+    private $baseUrl = "http://10.166.196.22:1880/";
 
     public function enviarComando($tag, $valor) {
     // Esto hará que si el tag es "Auto", la URL sea http://127.0.0.1:1880/set/Auto

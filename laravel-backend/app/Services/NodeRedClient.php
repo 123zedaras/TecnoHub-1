@@ -7,7 +7,7 @@ use Illuminate\Http\Client\ConnectionException;
 
 class NodeRedClient
 {
-    private string $baseUrl = 'http://127.0.0.1:1880';
+    private string $baseUrl = 'http://10.166.196.22:1880';
     private int $timeout = 5;
 
     public function __construct()
