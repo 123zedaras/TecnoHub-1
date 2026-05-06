@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -10,16 +11,22 @@ use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\SoftwareController;
 use Illuminate\Support\Facades\Route;
 
+// ── Autenticación (pública) ──────────────────────────────────────────────────
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login',    [AuthController::class, 'login']);
+
 // ── Webhook Stripe (sin autenticación) ──────────────────────────────────────
 Route::post('/webhooks/stripe', [PaymentController::class, 'handleWebhook']);
 
- // Catálogo de productos. lo he sacado de la ruta protegida por Sanctum para que sea publico 
- Route::get('/products',          [ProductController::class, 'index']);
- Route::get('/products/{product}', [ProductController::class, 'show']);
-
-
 // ── Rutas protegidas con Sanctum ─────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
+
+    // Cerrar sesión
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+    // Catálogo de productos
+    Route::get('/products',          [ProductController::class, 'index']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
 
     // Carrito
     Route::prefix('cart')->group(function () {

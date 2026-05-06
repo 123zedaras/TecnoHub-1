@@ -18,7 +18,7 @@
               <tr>
                 <td>
                   <span style="color:#4F46E5;font-size:22px;font-weight:700;">⚙</span>
-                  <span style="color:#F8FAFC;font-size:18px;font-weight:700;margin-left:8px;">TecnoHub Industrial</span>
+                  <span style="color:#F8FAFC;font-size:18px;font-weight:700;margin-left:8px;">TecnoHub</span>
                 </td>
                 <td align="right">
                   <span style="background:#EF4444;color:#FFFFFF;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;">
@@ -67,11 +67,11 @@
                   <p style="margin:0;color:#1E293B;font-size:14px;">{{ $ticket->user->name }}</p>
                 </td>
               </tr>
-              @if($ticket->machine)
+              @if($ticket->machine_name)
               <tr>
                 <td style="border-bottom:1px solid #E2E8F0;">
                   <p style="margin:0 0 2px;color:#94A3B8;font-size:11px;font-weight:600;text-transform:uppercase;">Máquina afectada</p>
-                  <p style="margin:0;color:#1E293B;font-size:14px;">{{ $ticket->machine->name }}</p>
+                  <p style="margin:0;color:#1E293B;font-size:14px;">{{ $ticket->machine_name }}</p>
                 </td>
               </tr>
               @endif
@@ -107,7 +107,7 @@
         <tr>
           <td style="background:#F1F5F9;padding:20px 40px;border-top:1px solid #E2E8F0;">
             <p style="margin:0;color:#94A3B8;font-size:12px;text-align:center;">
-              © {{ date('Y') }} TecnoHub Industrial · Sistema de Gestión de Incidencias
+              © {{ date('Y') }} TecnoHub · Sistema de Gestión de Incidencias
             </p>
           </td>
         </tr>

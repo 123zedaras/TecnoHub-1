@@ -13,15 +13,6 @@ interface PriorityOption {
   border: string;
 }
 
-interface MachineOption {
-  id: number;
-  name: string;
-  model?: string;
-  location?: string;
-  hours?: string;
-  last_review?: string;
-}
-
 @Component({
   selector: 'app-ticket-create',
   templateUrl: './ticket-create.component.html',
@@ -31,10 +22,6 @@ export class TicketCreateComponent implements OnInit {
   form!: FormGroup;
   loading = false;
   error: string | null = null;
-
-  machines: MachineOption[] = [];
-  loadingMachines = false;
-  selectedMachine: MachineOption | null = null;
 
   // Solo 3 prioridades (como en el diseño: Crítica, Alta, Normal)
   priorities: PriorityOption[] = [
@@ -51,29 +38,11 @@ export class TicketCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      title:       ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(5000)]],
-      priority:    ['critical', Validators.required],
-      machine_id:  [null],
+      title:        ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255)]],
+      description:  ['', [Validators.required, Validators.minLength(10), Validators.maxLength(5000)]],
+      priority:     ['critical', Validators.required],
+      machine_name: ['', Validators.required],
     });
-
-    this.loadMachines();
-  }
-
-  loadMachines(): void {
-    this.loadingMachines = true;
-    this.ticketsService.getMachines().subscribe({
-      next: (machines) => {
-        this.machines = machines as MachineOption[];
-        this.loadingMachines = false;
-      },
-      error: () => { this.loadingMachines = false; },
-    });
-  }
-
-  onMachineChange(): void {
-    const id = this.form.get('machine_id')?.value;
-    this.selectedMachine = id ? (this.machines.find(m => m.id === Number(id)) ?? null) : null;
   }
 
   setPriority(value: TicketPriority): void {

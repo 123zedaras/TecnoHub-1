@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SoftwareService } from '../../services/software.service';
+import { SoftwareService } from '../services/software.service';
 
 @Component({
   selector: 'app-software-list',
@@ -9,6 +9,8 @@ import { SoftwareService } from '../../services/software.service';
 export class SoftwareListComponent implements OnInit {
 
   softwareList: any[] = [];
+  search: string = '';
+  loading: boolean = false;
 
   constructor(private softwareService: SoftwareService) {}
 
@@ -16,24 +18,34 @@ export class SoftwareListComponent implements OnInit {
     this.loadSoftware();
   }
 
-  loadSoftware() {
-    this.softwareService.getAll().subscribe((res: any) => {
+  loadSoftware(): void {
+    this.loading = true;
 
-      this.softwareList = res.data.map((item: any, index: number) => {
-        
-        // Asignar imagen según el orden o ID
-        let imagen = '';
-
-        if (index === 0) imagen = 'assets/img/imagen1.jpg';
-        if (index === 1) imagen = 'assets/img/imagen2.jpg';
-        if (index === 2) imagen = 'assets/img/imagen3.jpg';
-
-        return {
+    this.softwareService.getAll(this.search).subscribe({
+      next: (response) => {
+        this.softwareList = response.data.map((item: any) => ({
           ...item,
-          imagen
-        };
-      });
-
+          imagen: this.getImageFor(item)
+        }));
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error cargando software:', err);
+        this.loading = false;
+      }
     });
+  }
+
+  getImageFor(item: any): string {
+    switch (item.nombre.toLowerCase()) {
+      case 'scada pro':
+        return 'assets/software/scada.png';
+      case 'editor pro':
+        return 'assets/software/editor.png';
+      case 'monitor x':
+        return 'assets/software/monitor.png';
+      default:
+        return 'assets/software/default.png';
+    }
   }
 }

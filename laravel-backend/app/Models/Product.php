@@ -14,6 +14,7 @@ class Product extends Model
         'stock',
         'image',
         'active',
+        'documentacion',
     ];
 
     protected $casts = [
@@ -21,4 +22,9 @@ class Product extends Model
         'stock'  => 'integer',
         'active' => 'boolean',
     ];
+
+    public function sws()
+    {
+        return $this->hasMany(Sw::class);
+    }
 }

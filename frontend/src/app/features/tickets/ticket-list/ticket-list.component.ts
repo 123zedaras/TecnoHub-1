@@ -80,10 +80,11 @@ export class TicketListComponent implements OnInit {
 
     this.ticketsService.getTickets(filters).subscribe({
       next: (res) => {
-        this.tickets  = res.data;
-        this.lastPage = res.last_page ?? 1;
-        this.total    = res.total ?? res.data.length;
-        this.loading  = false;
+        this.tickets      = res.data;
+        this.lastPage     = res.last_page ?? 1;
+        this.total        = res.total ?? res.data.length;
+        this.statusCounts = res.status_counts ?? {};
+        this.loading      = false;
       },
       error: () => {
         this.error   = 'No se pudieron cargar los tickets.';

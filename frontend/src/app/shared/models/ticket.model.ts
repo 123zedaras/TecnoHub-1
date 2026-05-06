@@ -26,7 +26,7 @@ export interface Ticket {
   id: number;
   ticket_number: string;
   user_id: number;
-  machine_id: number | null;
+  machine_name: string | null;
   assigned_to: number | null;
   title: string;
   description: string;
@@ -40,7 +40,6 @@ export interface Ticket {
   updated_at: string;
   // Relaciones cargadas
   user?: TicketUser;
-  machine?: TicketMachine | null;
   assigned_technician?: TicketUser | null;
   messages?: TicketMessage[];
 }
@@ -49,7 +48,7 @@ export interface CreateTicketRequest {
   title: string;
   description: string;
   priority: TicketPriority;
-  machine_id?: number | null;
+  machine_name?: string | null;
   assigned_to?: number | null;
 }
 

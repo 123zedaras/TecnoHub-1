@@ -2,14 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
-/**
- * Marcador de ruta hasta que exista el formulario real de login.
- *
- * Cuando tengas la respuesta del backend con el token Sanctum, el flujo típico es:
- * 1) auth.completeLoginWithGuestCartMerge(token)
- * 2) En `next`: navegar al área autenticada y opcionalmente mostrar cuántas líneas se sincronizaron (`mergedCount`).
- * 3) En `error`: mostrar mensaje; la cesta invitado en localStorage NO se borra si falló a mitad del merge.
- */
 @Component({
   selector: 'app-public-login',
   templateUrl: './public-login.component.html',
@@ -18,20 +10,15 @@ import { AuthService } from '../../core/services/auth.service';
 export class PublicLoginComponent {
   activeTab: 'login' | 'register' = 'login';
 
-  loginForm = {
-    username: '',
-    password: '',
-  };
+  loginForm    = { email: '', password: '' };
+  registerForm = { email: '', name: '', password: '', confirmPassword: '' };
 
-  registerForm = {
-    email: '',
-    name: '',
-    password: '',
-    confirmPassword: '',
-  };
-
-  loginSubmitted = false;
+  loginSubmitted    = false;
   registerSubmitted = false;
+  loading           = false;
+
+  loginError: string | null    = null;
+  registerError: string | null = null;
 
   constructor(
     private auth: AuthService,
@@ -40,51 +27,53 @@ export class PublicLoginComponent {
 
   setTab(tab: 'login' | 'register'): void {
     this.activeTab = tab;
+    this.loginError = null;
+    this.registerError = null;
   }
 
   onLoginSubmit(): void {
     this.loginSubmitted = true;
+    this.loginError = null;
 
-    if (!this.isLoginFormValid) {
-      return;
-    }
+    if (!this.isLoginFormValid) return;
 
-    // Pendiente: conectar con endpoint real de login en backend.
-    // this.auth.login(...)
-    console.log('Login listo para backend:', this.loginForm);
-  }
-
-  /**
-   * Acceso rápido para pruebas en entorno local:
-   * simula sesión iniciada para forzar el layout autenticado.
-   */
-  loginDePruebas(): void {
-    this.auth.setToken('token-pruebas');
-    void this.router.navigate(['/dashboard']);
+    this.loading = true;
+    this.auth.login(this.loginForm.email, this.loginForm.password).subscribe({
+      next: () => void this.router.navigate(['/dashboard']),
+      error: (err) => {
+        this.loginError = err?.error?.message ?? 'No se pudo iniciar sesión. Comprueba tus datos.';
+        this.loading = false;
+      },
+    });
   }
 
   onRegisterSubmit(): void {
     this.registerSubmitted = true;
+    this.registerError = null;
 
-    if (!this.isRegisterFormValid) {
-      return;
-    }
+    if (!this.isRegisterFormValid) return;
 
-    // Pendiente: conectar con endpoint real de registro en backend.
-    // this.auth.register(...)
-    console.log('Registro listo para backend:', this.registerForm);
+    this.loading = true;
+    this.auth.register(this.registerForm.name, this.registerForm.email, this.registerForm.password).subscribe({
+      next: () => void this.router.navigate(['/dashboard']),
+      error: (err) => {
+        this.registerError = err?.error?.message
+          ?? err?.error?.errors?.email?.[0]
+          ?? 'No se pudo crear la cuenta. Inténtalo de nuevo.';
+        this.loading = false;
+      },
+    });
   }
 
   get isLoginFormValid(): boolean {
-    return this.loginForm.username.trim().length > 0 && this.loginForm.password.length > 0;
+    return this.loginForm.email.trim().length > 0 && this.loginForm.password.length > 0;
   }
 
   get isRegisterFormValid(): boolean {
     return (
       this.registerForm.email.trim().length > 0 &&
       this.registerForm.name.trim().length > 0 &&
-      this.registerForm.password.length >= 6 &&
-      this.registerForm.confirmPassword.length >= 6 &&
+      this.registerForm.password.length >= 8 &&
       this.registerForm.password === this.registerForm.confirmPassword
     );
   }
@@ -99,26 +88,5 @@ export class PublicLoginComponent {
 
   onForgotPassword(event: Event): void {
     event.preventDefault();
-    // Pendiente: implementar flujo real cuando exista endpoint.
-    console.log('Recuperar contraseña pendiente de backend');
-  }
-
-  /**
-   * EJEMPLO: llamar esto desde el handler del formulario cuando `POST /login` (o similar) devuelva el token.
-   * Sustituye `tokenEjemplo` por el string real de la respuesta JSON.
-   */
-  ejemploTrasLoginExitoso(tokenDeLaApi: string): void {
-    this.auth.completeLoginWithGuestCartMerge(tokenDeLaApi).subscribe({
-      next: ({ mergedCount }) => {
-        // mergedCount = líneas enviadas con POST /cart/items (no es el total de unidades).
-        if (mergedCount > 0) {
-          // Ej.: this.toast.show(`Se sincronizaron ${mergedCount} líneas de tu cesta.`);
-        }
-        void this.router.navigate(['/']); // o la ruta autenticada que uses
-      },
-      error: () => {
-        // El token ya está guardado; el usuario puede estar logueado pero la cesta invitado puede seguir en localStorage.
-      },
-    });
   }
 }

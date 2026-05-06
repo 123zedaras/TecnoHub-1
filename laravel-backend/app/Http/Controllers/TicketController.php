@@ -17,7 +17,8 @@ class TicketController extends Controller
     {
         $user = $request->user();
 
-        $query = Ticket::with(['user:id,name', 'machine:id,name', 'assignedTechnician:id,name'])
+        $query = Ticket::with(['user:id,name', 'assignedTechnician:id,name'])
+            ->orderByRaw("CASE status WHEN 'open' THEN 1 WHEN 'in_process' THEN 2 WHEN 'resolved' THEN 3 WHEN 'closed' THEN 4 ELSE 5 END")
             ->orderByDesc('created_at');
 
         // Técnicos y admins ven todos los tickets; operarios solo los suyos
@@ -32,13 +33,25 @@ class TicketController extends Controller
         if ($request->filled('priority')) {
             $query->where('priority', $request->priority);
         }
-        if ($request->filled('machine_id')) {
-            $query->where('machine_id', $request->machine_id);
+        if ($request->filled('machine_name')) {
+            $query->where('machine_name', 'like', '%' . $request->machine_name . '%');
         }
+
+        // Contadores por estado (mismos filtros de usuario, sin filtro de estado)
+        $countsBase = Ticket::query();
+        if ($user->role === 'operator') {
+            $countsBase->where('user_id', $user->id);
+        }
+        $statusCounts = $countsBase
+            ->selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status');
 
         $tickets = $query->paginate(20);
 
-        return response()->json($tickets);
+        return response()->json(array_merge($tickets->toArray(), [
+            'status_counts' => $statusCounts,
+        ]));
     }
 
     // POST /api/tickets — Crear nuevo ticket
@@ -47,7 +60,7 @@ class TicketController extends Controller
         $ticket = Ticket::create([
             'ticket_number' => Ticket::generateTicketNumber(),
             'user_id'       => $request->user()->id,
-            'machine_id'    => $request->machine_id,
+            'machine_name'  => $request->machine_name,
             'assigned_to'   => $request->assigned_to,
             'title'         => $request->title,
             'description'   => $request->description,
@@ -55,7 +68,7 @@ class TicketController extends Controller
             'status'        => 'open',
         ]);
 
-        $ticket->load(['user', 'machine', 'assignedTechnician']);
+        $ticket->load(['user', 'assignedTechnician']);
 
         // Email al operario que abre el ticket
         Mail::to($ticket->user->email)->send(new TicketCreatedMail($ticket));
@@ -83,7 +96,6 @@ class TicketController extends Controller
 
         $ticket->load([
             'user:id,name,email',
-            'machine:id,name,model',
             'assignedTechnician:id,name,email',
             'messages.user:id,name',
         ]);
@@ -115,7 +127,7 @@ class TicketController extends Controller
             Mail::to($ticket->user->email)->send(new TicketStatusChangedMail($ticket, $oldStatus));
         }
 
-        $ticket->load(['user:id,name', 'machine:id,name', 'assignedTechnician:id,name']);
+        $ticket->load(['user:id,name', 'assignedTechnician:id,name']);
 
         return response()->json([
             'message' => 'Ticket actualizado.',
