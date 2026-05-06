@@ -56,6 +56,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/{ticket}/messages',  [TicketMessageController::class, 'store']);
     });
 
+    // Catálogo de software
+    Route::get('/software',           [SoftwareController::class, 'index']);
+    Route::get('/software/{software}', [SoftwareController::class, 'show']);
+
     // SCADA (solo técnicos/admins, validado vía ScadaPolicy)
     Route::prefix('scada')->group(function () {
         Route::get('/dashboard',                    [ScadaController::class, 'getDashboard'])

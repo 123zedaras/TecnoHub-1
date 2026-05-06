@@ -1,0 +1,74 @@
+<div class="catalog-page">
+
+  <!-- Cabecera -->
+  <div class="catalog-header">
+    <div>
+      <h1 class="catalog-title">Catálogo de Software</h1>
+      <p class="catalog-subtitle">Consulta el software disponible para tu equipo</p>
+    </div>
+  </div>
+
+  <div class="catalog-toolbar" role="search" aria-label="Buscar software">
+    <div class="catalog-search">
+      <svg class="catalog-search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input
+        id="app-software-search"
+        type="search"
+        class="catalog-search__input"
+        placeholder="Buscar por nombre o versión…"
+        autocomplete="off"
+        [value]="searchInput"
+        (input)="onSearchInput($any($event.target).value)"
+        (keydown.enter)="flushSearch()"
+      />
+    </div>
+    <button type="button" class="btn-search" (click)="flushSearch()">Buscar</button>
+    <button type="button" class="btn-clear-search" *ngIf="searchInput.trim()" (click)="clearSearch()">Limpiar</button>
+  </div>
+
+  <!-- Error -->
+  <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando catálogo…</p>
+  </div>
+
+  <!-- Grid de software -->
+  <div class="product-grid" *ngIf="!loading && softwareList.length > 0">
+    <div class="product-card" *ngFor="let item of softwareList">
+
+      <div class="product-info">
+        <span class="product-sku">v{{ item.version }}</span>
+        <h3 class="product-name">{{ item.nombre }}</h3>
+        <p class="product-desc" *ngIf="item.descripcion">{{ item.descripcion }}</p>
+
+        <div class="product-footer">
+          <span class="product-price">{{ formatPrice(item.precio) }}</span>
+          <span class="stock-badge" [class]="estadoClass(item.estado)">
+            {{ estadoLabel(item.estado) }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Estado vacío -->
+  <div class="empty-state" *ngIf="!loading && !error && softwareList.length === 0">
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none"
+         stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <path d="M9 9h6M9 12h6M9 15h4"/>
+    </svg>
+    <p *ngIf="lastSearchQuery; else emptyMsg">Ningún software coincide con «{{ lastSearchQuery }}».</p>
+    <ng-template #emptyMsg>
+      <p>No hay software disponible en el catálogo.</p>
+    </ng-template>
+  </div>
+
+</div>

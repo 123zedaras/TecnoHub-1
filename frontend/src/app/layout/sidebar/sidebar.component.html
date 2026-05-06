@@ -59,10 +59,10 @@
   <!-- Footer -->
   <div class="sidebar-footer">
     <div class="user-info">
-      <div class="user-avatar">U</div>
+      <div class="user-avatar">{{ currentUser?.name?.charAt(0)?.toUpperCase() ?? 'U' }}</div>
       <div class="user-details">
-        <span class="user-name">Usuario</span>
-        <span class="user-role">Operario</span>
+        <span class="user-name">{{ currentUser?.name ?? 'Usuario' }}</span>
+        <span class="user-role">{{ currentUser?.role ?? 'Operario' }}</span>
       </div>
     </div>
     <button type="button" class="sidebar-logout" (click)="logout()">Cerrar sesión</button>

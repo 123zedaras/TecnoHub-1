@@ -1,16 +1,17 @@
 import {
+  ScadaService
+} from "./chunk-NGWBMD4A.js";
+import {
   FormsModule,
   NgControlStatus,
   NgModel,
   NgSelectOption,
   SelectControlValueAccessor,
   ɵNgSelectMultipleOption
-} from "./chunk-WUE7237N.js";
+} from "./chunk-B2JNEFE6.js";
 import {
   CommonModule,
   DatePipe,
-  HttpClient,
-  HttpParams,
   NgClass,
   NgForOf,
   NgIf,
@@ -18,7 +19,6 @@ import {
   Subject,
   UpperCasePipe,
   interval,
-  map,
   switchMap,
   takeUntil,
   ɵsetClassDebugInfo,
@@ -26,7 +26,6 @@ import {
   ɵɵadvance,
   ɵɵclassProp,
   ɵɵdefineComponent,
-  ɵɵdefineInjectable,
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵdirectiveInject,
@@ -36,7 +35,6 @@ import {
   ɵɵelementEnd,
   ɵɵelementStart,
   ɵɵgetCurrentView,
-  ɵɵinject,
   ɵɵlistener,
   ɵɵnextContext,
   ɵɵpipe,
@@ -54,74 +52,7 @@ import {
   ɵɵtwoWayBindingSet,
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty
-} from "./chunk-NZQ3SXBR.js";
-
-// src/app/core/services/scada.service.ts
-var ScadaService = class _ScadaService {
-  constructor(http) {
-    this.http = http;
-    this.apiUrl = "/api/scada";
-  }
-  /**
-   * GET /api/scada/dashboard
-   * Obtiene el estado actual del sistema SCADA desde Node-RED
-   */
-  getDashboard() {
-    return this.http.get(`${this.apiUrl}/dashboard`).pipe(map((res) => res.data));
-  }
-  /**
-   * Polling automático cada 800ms del dashboard SCADA
-   */
-  getDashboardAutoRefresh(intervalMs = 800) {
-    return interval(intervalMs).pipe(switchMap(() => this.getDashboard()));
-  }
-  /**
-   * POST /api/scada/enviar-comando
-   * Envía un comando a Node-RED
-   */
-  enviarComando(tag, valor) {
-    return this.http.post(`${this.apiUrl}/enviar-comando`, { tag, valor });
-  }
-  /**
-   * GET /api/scada/historicos
-   * Retorna histórico de comandos y eventos
-   */
-  getHistoricos(machineId, days = 30, perPage = 50, page = 1) {
-    let params = new HttpParams().set("days", days.toString()).set("per_page", perPage.toString()).set("page", page.toString());
-    if (machineId) {
-      params = params.set("machine_id", machineId.toString());
-    }
-    return this.http.get(`${this.apiUrl}/historicos`, { params });
-  }
-  /**
-   * GET /api/scada/eventos-maquina/{machineId}
-   * Retorna eventos históricos de una máquina (para integración con Tickets)
-   */
-  getEventosMaquina(machineId, days = 7, perPage = 30, page = 1) {
-    const params = new HttpParams().set("days", days.toString()).set("per_page", perPage.toString()).set("page", page.toString());
-    return this.http.get(`${this.apiUrl}/eventos-maquina/${machineId}`, { params });
-  }
-  /**
-   * POST /api/scada/evento-manual
-   * Registra un evento manual (solo para admins)
-   */
-  registrarEventoManual(machineId, eventoType, valorAnterior, valorNuevo) {
-    return this.http.post(`${this.apiUrl}/evento-manual`, {
-      machine_id: machineId,
-      evento_type: eventoType,
-      valor_anterior: valorAnterior,
-      valor_nuevo: valorNuevo
-    });
-  }
-  static {
-    this.\u0275fac = function ScadaService_Factory(__ngFactoryType__) {
-      return new (__ngFactoryType__ || _ScadaService)(\u0275\u0275inject(HttpClient));
-    };
-  }
-  static {
-    this.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _ScadaService, factory: _ScadaService.\u0275fac, providedIn: "root" });
-  }
-};
+} from "./chunk-Y4GLGG7Z.js";
 
 // src/app/features/scada/dashboard/dashboard.component.ts
 function ScadaDashboardComponent_span_5_Template(rf, ctx) {
@@ -531,7 +462,7 @@ var ScadaDashboardComponent = class _ScadaDashboardComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ScadaDashboardComponent, { className: "ScadaDashboardComponent", filePath: "src\\app\\features\\scada\\dashboard\\dashboard.component.ts", lineNumber: 15 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ScadaDashboardComponent, { className: "ScadaDashboardComponent", filePath: "app\\features\\scada\\dashboard\\dashboard.component.ts", lineNumber: 15 });
 })();
 
 // src/app/features/scada/historicos/historicos.component.ts
@@ -904,11 +835,11 @@ var HistoricosComponent = class _HistoricosComponent {
         \u0275\u0275advance();
         \u0275\u0275property("ngIf", !ctx.loading && ctx.commands.length === 0);
       }
-    }, dependencies: [CommonModule, NgClass, NgForOf, NgIf, UpperCasePipe, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, SelectControlValueAccessor, NgControlStatus, NgModel], styles: ['\n\n.historicos-container[_ngcontent-%COMP%] {\n  padding: 24px;\n  background: #F8FAFC;\n  min-height: 100vh;\n}\n.historicos-header[_ngcontent-%COMP%] {\n  margin-bottom: 32px;\n}\n.historicos-header[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  font-size: 28px;\n  font-weight: 700;\n  color: #1E293B;\n  margin: 0 0 8px 0;\n}\n.historicos-header[_ngcontent-%COMP%]   .subtitle[_ngcontent-%COMP%] {\n  font-size: 14px;\n  color: #94A3B8;\n  margin: 0;\n}\n.filters-bar[_ngcontent-%COMP%] {\n  background: #FFFFFF;\n  border: 1px solid #E2E8F0;\n  border-radius: 8px;\n  padding: 16px;\n  margin-bottom: 24px;\n  display: flex;\n  gap: 16px;\n  align-items: flex-end;\n  flex-wrap: wrap;\n}\n.filter-group[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n.filter-group[_ngcontent-%COMP%]   label[_ngcontent-%COMP%] {\n  font-size: 13px;\n  font-weight: 500;\n  color: #1E293B;\n}\n.filter-group[_ngcontent-%COMP%]   select[_ngcontent-%COMP%] {\n  border: 1px solid #E2E8F0;\n  border-radius: 6px;\n  padding: 6px 12px;\n  font-size: 13px;\n  color: #1E293B;\n  background: #FFFFFF;\n  cursor: pointer;\n  transition: border-color 0.15s;\n}\n.filter-group[_ngcontent-%COMP%]   select[_ngcontent-%COMP%]:focus {\n  outline: none;\n  border-color: #4F46E5;\n}\n.alert-error[_ngcontent-%COMP%] {\n  background: #FEF2F2;\n  border: 1px solid #FECACA;\n  border-radius: 8px;\n  padding: 12px 16px;\n  color: #EF4444;\n  font-size: 13px;\n  margin-bottom: 16px;\n}\n.state-loading[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  height: 300px;\n  gap: 12px;\n  color: #64748B;\n  font-size: 14px;\n}\n.spinner[_ngcontent-%COMP%] {\n  width: 32px;\n  height: 32px;\n  border: 3px solid #E2E8F0;\n  border-top-color: #4F46E5;\n  border-radius: 50%;\n  animation: _ngcontent-%COMP%_spin 0.7s linear infinite;\n}\n@keyframes _ngcontent-%COMP%_spin {\n  to {\n    transform: rotate(360deg);\n  }\n}\n.table-container[_ngcontent-%COMP%] {\n  background: #FFFFFF;\n  border: 1px solid #E2E8F0;\n  border-radius: 8px;\n  overflow: hidden;\n  margin-bottom: 24px;\n}\n.historicos-table[_ngcontent-%COMP%] {\n  width: 100%;\n  border-collapse: collapse;\n  font-size: 13px;\n}\n.historicos-table[_ngcontent-%COMP%]   thead[_ngcontent-%COMP%] {\n  background: #F3F4F6;\n  border-bottom: 1px solid #E2E8F0;\n}\n.historicos-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  padding: 12px 16px;\n  text-align: left;\n  font-weight: 600;\n  color: #1E293B;\n  white-space: nowrap;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr[_ngcontent-%COMP%] {\n  border-bottom: 1px solid #E2E8F0;\n  transition: background 0.1s;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr[_ngcontent-%COMP%]:hover {\n  background: #F9FAFB;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr.resultado-success[_ngcontent-%COMP%] {\n  --accent: #10B981;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr.resultado-error[_ngcontent-%COMP%] {\n  --accent: #EF4444;\n  background: #FEF2F2;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr.resultado-timeout[_ngcontent-%COMP%] {\n  --accent: #F59E0B;\n}\n.historicos-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 12px 16px;\n  color: #1E293B;\n}\n.historicos-table[_ngcontent-%COMP%]   code[_ngcontent-%COMP%] {\n  background: #F3F4F6;\n  border-radius: 4px;\n  padding: 2px 6px;\n  font-family: "Courier New", monospace;\n  font-size: 12px;\n  color: #111827;\n}\n.col-datetime[_ngcontent-%COMP%] {\n  color: #64748B;\n  font-size: 12px;\n}\n.col-user[_ngcontent-%COMP%] {\n  font-weight: 500;\n}\n.col-resultado[_ngcontent-%COMP%] {\n  text-align: center;\n}\n.resultado-badge[_ngcontent-%COMP%] {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  padding: 2px 8px;\n  border-radius: 8px;\n  font-size: 11px;\n  font-weight: 600;\n}\n.resultado-badge.resultado-success[_ngcontent-%COMP%] {\n  background: #DCFCE7;\n  color: #10B981;\n}\n.resultado-badge.resultado-error[_ngcontent-%COMP%] {\n  background: #FEE2E2;\n  color: #EF4444;\n}\n.resultado-badge.resultado-timeout[_ngcontent-%COMP%] {\n  background: #FEF3C7;\n  color: #92400E;\n}\n.response-ok[_ngcontent-%COMP%], \n.response-error[_ngcontent-%COMP%], \n.response-timeout[_ngcontent-%COMP%] {\n  font-size: 12px;\n  font-weight: 500;\n}\n.response-ok[_ngcontent-%COMP%] {\n  color: #10B981;\n}\n.response-error[_ngcontent-%COMP%] {\n  color: #EF4444;\n}\n.response-timeout[_ngcontent-%COMP%] {\n  color: #F59E0B;\n}\n.empty-state[_ngcontent-%COMP%] {\n  background: #FFFFFF;\n  border: 1px dashed #E2E8F0;\n  border-radius: 8px;\n  padding: 48px 24px;\n  text-align: center;\n  color: #94A3B8;\n  font-size: 16px;\n}\n.pagination[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  flex-wrap: wrap;\n  padding: 16px;\n  background: #FFFFFF;\n  border: 1px solid #E2E8F0;\n  border-radius: 8px;\n}\n.pagination-btn[_ngcontent-%COMP%] {\n  background: #FFFFFF;\n  border: 1px solid #E2E8F0;\n  border-radius: 6px;\n  padding: 6px 12px;\n  font-size: 12px;\n  cursor: pointer;\n  transition: all 0.15s;\n  color: #1E293B;\n}\n.pagination-btn[_ngcontent-%COMP%]:hover:not(:disabled) {\n  background: #4F46E5;\n  color: #FFFFFF;\n  border-color: #4F46E5;\n}\n.pagination-btn[_ngcontent-%COMP%]:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.page-number[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  background: #FFFFFF;\n  border: 1px solid #E2E8F0;\n  border-radius: 6px;\n  padding: 6px 10px;\n  font-size: 12px;\n  cursor: pointer;\n  transition: all 0.15s;\n  color: #1E293B;\n  min-width: 36px;\n}\n.page-number[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:hover {\n  border-color: #4F46E5;\n  color: #4F46E5;\n}\n.page-number[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%] {\n  background: #4F46E5;\n  color: #FFFFFF;\n  border-color: #4F46E5;\n  font-weight: 600;\n}\n.pagination-info[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: #94A3B8;\n  margin-left: 8px;\n}\n/*# sourceMappingURL=historicos.component.css.map */'] });
+    }, dependencies: [CommonModule, NgClass, NgForOf, NgIf, UpperCasePipe, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, SelectControlValueAccessor, NgControlStatus, NgModel], styles: ['\n\n.historicos-container[_ngcontent-%COMP%] {\n  padding: 24px;\n  background: #ffffff;\n  min-height: 100vh;\n}\n.historicos-header[_ngcontent-%COMP%] {\n  margin-bottom: 32px;\n}\n.historicos-header[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  font-size: 28px;\n  font-weight: 700;\n  color: #1e293b;\n  margin: 0 0 8px 0;\n}\n.historicos-header[_ngcontent-%COMP%]   .subtitle[_ngcontent-%COMP%] {\n  font-size: 14px;\n  color: #94a3b8;\n  margin: 0;\n}\n.filters-bar[_ngcontent-%COMP%] {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n  padding: 16px;\n  margin-bottom: 24px;\n  display: flex;\n  gap: 16px;\n  align-items: flex-end;\n  flex-wrap: wrap;\n}\n.filter-group[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n.filter-group[_ngcontent-%COMP%]   label[_ngcontent-%COMP%] {\n  font-size: 13px;\n  font-weight: 500;\n  color: #1e293b;\n}\n.filter-group[_ngcontent-%COMP%]   select[_ngcontent-%COMP%] {\n  border: 1px solid #e2e8f0;\n  border-radius: 6px;\n  padding: 6px 12px;\n  font-size: 13px;\n  color: #1e293b;\n  background: #ffffff;\n  cursor: pointer;\n  transition: border-color 0.15s;\n}\n.filter-group[_ngcontent-%COMP%]   select[_ngcontent-%COMP%]:focus {\n  outline: none;\n  border-color: #4f46e5;\n}\n.alert-error[_ngcontent-%COMP%] {\n  background: #FEF2F2;\n  border: 1px solid #FECACA;\n  border-radius: 8px;\n  padding: 12px 16px;\n  color: #EF4444;\n  font-size: 13px;\n  margin-bottom: 16px;\n}\n.state-loading[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  height: 300px;\n  gap: 12px;\n  color: #64748b;\n  font-size: 14px;\n}\n.spinner[_ngcontent-%COMP%] {\n  width: 32px;\n  height: 32px;\n  border: 3px solid #e2e8f0;\n  border-top-color: #4f46e5;\n  border-radius: 50%;\n  animation: _ngcontent-%COMP%_spin 0.7s linear infinite;\n}\n@keyframes _ngcontent-%COMP%_spin {\n  to {\n    transform: rotate(360deg);\n  }\n}\n.table-container[_ngcontent-%COMP%] {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n  overflow: hidden;\n  margin-bottom: 24px;\n}\n.historicos-table[_ngcontent-%COMP%] {\n  width: 100%;\n  border-collapse: collapse;\n  font-size: 13px;\n}\n.historicos-table[_ngcontent-%COMP%]   thead[_ngcontent-%COMP%] {\n  background: #f3f4f6;\n  border-bottom: 1px solid #e2e8f0;\n}\n.historicos-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  padding: 12px 16px;\n  text-align: left;\n  font-weight: 600;\n  color: #1e293b;\n  white-space: nowrap;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr[_ngcontent-%COMP%] {\n  border-bottom: 1px solid #e2e8f0;\n  transition: background 0.1s;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr[_ngcontent-%COMP%]:hover {\n  background: #f9fafb;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr.resultado-success[_ngcontent-%COMP%] {\n  --accent: #10B981;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr.resultado-error[_ngcontent-%COMP%] {\n  --accent: #EF4444;\n  background: #FEF2F2;\n}\n.historicos-table[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr.resultado-timeout[_ngcontent-%COMP%] {\n  --accent: #F59E0B;\n}\n.historicos-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 12px 16px;\n  color: #1e293b;\n}\n.historicos-table[_ngcontent-%COMP%]   code[_ngcontent-%COMP%] {\n  background: #f3f4f6;\n  border-radius: 4px;\n  padding: 2px 6px;\n  font-family: "Courier New", monospace;\n  font-size: 12px;\n  color: #1e293b;\n}\n.col-datetime[_ngcontent-%COMP%] {\n  color: #64748b;\n  font-size: 12px;\n}\n.col-user[_ngcontent-%COMP%] {\n  font-weight: 500;\n}\n.col-resultado[_ngcontent-%COMP%] {\n  text-align: center;\n}\n.resultado-badge[_ngcontent-%COMP%] {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  padding: 2px 8px;\n  border-radius: 8px;\n  font-size: 11px;\n  font-weight: 600;\n}\n.resultado-badge.resultado-success[_ngcontent-%COMP%] {\n  background: #DCFCE7;\n  color: #10B981;\n}\n.resultado-badge.resultado-error[_ngcontent-%COMP%] {\n  background: #FEE2E2;\n  color: #EF4444;\n}\n.resultado-badge.resultado-timeout[_ngcontent-%COMP%] {\n  background: #FEF3C7;\n  color: #92400E;\n}\n.response-ok[_ngcontent-%COMP%], \n.response-error[_ngcontent-%COMP%], \n.response-timeout[_ngcontent-%COMP%] {\n  font-size: 12px;\n  font-weight: 500;\n}\n.response-ok[_ngcontent-%COMP%] {\n  color: #10B981;\n}\n.response-error[_ngcontent-%COMP%] {\n  color: #EF4444;\n}\n.response-timeout[_ngcontent-%COMP%] {\n  color: #F59E0B;\n}\n.empty-state[_ngcontent-%COMP%] {\n  background: #ffffff;\n  border: 1px dashed #e2e8f0;\n  border-radius: 8px;\n  padding: 48px 24px;\n  text-align: center;\n  color: #94a3b8;\n  font-size: 16px;\n}\n.pagination[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  flex-wrap: wrap;\n  padding: 16px;\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n}\n.pagination-btn[_ngcontent-%COMP%] {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 6px;\n  padding: 6px 12px;\n  font-size: 12px;\n  cursor: pointer;\n  transition: all 0.15s;\n  color: #1e293b;\n}\n.pagination-btn[_ngcontent-%COMP%]:hover:not(:disabled) {\n  background: #4f46e5;\n  color: #fff;\n  border-color: #4f46e5;\n}\n.pagination-btn[_ngcontent-%COMP%]:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.page-number[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  background: #ffffff;\n  border: 1px solid #e2e8f0;\n  border-radius: 6px;\n  padding: 6px 10px;\n  font-size: 12px;\n  cursor: pointer;\n  transition: all 0.15s;\n  color: #1e293b;\n  min-width: 36px;\n}\n.page-number[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:hover {\n  border-color: #4f46e5;\n  color: #4f46e5;\n}\n.page-number[_ngcontent-%COMP%]   button.active[_ngcontent-%COMP%] {\n  background: #4f46e5;\n  color: #fff;\n  border-color: #4f46e5;\n  font-weight: 600;\n}\n.pagination-info[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: #94a3b8;\n  margin-left: 8px;\n}\n/*# sourceMappingURL=historicos.component.css.map */'] });
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(HistoricosComponent, { className: "HistoricosComponent", filePath: "src\\app\\features\\scada\\historicos\\historicos.component.ts", lineNumber: 16 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(HistoricosComponent, { className: "HistoricosComponent", filePath: "app\\features\\scada\\historicos\\historicos.component.ts", lineNumber: 16 });
 })();
 
 // src/app/features/scada/scada-routing.module.ts
@@ -963,4 +894,4 @@ var ScadaModule = class _ScadaModule {
 export {
   ScadaModule
 };
-//# sourceMappingURL=chunk-JSD3KA4F.js.map
+//# sourceMappingURL=chunk-AZ3QYQGL.js.map

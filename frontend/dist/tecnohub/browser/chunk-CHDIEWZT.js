@@ -1,25 +1,29 @@
 import {
+  ProductService
+} from "./chunk-VOC6WKN7.js";
+import {
+  CartService
+} from "./chunk-J4UNXGQC.js";
+import {
   environment
-} from "./chunk-WHW3TWVX.js";
+} from "./chunk-NW4XVQFF.js";
 import {
   DefaultValueAccessor,
   FormsModule,
   NgControlStatus,
   NgModel
-} from "./chunk-WUE7237N.js";
+} from "./chunk-B2JNEFE6.js";
 import {
   CommonModule,
-  HttpClient,
   NgForOf,
   NgIf,
   Router,
   RouterLink,
   RouterModule,
   __async,
-  signal,
-  tap,
   ɵsetClassDebugInfo,
   ɵɵadvance,
+  ɵɵclassMap,
   ɵɵclassProp,
   ɵɵdefineComponent,
   ɵɵdefineInjectable,
@@ -30,16 +34,19 @@ import {
   ɵɵelementEnd,
   ɵɵelementStart,
   ɵɵgetCurrentView,
-  ɵɵinject,
   ɵɵlistener,
   ɵɵloadQuery,
+  ɵɵnamespaceHTML,
+  ɵɵnamespaceSVG,
   ɵɵnextContext,
   ɵɵproperty,
   ɵɵqueryRefresh,
+  ɵɵreference,
   ɵɵresetView,
   ɵɵrestoreView,
   ɵɵsanitizeUrl,
   ɵɵtemplate,
+  ɵɵtemplateRefExtractor,
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
@@ -47,86 +54,392 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-NZQ3SXBR.js";
+} from "./chunk-Y4GLGG7Z.js";
 
-// src/app/core/services/cart.service.ts
-var CartService = class _CartService {
-  constructor(http) {
-    this.http = http;
-    this.apiUrl = `${environment.apiUrl}/cart`;
-    this.itemCount = signal(0);
-    this.cartTotal = signal(0);
+// src/app/features/cart/catalog/catalog.component.ts
+function CatalogComponent_span_13_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "span", 24);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
   }
-  // GET /api/cart
-  getCart() {
-    return this.http.get(this.apiUrl).pipe(tap((res) => {
-      this.itemCount.set(res.data.item_count);
-      this.cartTotal.set(res.data.total);
-    }));
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r0.cartCount);
   }
-  // POST /api/cart/items
-  addItem(request) {
-    return this.http.post(`${this.apiUrl}/items`, request).pipe(tap((res) => {
-      this.itemCount.set(res.cart?.item_count ?? this.itemCount());
-      this.cartTotal.set(res.cart?.total ?? this.cartTotal());
-    }));
+}
+function CatalogComponent_button_22_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "button", 25);
+    \u0275\u0275listener("click", function CatalogComponent_button_22_Template_button_click_0_listener() {
+      \u0275\u0275restoreView(_r2);
+      const ctx_r0 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r0.clearSearch());
+    });
+    \u0275\u0275text(1, "Limpiar");
+    \u0275\u0275elementEnd();
   }
-  // PUT /api/cart/items/{id}
-  updateItem(itemId, request) {
-    return this.http.put(`${this.apiUrl}/items/${itemId}`, request).pipe(tap((res) => {
-      if (res.cart) {
-        this.itemCount.set(res.cart.item_count);
-        this.cartTotal.set(res.cart.total);
+}
+function CatalogComponent_div_23_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 26);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r0.successMessage);
+  }
+}
+function CatalogComponent_div_24_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 27);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r0.error);
+  }
+}
+function CatalogComponent_div_25_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 28);
+    \u0275\u0275element(1, "div", 29);
+    \u0275\u0275elementStart(2, "p");
+    \u0275\u0275text(3, "Cargando cat\xE1logo\u2026");
+    \u0275\u0275elementEnd()();
+  }
+}
+function CatalogComponent_div_26_div_1_img_2_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "img", 44);
+  }
+  if (rf & 2) {
+    const product_r4 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275property("src", product_r4.image, \u0275\u0275sanitizeUrl)("alt", product_r4.name);
+  }
+}
+function CatalogComponent_div_26_div_1_div_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 45);
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275elementStart(1, "svg", 46);
+    \u0275\u0275element(2, "rect", 47)(3, "circle", 48)(4, "path", 49);
+    \u0275\u0275elementEnd()();
+  }
+}
+function CatalogComponent_div_26_div_1_p_9_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 50);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const product_r4 = \u0275\u0275nextContext().$implicit;
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(product_r4.description);
+  }
+}
+function CatalogComponent_div_26_div_1_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 32)(1, "div", 33);
+    \u0275\u0275template(2, CatalogComponent_div_26_div_1_img_2_Template, 1, 2, "img", 34)(3, CatalogComponent_div_26_div_1_div_3_Template, 5, 0, "div", 35);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "div", 36)(5, "span", 37);
+    \u0275\u0275text(6);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(7, "h3", 38);
+    \u0275\u0275text(8);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(9, CatalogComponent_div_26_div_1_p_9_Template, 2, 1, "p", 39);
+    \u0275\u0275elementStart(10, "div", 40)(11, "span", 41);
+    \u0275\u0275text(12);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(13, "span", 42);
+    \u0275\u0275text(14);
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(15, "button", 43);
+    \u0275\u0275listener("click", function CatalogComponent_div_26_div_1_Template_button_click_15_listener() {
+      const product_r4 = \u0275\u0275restoreView(_r3).$implicit;
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.addToCart(product_r4));
+    });
+    \u0275\u0275text(16);
+    \u0275\u0275elementEnd()()();
+  }
+  if (rf & 2) {
+    const product_r4 = ctx.$implicit;
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance(2);
+    \u0275\u0275property("ngIf", product_r4.image);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", !product_r4.image);
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(product_r4.sku);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(product_r4.name);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", product_r4.description);
+    \u0275\u0275advance(3);
+    \u0275\u0275textInterpolate(ctx_r0.formatPrice(product_r4.price));
+    \u0275\u0275advance();
+    \u0275\u0275classMap(ctx_r0.stockClass(product_r4.stock));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", ctx_r0.stockLabel(product_r4.stock), " ");
+    \u0275\u0275advance();
+    \u0275\u0275property("disabled", product_r4.stock === 0 || ctx_r0.addingProductId === product_r4.id);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", ctx_r0.addingProductId === product_r4.id ? "A\xF1adiendo\u2026" : "A\xF1adir al carrito", " ");
+  }
+}
+function CatalogComponent_div_26_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 30);
+    \u0275\u0275template(1, CatalogComponent_div_26_div_1_Template, 17, 11, "div", 31);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275property("ngForOf", ctx_r0.products);
+  }
+}
+function CatalogComponent_div_27_p_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p");
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1("Ning\xFAn producto coincide con \xAB", ctx_r0.lastSearchQuery, "\xBB.");
+  }
+}
+function CatalogComponent_div_27_ng_template_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p");
+    \u0275\u0275text(1, "No hay productos disponibles en el cat\xE1logo.");
+    \u0275\u0275elementEnd();
+  }
+}
+function CatalogComponent_div_27_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 51);
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275elementStart(1, "svg", 52);
+    \u0275\u0275element(2, "path", 53);
+    \u0275\u0275elementEnd();
+    \u0275\u0275template(3, CatalogComponent_div_27_p_3_Template, 2, 1, "p", 54)(4, CatalogComponent_div_27_ng_template_4_Template, 2, 0, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const emptyCatalogMsg_r5 = \u0275\u0275reference(5);
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance(3);
+    \u0275\u0275property("ngIf", ctx_r0.lastSearchQuery)("ngIfElse", emptyCatalogMsg_r5);
+  }
+}
+var CatalogComponent = class _CatalogComponent {
+  get cartCount() {
+    return this.cartService.itemCount();
+  }
+  constructor(productService, cartService, router) {
+    this.productService = productService;
+    this.cartService = cartService;
+    this.router = router;
+    this.products = [];
+    this.loading = true;
+    this.error = null;
+    this.addingProductId = null;
+    this.successMessage = null;
+    this.searchInput = "";
+    this.lastSearchQuery = "";
+    this.loadSeq = 0;
+    this.searchDebounceHandle = null;
+    this.searchDebounceMs = 400;
+  }
+  ngOnInit() {
+    this.loadProducts();
+  }
+  ngOnDestroy() {
+    this.cancelSearchDebounce();
+  }
+  onSearchInput(rawValue) {
+    this.searchInput = rawValue;
+    this.cancelSearchDebounce();
+    this.searchDebounceHandle = setTimeout(() => {
+      this.searchDebounceHandle = null;
+      const term = rawValue.trim();
+      this.loadProducts(term.length > 0 ? term : void 0);
+    }, this.searchDebounceMs);
+  }
+  flushSearch() {
+    this.cancelSearchDebounce();
+    const term = this.searchInput.trim();
+    this.loadProducts(term.length > 0 ? term : void 0);
+  }
+  clearSearch() {
+    this.cancelSearchDebounce();
+    this.searchInput = "";
+    this.loadProducts();
+  }
+  cancelSearchDebounce() {
+    if (this.searchDebounceHandle !== null) {
+      clearTimeout(this.searchDebounceHandle);
+      this.searchDebounceHandle = null;
+    }
+  }
+  loadProducts(search) {
+    const seq = ++this.loadSeq;
+    this.loading = true;
+    this.error = null;
+    const query = search?.trim();
+    const param = query && query.length > 0 ? query : void 0;
+    this.productService.getProducts(param).subscribe({
+      next: (res) => {
+        if (seq !== this.loadSeq) {
+          return;
+        }
+        this.products = Array.isArray(res?.data) ? res.data : [];
+        this.lastSearchQuery = param ?? "";
+        this.loading = false;
+      },
+      error: (err) => {
+        if (seq !== this.loadSeq) {
+          return;
+        }
+        this.products = [];
+        this.error = err.status === 0 ? "No hay conexi\xF3n con el servidor. Comprueba que la API est\xE9 en marcha." : "No se pudo cargar el cat\xE1logo. Int\xE9ntalo de nuevo.";
+        this.loading = false;
       }
-    }));
+    });
   }
-  // DELETE /api/cart/items/{id}
-  removeItem(itemId) {
-    return this.http.delete(`${this.apiUrl}/items/${itemId}`).pipe(tap((res) => {
-      if (res.cart) {
-        this.itemCount.set(res.cart.item_count);
-        this.cartTotal.set(res.cart.total);
+  addToCart(product) {
+    if (product.stock === 0) {
+      return;
+    }
+    this.addingProductId = product.id;
+    this.cartService.addItem({ product_id: product.id, quantity: 1 }).subscribe({
+      next: () => {
+        this.addingProductId = null;
+        this.successMessage = `"${product.name}" a\xF1adido al carrito.`;
+        setTimeout(() => this.successMessage = null, 3e3);
+      },
+      error: (err) => {
+        this.addingProductId = null;
+        this.error = err.error?.message ?? "Error al a\xF1adir al carrito.";
+        setTimeout(() => this.error = null, 4e3);
       }
-    }));
+    });
   }
-  // DELETE /api/cart
-  clearCart() {
-    return this.http.delete(this.apiUrl).pipe(tap(() => {
-      this.itemCount.set(0);
-      this.cartTotal.set(0);
-    }));
+  goToCart() {
+    void this.router.navigate(["/recambios/carrito"]);
   }
-  // POST /api/payments/create-intent
-  createPaymentIntent() {
-    return this.http.post(`${environment.apiUrl}/payments/create-intent`, {});
+  formatPrice(amount) {
+    return new Intl.NumberFormat("es-ES", {
+      style: "currency",
+      currency: "EUR"
+    }).format(amount);
   }
-  // POST /api/orders
-  createOrder(paymentIntentId, shippingAddress) {
-    return this.http.post(`${environment.apiUrl}/orders`, {
-      payment_intent_id: paymentIntentId,
-      shipping_address: shippingAddress
-    }).pipe(tap(() => {
-      this.itemCount.set(0);
-      this.cartTotal.set(0);
-    }));
+  stockLabel(stock) {
+    if (stock === 0) {
+      return "Sin stock";
+    }
+    if (stock < 5) {
+      return "Pocas unidades";
+    }
+    return "Disponible";
   }
-  // GET /api/orders
-  getOrders() {
-    return this.http.get(`${environment.apiUrl}/orders`);
-  }
-  // GET /api/orders/{id}
-  getOrder(id) {
-    return this.http.get(`${environment.apiUrl}/orders/${id}`);
+  stockClass(stock) {
+    if (stock === 0) {
+      return "out";
+    }
+    if (stock < 5) {
+      return "low";
+    }
+    return "";
   }
   static {
-    this.\u0275fac = function CartService_Factory(__ngFactoryType__) {
-      return new (__ngFactoryType__ || _CartService)(\u0275\u0275inject(HttpClient));
+    this.\u0275fac = function CatalogComponent_Factory(__ngFactoryType__) {
+      return new (__ngFactoryType__ || _CatalogComponent)(\u0275\u0275directiveInject(ProductService), \u0275\u0275directiveInject(CartService), \u0275\u0275directiveInject(Router));
     };
   }
   static {
-    this.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _CartService, factory: _CartService.\u0275fac, providedIn: "root" });
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CatalogComponent, selectors: [["app-catalog"]], decls: 28, vars: 8, consts: [["emptyCatalogMsg", ""], [1, "catalog-page"], [1, "catalog-header"], [1, "catalog-title"], [1, "catalog-subtitle"], ["type", "button", 1, "btn-cart", 3, "click"], ["width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["cx", "9", "cy", "21", "r", "1"], ["cx", "20", "cy", "21", "r", "1"], ["d", "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"], ["class", "cart-badge", 4, "ngIf"], ["role", "search", "aria-label", "Buscar productos", 1, "catalog-toolbar"], [1, "catalog-search"], ["width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "aria-hidden", "true", 1, "catalog-search__icon"], ["cx", "11", "cy", "11", "r", "8"], ["d", "M21 21l-4.35-4.35"], ["id", "app-catalog-search", "type", "search", "placeholder", "Buscar por nombre o SKU\u2026", "autocomplete", "off", 1, "catalog-search__input", 3, "input", "keydown.enter", "value"], ["type", "button", 1, "btn-search", 3, "click"], ["type", "button", "class", "btn-clear-search", 3, "click", 4, "ngIf"], ["class", "alert-success", 4, "ngIf"], ["class", "alert-error", 4, "ngIf"], ["class", "loading-state", 4, "ngIf"], ["class", "product-grid", 4, "ngIf"], ["class", "empty-state", 4, "ngIf"], [1, "cart-badge"], ["type", "button", 1, "btn-clear-search", 3, "click"], [1, "alert-success"], [1, "alert-error"], [1, "loading-state"], [1, "spinner"], [1, "product-grid"], ["class", "product-card", 4, "ngFor", "ngForOf"], [1, "product-card"], [1, "product-image"], [3, "src", "alt", 4, "ngIf"], ["class", "product-placeholder", 4, "ngIf"], [1, "product-info"], [1, "product-sku"], [1, "product-name"], ["class", "product-desc", 4, "ngIf"], [1, "product-footer"], [1, "product-price"], [1, "stock-badge"], ["type", "button", 1, "btn-add", 3, "click", "disabled"], [3, "src", "alt"], [1, "product-placeholder"], ["width", "48", "height", "48", "viewBox", "0 0 24 24", "fill", "none", "stroke", "#CBD5E1", "stroke-width", "1.2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["x", "2", "y", "2", "width", "20", "height", "20", "rx", "3"], ["cx", "12", "cy", "10", "r", "3"], ["d", "M4 20c0-3.31 3.58-6 8-6s8 2.69 8 6"], [1, "product-desc"], [1, "empty-state"], ["width", "56", "height", "56", "viewBox", "0 0 24 24", "fill", "none", "stroke", "#CBD5E1", "stroke-width", "1.2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["d", "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"], [4, "ngIf", "ngIfElse"]], template: function CatalogComponent_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "div")(3, "h1", 3);
+        \u0275\u0275text(4, "Cat\xE1logo de Recambios");
+        \u0275\u0275elementEnd();
+        \u0275\u0275elementStart(5, "p", 4);
+        \u0275\u0275text(6, "Selecciona los productos para a\xF1adir a tu pedido");
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(7, "button", 5);
+        \u0275\u0275listener("click", function CatalogComponent_Template_button_click_7_listener() {
+          return ctx.goToCart();
+        });
+        \u0275\u0275namespaceSVG();
+        \u0275\u0275elementStart(8, "svg", 6);
+        \u0275\u0275element(9, "circle", 7)(10, "circle", 8)(11, "path", 9);
+        \u0275\u0275elementEnd();
+        \u0275\u0275text(12, " Ver carrito ");
+        \u0275\u0275template(13, CatalogComponent_span_13_Template, 2, 1, "span", 10);
+        \u0275\u0275elementEnd()();
+        \u0275\u0275namespaceHTML();
+        \u0275\u0275elementStart(14, "div", 11)(15, "div", 12);
+        \u0275\u0275namespaceSVG();
+        \u0275\u0275elementStart(16, "svg", 13);
+        \u0275\u0275element(17, "circle", 14)(18, "path", 15);
+        \u0275\u0275elementEnd();
+        \u0275\u0275namespaceHTML();
+        \u0275\u0275elementStart(19, "input", 16);
+        \u0275\u0275listener("input", function CatalogComponent_Template_input_input_19_listener($event) {
+          return ctx.onSearchInput($event.target.value);
+        })("keydown.enter", function CatalogComponent_Template_input_keydown_enter_19_listener() {
+          return ctx.flushSearch();
+        });
+        \u0275\u0275elementEnd()();
+        \u0275\u0275elementStart(20, "button", 17);
+        \u0275\u0275listener("click", function CatalogComponent_Template_button_click_20_listener() {
+          return ctx.flushSearch();
+        });
+        \u0275\u0275text(21, "Buscar");
+        \u0275\u0275elementEnd();
+        \u0275\u0275template(22, CatalogComponent_button_22_Template, 2, 0, "button", 18);
+        \u0275\u0275elementEnd();
+        \u0275\u0275template(23, CatalogComponent_div_23_Template, 2, 1, "div", 19)(24, CatalogComponent_div_24_Template, 2, 1, "div", 20)(25, CatalogComponent_div_25_Template, 4, 0, "div", 21)(26, CatalogComponent_div_26_Template, 2, 1, "div", 22)(27, CatalogComponent_div_27_Template, 6, 2, "div", 23);
+        \u0275\u0275elementEnd();
+      }
+      if (rf & 2) {
+        \u0275\u0275advance(13);
+        \u0275\u0275property("ngIf", ctx.cartCount > 0);
+        \u0275\u0275advance(6);
+        \u0275\u0275property("value", ctx.searchInput);
+        \u0275\u0275advance(3);
+        \u0275\u0275property("ngIf", ctx.searchInput.trim());
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", ctx.successMessage);
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", ctx.error);
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", ctx.loading);
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", !ctx.loading && ctx.products.length > 0);
+        \u0275\u0275advance();
+        \u0275\u0275property("ngIf", !ctx.loading && !ctx.error && ctx.products.length === 0);
+      }
+    }, dependencies: [NgForOf, NgIf], styles: ["\n\n.catalog-page[_ngcontent-%COMP%] {\n  padding: 32px;\n  max-width: 1200px;\n}\n.catalog-toolbar[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  flex-wrap: wrap;\n  margin-bottom: 20px;\n}\n.catalog-search[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  flex: 1 1 220px;\n  min-width: 0;\n  max-width: 400px;\n  padding: 8px 12px;\n  background: #fff;\n  border: 1px solid #e2e8f0;\n  border-radius: 10px;\n  transition: border-color 0.15s ease, box-shadow 0.15s ease;\n}\n.catalog-search[_ngcontent-%COMP%]:focus-within {\n  border-color: #a5b4fc;\n  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);\n}\n.catalog-search__icon[_ngcontent-%COMP%] {\n  flex-shrink: 0;\n  color: #94a3b8;\n}\n.catalog-search__input[_ngcontent-%COMP%] {\n  flex: 1 1 auto;\n  min-width: 0;\n  border: none;\n  background: transparent;\n  font-size: 14px;\n  color: #1e293b;\n  outline: none;\n}\n.catalog-search__input[_ngcontent-%COMP%]::placeholder {\n  color: #94a3b8;\n}\n.btn-search[_ngcontent-%COMP%] {\n  padding: 8px 18px;\n  font-size: 14px;\n  font-weight: 600;\n  color: #fff;\n  background: #4f46e5;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.15s ease;\n}\n.btn-search[_ngcontent-%COMP%]:hover {\n  background: #4338ca;\n}\n.btn-clear-search[_ngcontent-%COMP%] {\n  padding: 8px 14px;\n  font-size: 13px;\n  font-weight: 500;\n  color: #64748b;\n  background: #fff;\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n  cursor: pointer;\n  transition:\n    color 0.15s ease,\n    border-color 0.15s ease,\n    background 0.15s ease;\n}\n.btn-clear-search[_ngcontent-%COMP%]:hover {\n  color: #4f46e5;\n  border-color: #c7d2fe;\n  background: #eef2ff;\n}\n.catalog-header[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-start;\n  margin-bottom: 28px;\n}\n.catalog-title[_ngcontent-%COMP%] {\n  font-size: 22px;\n  font-weight: 700;\n  color: #1E293B;\n  margin: 0 0 4px;\n}\n.catalog-subtitle[_ngcontent-%COMP%] {\n  font-size: 14px;\n  color: #64748B;\n  margin: 0;\n}\n.btn-cart[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 10px 20px;\n  background: #4F46E5;\n  color: white;\n  border: none;\n  border-radius: 8px;\n  font-size: 14px;\n  font-weight: 500;\n  cursor: pointer;\n  transition: background 0.2s;\n  white-space: nowrap;\n}\n.btn-cart[_ngcontent-%COMP%]:hover {\n  background: #4338CA;\n}\n.btn-cart[_ngcontent-%COMP%]   .cart-badge[_ngcontent-%COMP%] {\n  background: #EF4444;\n  color: white;\n  border-radius: 50%;\n  min-width: 20px;\n  height: 20px;\n  font-size: 11px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 4px;\n}\n.alert-success[_ngcontent-%COMP%] {\n  padding: 12px 16px;\n  background: #DCFCE7;\n  border: 1px solid #86EFAC;\n  border-radius: 8px;\n  color: #166534;\n  margin-bottom: 16px;\n  font-size: 14px;\n}\n.alert-error[_ngcontent-%COMP%] {\n  padding: 12px 16px;\n  background: #FEF2F2;\n  border: 1px solid #FECACA;\n  border-radius: 8px;\n  color: #991B1B;\n  margin-bottom: 16px;\n  font-size: 14px;\n}\n.loading-state[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 80px 0;\n  color: #64748B;\n  font-size: 14px;\n  gap: 12px;\n}\n.loading-state[_ngcontent-%COMP%]   .spinner[_ngcontent-%COMP%] {\n  width: 36px;\n  height: 36px;\n  border: 3px solid #E2E8F0;\n  border-top-color: #4F46E5;\n  border-radius: 50%;\n  animation: _ngcontent-%COMP%_spin 0.8s linear infinite;\n}\n.product-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));\n  gap: 20px;\n}\n.product-card[_ngcontent-%COMP%] {\n  background: white;\n  border: 1px solid #E2E8F0;\n  border-radius: 12px;\n  overflow: hidden;\n  transition: box-shadow 0.2s, transform 0.15s;\n}\n.product-card[_ngcontent-%COMP%]:hover {\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);\n  transform: translateY(-2px);\n}\n.product-image[_ngcontent-%COMP%] {\n  height: 150px;\n  background: #F8FAFC;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n}\n.product-image[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.product-placeholder[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}\n.product-info[_ngcontent-%COMP%] {\n  padding: 16px;\n}\n.product-sku[_ngcontent-%COMP%] {\n  font-size: 11px;\n  font-weight: 600;\n  color: #94A3B8;\n  text-transform: uppercase;\n  letter-spacing: 0.06em;\n  display: block;\n  margin-bottom: 4px;\n}\n.product-name[_ngcontent-%COMP%] {\n  font-size: 15px;\n  font-weight: 600;\n  color: #1E293B;\n  margin: 0 0 6px;\n  line-height: 1.3;\n}\n.product-desc[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: #64748B;\n  margin: 0 0 12px;\n  line-height: 1.5;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n.product-footer[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 14px;\n}\n.product-price[_ngcontent-%COMP%] {\n  font-size: 18px;\n  font-weight: 700;\n  color: #4F46E5;\n}\n.stock-badge[_ngcontent-%COMP%] {\n  font-size: 11px;\n  font-weight: 500;\n  padding: 3px 10px;\n  border-radius: 12px;\n  background: #DCFCE7;\n  color: #166534;\n}\n.stock-badge.low[_ngcontent-%COMP%] {\n  background: #FEF3C7;\n  color: #92400E;\n}\n.stock-badge.out[_ngcontent-%COMP%] {\n  background: #FEE2E2;\n  color: #991B1B;\n}\n.btn-add[_ngcontent-%COMP%] {\n  width: 100%;\n  padding: 10px;\n  background: #4F46E5;\n  color: white;\n  border: none;\n  border-radius: 8px;\n  font-size: 14px;\n  font-weight: 500;\n  cursor: pointer;\n  transition: background 0.2s;\n}\n.btn-add[_ngcontent-%COMP%]:hover:not(:disabled) {\n  background: #4338CA;\n}\n.btn-add[_ngcontent-%COMP%]:disabled {\n  background: #E2E8F0;\n  color: #94A3B8;\n  cursor: not-allowed;\n}\n.empty-state[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 16px;\n  padding: 80px 0;\n  color: #94a3b8;\n  font-size: 14px;\n  text-align: center;\n  max-width: 420px;\n  margin: 0 auto;\n}\n.empty-state[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  margin: 0;\n}\n@keyframes _ngcontent-%COMP%_spin {\n  to {\n    transform: rotate(360deg);\n  }\n}\n/*# sourceMappingURL=catalog.component.css.map */"] });
   }
 };
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CatalogComponent, { className: "CatalogComponent", filePath: "app\\features\\cart\\catalog\\catalog.component.ts", lineNumber: 12 });
+})();
 
 // src/app/features/cart/cart-page/cart-page.component.ts
 function CartPageComponent_div_1_Template(rf, ctx) {
@@ -170,7 +483,7 @@ function CartPageComponent_div_3_Template(rf, ctx) {
     \u0275\u0275text(6, "A\xF1ade recambios desde el cat\xE1logo para comenzar tu pedido.");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(7, "a", 11);
-    \u0275\u0275text(8, "Ver cat\xE1logo");
+    \u0275\u0275text(8, "Ir al cat\xE1logo");
     \u0275\u0275elementEnd()();
   }
 }
@@ -333,9 +646,11 @@ var CartPageComponent = class _CartPageComponent {
     this.error = null;
     this.updatingItemId = null;
   }
+  // Carga el carrito al iniciar el componente
   ngOnInit() {
     this.loadCart();
   }
+  // Métodos para manejar el carrito: cargar, actualizar cantidad, eliminar, vaciar y proceder al checkout
   loadCart() {
     this.loading = true;
     this.cartService.getCart().subscribe({
@@ -349,6 +664,7 @@ var CartPageComponent = class _CartPageComponent {
       }
     });
   }
+  // Actualiza la cantidad de un producto en el carrito, con validación de rango
   updateQuantity(item, newQty) {
     if (newQty < 1 || newQty > 99)
       return;
@@ -361,6 +677,7 @@ var CartPageComponent = class _CartPageComponent {
       }
     });
   }
+  // Elimina un producto del carrito
   removeItem(item) {
     this.updatingItemId = item.id;
     this.cartService.removeItem(item.id).subscribe({
@@ -371,6 +688,7 @@ var CartPageComponent = class _CartPageComponent {
       }
     });
   }
+  // Vacía todo el carrito con confirmación del usuario
   clearCart() {
     if (!confirm("\xBFVaciar todo el carrito?"))
       return;
@@ -378,15 +696,18 @@ var CartPageComponent = class _CartPageComponent {
       next: () => this.loadCart()
     });
   }
+  // Navega a la página de checkout
   proceedToCheckout() {
     this.router.navigate(["/recambios/checkout"]);
   }
+  // Formatea un número como precio en euros
   formatPrice(amount) {
     return new Intl.NumberFormat("es-ES", {
       style: "currency",
       currency: "EUR"
     }).format(amount);
   }
+  // Función de trackBy para optimizar la renderización de la lista de productos en el carrito
   trackByItemId(_, item) {
     return item.id;
   }
@@ -416,7 +737,7 @@ var CartPageComponent = class _CartPageComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CartPageComponent, { className: "CartPageComponent", filePath: "src\\app\\features\\cart\\cart-page\\cart-page.component.ts", lineNumber: 11 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CartPageComponent, { className: "CartPageComponent", filePath: "app\\features\\cart\\cart-page\\cart-page.component.ts", lineNumber: 11 });
 })();
 
 // node_modules/@stripe/stripe-js/dist/index.mjs
@@ -911,13 +1232,17 @@ var CheckoutComponent = class _CheckoutComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CheckoutComponent, { className: "CheckoutComponent", filePath: "src\\app\\features\\cart\\checkout\\checkout.component.ts", lineNumber: 14 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CheckoutComponent, { className: "CheckoutComponent", filePath: "app\\features\\cart\\checkout\\checkout.component.ts", lineNumber: 14 });
 })();
 
 // src/app/features/cart/cart.module.ts
 var routes = [
-  { path: "", component: CartPageComponent },
+  { path: "", component: CatalogComponent },
+  // /recambios         → catálogo
+  { path: "carrito", component: CartPageComponent },
+  // /recambios/carrito → carrito
   { path: "checkout", component: CheckoutComponent }
+  // /recambios/checkout → checkout
 ];
 var CartModule = class _CartModule {
   static {
@@ -939,4 +1264,4 @@ var CartModule = class _CartModule {
 export {
   CartModule
 };
-//# sourceMappingURL=chunk-HPYPFK6V.js.map
+//# sourceMappingURL=chunk-CHDIEWZT.js.map

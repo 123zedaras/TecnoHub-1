@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/layout/authenticated-layout/authenticated-layout.component.scss"],
+  "sourcesContent": ["/* Shell con sidebar + área de contenido (rutas hijas lazy). */\r\n:host {\r\n  display: block;\r\n  min-height: 100vh;\r\n  width: 100%;\r\n}\r\n\r\n.app-shell {\r\n  display: flex;\r\n  width: 100%;\r\n  min-height: 100vh;\r\n  overflow: hidden;\r\n}\r\n\r\n/* min-width: 0 evita que el flex item del main colapse el contenido junto al sidebar. */\r\n.main-content {\r\n  flex: 1 1 auto;\r\n  min-width: 0;\r\n  overflow-y: auto;\r\n  background: #ffffff;\r\n}\r\n"],
+  "mappings": ";;;AACA;AACE,WAAA;AACA,cAAA;AACA,SAAA;;AAGF,CAAA;AACE,WAAA;AACA,SAAA;AACA,cAAA;AACA,YAAA;;AAIF,CAAA;AACE,QAAA,EAAA,EAAA;AACA,aAAA;AACA,cAAA;AACA,cAAA;;",
+  "names": []
+}

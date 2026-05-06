@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface SoftwareItem {
+  id: number;
+  nombre: string;
+  descripcion: string | null;
+  precio: number;
+  instalador: string | null;
+  estado: string;
+  version: string;
+  product_id: number | null;
+}
+
+@Injectable({ providedIn: 'root' })
 export class SoftwareService {
-
-  private apiUrl = 'http://localhost:8000/api/software';
+  private readonly apiUrl = `${environment.apiUrl}/software`;
 
   constructor(private http: HttpClient) {}
 
-  // GET /api/software
-  getAll(search?: string): Observable<any> {
-    const url = search ? `${this.apiUrl}?search=${search}` : this.apiUrl;
-    return this.http.get(url);
+  getAll(search?: string): Observable<{ data: SoftwareItem[] }> {
+    let params = new HttpParams();
+    if (search) {
+      params = params.set('search', search);
+    }
+    return this.http.get<{ data: SoftwareItem[] }>(this.apiUrl, { params });
   }
 
-  // GET /api/software/{id}
-  getById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  getById(id: number): Observable<{ data: SoftwareItem }> {
+    return this.http.get<{ data: SoftwareItem }>(`${this.apiUrl}/${id}`);
   }
 }

@@ -23,6 +23,13 @@ body {
   background: #F8FAFC;
   -webkit-font-smoothing: antialiased;
 }
+button,
+input,
+select,
+textarea,
+a {
+  font: inherit;
+}
 :root {
   --primary: #4F46E5;
   --primary-hover: #4338CA;
@@ -417,3 +424,6 @@ select {
 .mb-16 {
   margin-bottom: 16px;
 }
+
+/* angular:styles/global:styles */
+/*# sourceMappingURL=styles.css.map */

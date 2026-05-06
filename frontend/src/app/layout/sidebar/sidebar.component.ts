@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService, AuthUser } from '../../core/services/auth.service';
 
 interface NavItem {
   label: string;
@@ -15,6 +15,8 @@ interface NavItem {
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
+  currentUser: AuthUser | null = null;
+
   navItems: NavItem[] = [
     { label: 'Dashboard',   route: '/dashboard',   icon: 'grid' },
     { label: 'Mis datos',   route: '/mis-datos',   icon: 'user' },
@@ -28,7 +30,9 @@ export class SidebarComponent {
   constructor(
     private router: Router,
     private auth: AuthService,
-  ) {}
+  ) {
+    this.currentUser = this.auth.getUser();
+  }
 
   isActive(route: string): boolean {
     return this.router.url.startsWith(route);

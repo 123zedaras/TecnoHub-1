@@ -57,6 +57,11 @@ const routes: Routes = [
           import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
+        path: 'software',
+        loadChildren: () =>
+          import('./features/software-list/software.module').then(m => m.SoftwareModule),
+      },
+      {
         path: 'recambios',
         loadChildren: () =>
           import('./features/cart/cart.module').then(m => m.CartModule),

@@ -1,7 +1,7 @@
 {
   "version": 3,
-  "sources": ["src/app/app.component.scss"],
-  "sourcesContent": [".app-shell {\r\n  display: flex;\r\n  height: 100vh;\r\n  overflow: hidden;\r\n}\r\n\r\n.main-content {\r\n  flex: 1;\r\n  overflow-y: auto;\r\n  background: var(--bg);\r\n}\r\n"],
-  "mappings": ";AAAA,CAAA;AACE,WAAA;AACA,UAAA;AACA,YAAA;;AAGF,CAAA;AACE,QAAA;AACA,cAAA;AACA,cAAA,IAAA;;",
+  "sources": [],
+  "sourcesContent": [],
+  "mappings": "",
   "names": []
 }

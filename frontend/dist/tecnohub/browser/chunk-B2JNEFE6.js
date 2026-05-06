@@ -45,7 +45,7 @@ import {
   ɵɵdirectiveInject,
   ɵɵgetInheritedFactory,
   ɵɵlistener
-} from "./chunk-NZQ3SXBR.js";
+} from "./chunk-Y4GLGG7Z.js";
 
 // node_modules/@angular/forms/fesm2022/forms.mjs
 var BaseControlValueAccessor = class _BaseControlValueAccessor {
@@ -6423,6 +6423,7 @@ export {
   Validators,
   NgControlStatus,
   NgControlStatusGroup,
+  NgForm,
   NgModel,
   ɵNgNoValidate,
   FormGroupDirective,
@@ -6430,6 +6431,7 @@ export {
   SelectControlValueAccessor,
   NgSelectOption,
   ɵNgSelectMultipleOption,
+  RequiredValidator,
   FormBuilder,
   FormsModule,
   ReactiveFormsModule
@@ -6443,4 +6445,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-WUE7237N.js.map
+//# sourceMappingURL=chunk-B2JNEFE6.js.map
