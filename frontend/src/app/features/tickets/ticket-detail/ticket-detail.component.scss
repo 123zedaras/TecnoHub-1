@@ -102,20 +102,6 @@ $white:     #FFFFFF;
   gap: 10px;
 }
 
-.btn-escalate {
-  background: #F1F5F9;
-  border: 1px solid $border;
-  border-radius: 8px;
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  color: $text-mid;
-  cursor: pointer;
-  transition: background 0.15s;
-
-  &:hover { background: $border; }
-}
-
 .btn-close-ticket {
   background: #ECFDF5;
   border: 1px solid #6EE7B7;

@@ -13,7 +13,7 @@ return new class extends Migration
             // Formato legible: TK-2024-001
             $table->string('ticket_number')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('restrict');       // Operario que abre el ticket
-            $table->foreignId('machine_id')->nullable()->constrained()->onDelete('set null'); // Máquina afectada
+            $table->string('machine_name')->nullable();                                       // Máquina afectada (texto libre)
             $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null'); // Técnico asignado
             $table->string('title');
             $table->text('description');

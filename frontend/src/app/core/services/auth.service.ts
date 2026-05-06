@@ -1,46 +1,82 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
+import { concatMap, map, tap } from 'rxjs/operators';
 import { CartService } from './cart.service';
+import { environment } from '../../../environments/environment';
 
-/**
- * “Autenticado” = existe un token en localStorage (misma clave que AuthInterceptor).
- * No hay pantalla de login aún: si quedó un token de pruebas, el router usará siempre el layout autenticado.
- */
+export interface AuthUser {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
+
+interface AuthResponse {
+  token: string;
+  user: AuthUser;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly tokenKey = 'auth_token';
+  private readonly userKey  = 'auth_user';
+  private readonly apiUrl   = environment.apiUrl;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private http: HttpClient,
+    private cartService: CartService,
+  ) {}
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem(this.tokenKey);
     return !!token && token.length > 0;
   }
 
-  /** Tras login real: guardar el JWT que devuelva el backend. */
+  getUser(): AuthUser | null {
+    const raw = localStorage.getItem(this.userKey);
+    return raw ? JSON.parse(raw) : null;
+  }
+
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  /**
-   * Flujo recomendado cuando el backend devuelve el token:
-   * 1) Guardar token (el interceptor añadirá Authorization en las siguientes peticiones).
-   * 2) Volcar la cesta invitado (localStorage) al servidor con POST /cart/items por línea.
-   * Si el merge falla, la cesta invitado se mantiene para reintentar.
-   */
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, { email, password }).pipe(
+      tap(res => {
+        localStorage.setItem(this.tokenKey, res.token);
+        localStorage.setItem(this.userKey, JSON.stringify(res.user));
+      }),
+    );
+  }
+
+  register(name: string, email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, { name, email, password }).pipe(
+      tap(res => {
+        localStorage.setItem(this.tokenKey, res.token);
+        localStorage.setItem(this.userKey, JSON.stringify(res.user));
+      }),
+    );
+  }
+
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/auth/logout`, {}).pipe(
+      tap(() => this.clearSession()),
+    );
+  }
+
   completeLoginWithGuestCartMerge(token: string): Observable<{ mergedCount: number }> {
     this.setToken(token);
     return this.cartService.mergeGuestCartFromStorage().pipe(
-      // Tras volcar líneas, un GET /cart deja itemCount/total alineados con el servidor (y con el interceptor ya autenticado).
       concatMap((info) =>
         this.cartService.getCart().pipe(map(() => info)),
       ),
     );
   }
 
-  /** Cierra sesión en cliente y vuelve al layout público al navegar a '/'. */
   clearSession(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
   }
 }

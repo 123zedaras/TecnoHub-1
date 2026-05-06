@@ -18,7 +18,7 @@
               <tr>
                 <td>
                   <span style="color:#4F46E5;font-size:22px;font-weight:700;">⚙</span>
-                  <span style="color:#F8FAFC;font-size:18px;font-weight:700;margin-left:8px;">TecnoHub Industrial</span>
+                  <span style="color:#F8FAFC;font-size:18px;font-weight:700;margin-left:8px;">TecnoHub</span>
                 </td>
                 <td align="right">
                   <span style="background:#F59E0B;color:#FFFFFF;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;">
@@ -92,7 +92,7 @@
         <tr>
           <td style="padding:0 40px 32px;">
             <div style="background:#DCFCE7;border-left:4px solid #16A34A;padding:16px;border-radius:0 8px 8px 0;">
-              <p style="margin:0;color:#15803D;font-size:14px;font-weight:600;">✓ Tu incidencia ha sido {{ $ticket->status_label | lower }}.</p>
+              <p style="margin:0;color:#15803D;font-size:14px;font-weight:600;">✓ Tu incidencia ha sido {{ strtolower($ticket->status_label) }}.</p>
               <p style="margin:4px 0 0;color:#166534;font-size:13px;">Si el problema persiste, puedes abrir una nueva incidencia desde el panel de TecnoHub.</p>
             </div>
           </td>
@@ -103,7 +103,7 @@
         <tr>
           <td style="background:#F1F5F9;padding:20px 40px;border-top:1px solid #E2E8F0;">
             <p style="margin:0;color:#94A3B8;font-size:12px;text-align:center;">
-              © {{ date('Y') }} TecnoHub Industrial · Sistema de Gestión de Incidencias
+              © {{ date('Y') }} TecnoHub · Sistema de Gestión de Incidencias
             </p>
           </td>
         </tr>

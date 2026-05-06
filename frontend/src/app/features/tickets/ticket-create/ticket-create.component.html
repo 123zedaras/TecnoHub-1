@@ -18,17 +18,20 @@
 
         <!-- Máquina afectada -->
         <div class="field-group">
-          <label class="field-label" for="machine_id">
+          <label class="field-label" for="machine_name">
             Máquina afectada <span class="req">*</span>
           </label>
-          <div class="select-wrapper">
-            <select id="machine_id" class="field-select" formControlName="machine_id"
-                    (change)="onMachineChange()">
-              <option [ngValue]="null">Selecciona una máquina…</option>
-              <option *ngFor="let m of machines" [ngValue]="m.id">{{ m.name }}</option>
-            </select>
-            <span class="select-chevron">▾</span>
-          </div>
+          <input
+            id="machine_name"
+            type="text"
+            class="field-input"
+            [class.invalid]="fieldError('machine_name')"
+            formControlName="machine_name"
+            placeholder="Nombre o referencia de la máquina"
+          />
+          <span *ngIf="fieldError('machine_name')" class="field-error">
+            Este campo es obligatorio.
+          </span>
         </div>
 
         <!-- Título -->
@@ -51,7 +54,9 @@
 
         <!-- Descripción detallada -->
         <div class="field-group">
-          <label class="field-label" for="description">Descripción detallada</label>
+          <label class="field-label" for="description">
+            Descripción detallada <span class="req">*</span>
+          </label>
           <textarea
             id="description"
             class="field-textarea"
@@ -109,37 +114,12 @@
       </form>
     </div>
 
-    <!-- Columna derecha: info de máquina + alertas -->
+    <!-- Columna derecha: imagen -->
     <div class="right-col">
 
-      <!-- Card máquina seleccionada -->
-      <div class="machine-card" *ngIf="selectedMachine">
-        <div class="mcard-header">
-          <span class="mcard-name">{{ selectedMachine.name }}</span>
-          <span class="mcard-spacer"></span>
-          <span class="mcard-status">● Operativo</span>
-        </div>
-        <p class="mcard-sub">{{ selectedMachine.location ?? 'Sin ubicación registrada' }}</p>
-        <div class="mcard-divider"></div>
-        <div class="mcard-metrics">
-          <div class="metric-row">
-            <span class="metric-label">Modelo:</span>
-            <span class="metric-value">{{ selectedMachine.model ?? '—' }}</span>
-          </div>
-          <div class="metric-row">
-            <span class="metric-label">Horas acumuladas:</span>
-            <span class="metric-value">{{ selectedMachine.hours ?? '—' }}</span>
-          </div>
-          <div class="metric-row">
-            <span class="metric-label">Última revisión:</span>
-            <span class="metric-value">{{ selectedMachine.last_review ?? '—' }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Placeholder cuando no hay máquina seleccionada -->
-      <div class="machine-card machine-card--empty" *ngIf="!selectedMachine">
-        <p class="empty-hint">Selecciona una máquina para ver su información.</p>
+      <!-- Placeholder máquina -->
+      <div class="machine-card machine-card--empty">
+        <p class="empty-hint">Indica el nombre o referencia de la máquina afectada.</p>
       </div>
 
     </div>

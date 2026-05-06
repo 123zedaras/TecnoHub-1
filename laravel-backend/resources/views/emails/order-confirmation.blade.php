@@ -18,7 +18,7 @@
               <tr>
                 <td>
                   <span style="color:#4F46E5;font-size:22px;font-weight:700;">⚙</span>
-                  <span style="color:#F8FAFC;font-size:18px;font-weight:700;margin-left:8px;">TecnoHub Industrial</span>
+                  <span style="color:#F8FAFC;font-size:18px;font-weight:700;margin-left:8px;">TecnoHub</span>
                 </td>
                 <td align="right">
                   <span style="background:#4F46E5;color:#FFFFFF;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;">
@@ -123,7 +123,7 @@
         <tr>
           <td style="background:#F1F5F9;padding:20px 40px;border-top:1px solid #E2E8F0;">
             <p style="margin:0;color:#94A3B8;font-size:12px;text-align:center;">
-              © {{ date('Y') }} TecnoHub Industrial · Este email fue enviado automáticamente, no respondas a este mensaje.
+              © {{ date('Y') }} TecnoHub · Este email fue enviado automáticamente, no respondas a este mensaje.
             </p>
           </td>
         </tr>

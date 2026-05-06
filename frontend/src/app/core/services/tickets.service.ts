@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 export interface TicketFilters {
   status?: TicketStatus;
   priority?: TicketPriority;
-  machine_id?: number;
+  machine_name?: string;
   page?: number;
 }
 
@@ -24,6 +24,7 @@ export interface TicketsPage {
   total: number;
   last_page: number;
   current_page: number;
+  status_counts: Partial<Record<TicketStatus, number>>;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -35,10 +36,10 @@ export class TicketsService {
   // GET /api/tickets
   getTickets(filters: TicketFilters = {}): Observable<TicketsPage> {
     let params = new HttpParams();
-    if (filters.status)     params = params.set('status', filters.status);
-    if (filters.priority)   params = params.set('priority', filters.priority);
-    if (filters.machine_id) params = params.set('machine_id', filters.machine_id.toString());
-    if (filters.page)       params = params.set('page', filters.page.toString());
+    if (filters.status)       params = params.set('status', filters.status);
+    if (filters.priority)     params = params.set('priority', filters.priority);
+    if (filters.machine_name) params = params.set('machine_name', filters.machine_name);
+    if (filters.page)         params = params.set('page', filters.page.toString());
 
     return this.http.get<TicketsPage>(this.apiUrl, { params });
   }

@@ -21,18 +21,22 @@
       </button>
     </div>
 
+    <!-- ── Formulario de login ── -->
     <form *ngIf="activeTab === 'login'" class="auth-form" (ngSubmit)="onLoginSubmit()">
-      <label for="login-username">Usuario</label>
+
+      <div class="alert-error" *ngIf="loginError">{{ loginError }}</div>
+
+      <label for="login-email">Email</label>
       <input
-        id="login-username"
-        name="username"
-        type="text"
-        autocomplete="username"
-        [(ngModel)]="loginForm.username"
+        id="login-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        [(ngModel)]="loginForm.email"
         required
       />
-      <small class="error" *ngIf="loginSubmitted && !loginForm.username.trim()">
-        El usuario es obligatorio.
+      <small class="error" *ngIf="loginSubmitted && !loginForm.email.trim()">
+        El email es obligatorio.
       </small>
 
       <label for="login-password">Contraseña</label>
@@ -50,11 +54,16 @@
 
       <a href="#" class="forgot-link" (click)="onForgotPassword($event)">¿Has olvidado tu contraseña?</a>
 
-      <button type="submit" class="submit-btn">Iniciar sesión</button>
-      <button type="button" class="test-btn" (click)="loginDePruebas()">Pruebas</button>
+      <button type="submit" class="submit-btn" [disabled]="loading">
+        {{ loading ? 'Iniciando sesión…' : 'Iniciar sesión' }}
+      </button>
     </form>
 
+    <!-- ── Formulario de registro ── -->
     <form *ngIf="activeTab === 'register'" class="auth-form" (ngSubmit)="onRegisterSubmit()">
+
+      <div class="alert-error" *ngIf="registerError">{{ registerError }}</div>
+
       <label for="register-email">Email</label>
       <input
         id="register-email"
@@ -90,8 +99,8 @@
         [(ngModel)]="registerForm.password"
         required
       />
-      <small class="error" *ngIf="registerSubmitted && registerForm.password.length > 0 && registerForm.password.length < 6">
-        La contraseña debe tener al menos 6 caracteres.
+      <small class="error" *ngIf="registerSubmitted && registerForm.password.length > 0 && registerForm.password.length < 8">
+        La contraseña debe tener al menos 8 caracteres.
       </small>
 
       <label for="register-confirm-password">Repetir contraseña</label>
@@ -107,7 +116,9 @@
         Las contraseñas no coinciden.
       </small>
 
-      <button type="submit" class="submit-btn">Crear cuenta</button>
+      <button type="submit" class="submit-btn" [disabled]="loading">
+        {{ loading ? 'Creando cuenta…' : 'Crear cuenta' }}
+      </button>
     </form>
 
     <a routerLink="/" class="back-link">← Volver al inicio</a>

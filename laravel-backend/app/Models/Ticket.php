@@ -12,7 +12,7 @@ class Ticket extends Model
     protected $fillable = [
         'ticket_number',
         'user_id',
-        'machine_id',
+        'machine_name',
         'assigned_to',
         'title',
         'description',
@@ -30,11 +30,6 @@ class Ticket extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function machine(): BelongsTo
-    {
-        return $this->belongsTo(Machine::class);
     }
 
     public function assignedTechnician(): BelongsTo
