@@ -1,0 +1,36 @@
+<div class="software-container">
+  <div *ngFor="let item of softwareList" class="card">
+    
+    <img [src]="item.imagen" alt="{{ item.nombre }}" class="card-img">
+
+    <h3>{{ item.nombre }}</h3>
+    <p>{{ item.descripcion }}</p>
+
+    <label>Versión:</label>
+    <select [(ngModel)]="item.selectedVersion">
+      <option value="">Selecciona una versión</option>
+      <option *ngFor="let v of item.version.split(',')" [value]="v">
+        {{ v }}
+      </option>
+    </select>
+
+    <div class="buttons">
+      <button 
+        (click)="comprar(item)" 
+        [disabled]="!isLogged()">
+        Comprar
+      </button>
+
+      <button 
+        (click)="descargar(item)" 
+        [disabled]="!isLogged()">
+        Descargar
+      </button>
+    </div>
+
+    <p *ngIf="!isLogged()" class="login-warning">
+      Debes iniciar sesión para comprar o descargar
+    </p>
+
+  </div>
+</div>
