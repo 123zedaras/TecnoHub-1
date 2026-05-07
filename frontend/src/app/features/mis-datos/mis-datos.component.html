@@ -1,0 +1,141 @@
+<div class="profile-page">
+
+  <div class="profile-header">
+    <h1 class="profile-title">Mis datos</h1>
+    <p class="profile-subtitle">Consulta y actualiza tu información de cuenta</p>
+  </div>
+
+  <!-- Tarjeta de información -->
+  <div class="info-card">
+    <div class="avatar-block">
+      <div class="avatar">{{ user?.name?.charAt(0)?.toUpperCase() ?? 'U' }}</div>
+    </div>
+
+    <div class="info-rows">
+
+      <!-- Nombre -->
+      <div class="info-row">
+        <div class="info-left">
+          <span class="info-label">Nombre</span>
+          <span class="info-value">{{ user?.name }}</span>
+        </div>
+        <button class="edit-btn" (click)="openSection('nombre')" *ngIf="activeSection !== 'nombre'">
+          Cambiar
+        </button>
+      </div>
+
+      <!-- Formulario cambiar nombre -->
+      <div class="inline-form" *ngIf="activeSection === 'nombre'">
+        <div class="alert-success" *ngIf="nameSuccess">{{ nameSuccess }}</div>
+        <div class="alert-error"   *ngIf="nameError">{{ nameError }}</div>
+
+        <label for="new-name">Nuevo nombre</label>
+        <input
+          id="new-name"
+          type="text"
+          [(ngModel)]="nameForm.name"
+          placeholder="Tu nombre"
+          autocomplete="name"
+        />
+        <small class="field-error" *ngIf="nameSubmitted && nameForm.name.trim().length < 2">
+          El nombre debe tener al menos 2 caracteres.
+        </small>
+
+        <div class="form-actions">
+          <button class="btn-save" (click)="onSaveName()" [disabled]="loading">
+            {{ loading ? 'Guardando…' : 'Guardar' }}
+          </button>
+          <button class="btn-cancel" (click)="cancelSection()" [disabled]="loading">Cancelar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Email (solo lectura) -->
+      <div class="info-row">
+        <div class="info-left">
+          <span class="info-label">Email</span>
+          <span class="info-value">{{ user?.email }}</span>
+        </div>
+        <span class="readonly-badge">No editable</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Rol -->
+      <div class="info-row">
+        <div class="info-left">
+          <span class="info-label">Rol</span>
+          <span class="info-value">{{ roleLabel(user?.role ?? '') }}</span>
+        </div>
+        <span class="readonly-badge">No editable</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Contraseña -->
+      <div class="info-row">
+        <div class="info-left">
+          <span class="info-label">Contraseña</span>
+          <span class="info-value">••••••••</span>
+        </div>
+        <button class="edit-btn" (click)="openSection('password')" *ngIf="activeSection !== 'password'">
+          Cambiar
+        </button>
+      </div>
+
+      <!-- Formulario cambiar contraseña -->
+      <div class="inline-form" *ngIf="activeSection === 'password'">
+        <div class="alert-success" *ngIf="passwordSuccess">{{ passwordSuccess }}</div>
+        <div class="alert-error"   *ngIf="passwordError">{{ passwordError }}</div>
+
+        <label for="current-password">Contraseña actual</label>
+        <input
+          id="current-password"
+          type="password"
+          [(ngModel)]="passwordForm.current_password"
+          autocomplete="current-password"
+        />
+        <small class="field-error" *ngIf="passwordSubmitted && !passwordForm.current_password">
+          Introduce tu contraseña actual.
+        </small>
+
+        <label for="new-password">Nueva contraseña</label>
+        <input
+          id="new-password"
+          type="password"
+          [(ngModel)]="passwordForm.new_password"
+          autocomplete="new-password"
+        />
+        <small class="field-error" *ngIf="passwordSubmitted && passwordForm.new_password.length > 0 && passwordForm.new_password.length < 8">
+          La contraseña debe tener al menos 8 caracteres.
+        </small>
+
+        <label for="confirm-password">Repetir nueva contraseña</label>
+        <input
+          id="confirm-password"
+          type="password"
+          [(ngModel)]="passwordForm.new_password_confirmation"
+          autocomplete="new-password"
+        />
+        <small class="field-error" *ngIf="passwordsDoNotMatch">
+          Las contraseñas no coinciden.
+        </small>
+
+        <div class="form-actions">
+          <button class="btn-save" (click)="onSavePassword()" [disabled]="loading">
+            {{ loading ? 'Guardando…' : 'Guardar' }}
+          </button>
+          <button class="btn-cancel" (click)="cancelSection()" [disabled]="loading">Cancelar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mensajes de éxito fuera del formulario (cuando se cierra el panel) -->
+  <div class="alert-success floating" *ngIf="!activeSection && (nameSuccess || passwordSuccess)">
+    {{ nameSuccess || passwordSuccess }}
+  </div>
+
+</div>

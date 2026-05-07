@@ -57,6 +57,11 @@ const routes: Routes = [
           import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
+        path: 'mis-datos',
+        loadChildren: () =>
+          import('./features/mis-datos/mis-datos.module').then(m => m.MisDatosModule),
+      },
+      {
         path: 'software',
         loadChildren: () =>
           import('./features/software-list/software.module').then(m => m.SoftwareModule),

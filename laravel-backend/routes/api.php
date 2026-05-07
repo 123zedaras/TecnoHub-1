@@ -24,6 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Cerrar sesión
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
+    // Actualizar perfil (nombre y/o contraseña)
+    Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
+
     // Catálogo de productos
     Route::get('/products',          [ProductController::class, 'index']);
     Route::get('/products/{product}', [ProductController::class, 'show']);

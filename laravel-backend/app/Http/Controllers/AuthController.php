@@ -62,4 +62,38 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Sesión cerrada correctamente.']);
     }
+
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $request->validate([
+            'name'             => 'sometimes|string|max:255|min:2',
+            'current_password' => 'required_with:new_password|string',
+            'new_password'     => 'sometimes|string|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if ($request->filled('name')) {
+            $user->name = $request->name;
+        }
+
+        if ($request->filled('new_password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return response()->json(['message' => 'La contraseña actual no es correcta.'], 422);
+            }
+            $user->password = Hash::make($request->new_password);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Perfil actualizado correctamente.',
+            'user'    => [
+                'id'    => $user->id,
+                'name'  => $user->name,
+                'email' => $user->email,
+                'role'  => $user->role,
+            ],
+        ]);
+    }
 }

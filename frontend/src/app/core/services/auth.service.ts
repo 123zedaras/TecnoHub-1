@@ -75,6 +75,12 @@ export class AuthService {
     );
   }
 
+  updateProfile(payload: { name?: string; current_password?: string; new_password?: string; new_password_confirmation?: string }): Observable<{ message: string; user: AuthUser }> {
+    return this.http.put<{ message: string; user: AuthUser }>(`${this.apiUrl}/auth/profile`, payload).pipe(
+      tap(res => localStorage.setItem(this.userKey, JSON.stringify(res.user))),
+    );
+  }
+
   clearSession(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
