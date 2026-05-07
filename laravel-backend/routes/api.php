@@ -11,9 +11,13 @@ use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\SoftwareController;
 use Illuminate\Support\Facades\Route;
 
-// Autenticación (pública) 
+// Autenticación (pública)
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login',    [AuthController::class, 'login']);
+
+// Catálogo público (sin autenticación, solo lectura)
+Route::get('/public/products', [ProductController::class, 'index']);
+Route::get('/public/software', [SoftwareController::class, 'index']);
 
 // Webhook Stripe (sin autenticación)
 Route::post('/webhooks/stripe', [PaymentController::class, 'handleWebhook']);
