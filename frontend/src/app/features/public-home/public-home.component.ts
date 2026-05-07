@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { Product } from '../../shared/models/product.model';
+import { SoftwareItem } from '../../core/services/software.service';
 
 export interface PublicSlide {
   imageUrl: string;
@@ -6,13 +10,15 @@ export interface PublicSlide {
   subtitle: string;
 }
 
-/** Portada pública: carrusel y anclas a las que apunta el menú del PublicLayout. */
 @Component({
   selector: 'app-public-home',
   templateUrl: './public-home.component.html',
   styleUrls: ['./public-home.component.scss'],
 })
-export class PublicHomeComponent {
+export class PublicHomeComponent implements OnInit {
+  @ViewChild('productTrack') productTrack!: ElementRef<HTMLElement>;
+  @ViewChild('softwareTrack') softwareTrack!: ElementRef<HTMLElement>;
+
   readonly slides: PublicSlide[] = [
     {
       imageUrl: 'https://picsum.photos/id/48/1400/787',
@@ -33,6 +39,25 @@ export class PublicHomeComponent {
 
   slideIndex = 0;
 
+  products: Product[] = [];
+  softwareList: SoftwareItem[] = [];
+  loadingProducts = true;
+  loadingSoftware = true;
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get<{ data: Product[] }>(`${environment.apiUrl}/public/products`).subscribe({
+      next: (res) => { this.products = res.data; this.loadingProducts = false; },
+      error: () => { this.loadingProducts = false; },
+    });
+
+    this.http.get<{ data: SoftwareItem[] }>(`${environment.apiUrl}/public/software`).subscribe({
+      next: (res) => { this.softwareList = res.data; this.loadingSoftware = false; },
+      error: () => { this.loadingSoftware = false; },
+    });
+  }
+
   prevSlide(): void {
     this.slideIndex = (this.slideIndex - 1 + this.slides.length) % this.slides.length;
   }
@@ -40,4 +65,18 @@ export class PublicHomeComponent {
   nextSlide(): void {
     this.slideIndex = (this.slideIndex + 1) % this.slides.length;
   }
+
+  scrollProducts(dir: 1 | -1): void {
+    this.productTrack?.nativeElement.scrollBy({ left: dir * 320, behavior: 'smooth' });
+  }
+
+  scrollSoftware(dir: 1 | -1): void {
+    this.softwareTrack?.nativeElement.scrollBy({ left: dir * 320, behavior: 'smooth' });
+  }
+
+  formatPrice(price: number): string {
+    return price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+  }
+
+  trackById(_: number, item: { id: number }): number { return item.id; }
 }

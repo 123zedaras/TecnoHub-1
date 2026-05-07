@@ -1,5 +1,5 @@
 <div class="home">
-  <!-- Carrusel: solo en la home; sustituye imageUrl por assets propios cuando los tengas. -->
+  <!-- Carrusel hero -->
   <section class="hero-carousel" aria-roledescription="carrusel" aria-label="Destacados">
     <div class="carousel">
       <button
@@ -7,9 +7,7 @@
         class="carousel__arrow carousel__arrow--prev"
         (click)="prevSlide()"
         aria-label="Diapositiva anterior"
-      >
-        ‹
-      </button>
+      >‹</button>
 
       <div class="carousel__frame">
         <img
@@ -30,9 +28,7 @@
         class="carousel__arrow carousel__arrow--next"
         (click)="nextSlide()"
         aria-label="Diapositiva siguiente"
-      >
-        ›
-      </button>
+      >›</button>
     </div>
 
     <div class="carousel__dots" role="tablist" aria-label="Seleccionar diapositiva">
@@ -48,13 +44,13 @@
     </div>
   </section>
 
-  <!-- Mismos fragmentos que public-topnav (Producto, Software, Documentación, FAQ). -->
+  <!-- Accesos directos a secciones -->
   <nav class="home-section-nav" aria-label="Accesos a secciones">
     <div class="home-section-nav__grid">
-      <a routerLink="/" fragment="producto" class="home-navcard">
+      <a routerLink="/" fragment="productos" class="home-navcard">
         <div class="home-navcard__text">
           <span class="home-navcard__label">Sección</span>
-          <span class="home-navcard__title">Producto</span>
+          <span class="home-navcard__title">Productos</span>
           <span class="home-navcard__hint">Hardware y servicios</span>
         </div>
         <div class="home-navcard__iconwrap" aria-hidden="true">
@@ -114,14 +110,135 @@
     </div>
   </nav>
 
-  <section id="producto" class="anchor-block">
-    <h2>Producto</h2>
-    <p>Describe aquí tu oferta de hardware o servicios.</p>
+  <!-- Sección PRODUCTOS -->
+  <section id="productos" class="catalog-section">
+    <div class="catalog-section__header">
+      <div>
+        <h2 class="catalog-section__title">Productos</h2>
+        <p class="catalog-section__sub">Hardware y servicios industriales</p>
+      </div>
+      <a routerLink="/login" class="catalog-section__cta">Ver catálogo completo →</a>
+    </div>
+
+    <div *ngIf="loadingProducts" class="catalog-spinner">
+      <span class="spinner-ring"></span>
+    </div>
+
+    <div *ngIf="!loadingProducts && products.length === 0" class="catalog-empty">
+      No hay productos disponibles en este momento.
+    </div>
+
+    <div *ngIf="!loadingProducts && products.length > 0" class="catalog-carousel-wrap">
+      <button
+        type="button"
+        class="catalog-arrow catalog-arrow--prev"
+        (click)="scrollProducts(-1)"
+        aria-label="Productos anteriores"
+      >‹</button>
+
+      <div class="catalog-track" #productTrack>
+        <article
+          class="catalog-card"
+          *ngFor="let p of products; trackBy: trackById"
+        >
+          <div class="catalog-card__img-wrap">
+            <img
+              *ngIf="p.image"
+              [src]="p.image"
+              [alt]="p.name"
+              class="catalog-card__img"
+            />
+            <div *ngIf="!p.image" class="catalog-card__img-placeholder" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </div>
+          </div>
+          <div class="catalog-card__body">
+            <span class="catalog-card__sku">{{ p.sku }}</span>
+            <h3 class="catalog-card__name">{{ p.name }}</h3>
+            <p class="catalog-card__desc" *ngIf="p.description">{{ p.description }}</p>
+            <div class="catalog-card__footer">
+              <span class="catalog-card__price">{{ formatPrice(p.price) }}</span>
+              <a routerLink="/login" class="catalog-card__btn">Iniciar sesión</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <button
+        type="button"
+        class="catalog-arrow catalog-arrow--next"
+        (click)="scrollProducts(1)"
+        aria-label="Productos siguientes"
+      >›</button>
+    </div>
   </section>
 
-  <section id="software" class="anchor-block">
-    <h2>Software</h2>
-    <p>Detalle de aplicaciones, licencias o integraciones.</p>
+  <!-- Sección SOFTWARE -->
+  <section id="software" class="catalog-section catalog-section--alt">
+    <div class="catalog-section__header">
+      <div>
+        <h2 class="catalog-section__title">Software</h2>
+        <p class="catalog-section__sub">Aplicaciones, licencias e integraciones</p>
+      </div>
+      <a routerLink="/login" class="catalog-section__cta">Ver catálogo completo →</a>
+    </div>
+
+    <div *ngIf="loadingSoftware" class="catalog-spinner">
+      <span class="spinner-ring"></span>
+    </div>
+
+    <div *ngIf="!loadingSoftware && softwareList.length === 0" class="catalog-empty">
+      No hay software disponible en este momento.
+    </div>
+
+    <div *ngIf="!loadingSoftware && softwareList.length > 0" class="catalog-carousel-wrap">
+      <button
+        type="button"
+        class="catalog-arrow catalog-arrow--prev"
+        (click)="scrollSoftware(-1)"
+        aria-label="Software anterior"
+      >‹</button>
+
+      <div class="catalog-track" #softwareTrack>
+        <article
+          class="catalog-card catalog-card--sw"
+          *ngFor="let sw of softwareList; trackBy: trackById"
+        >
+          <div class="catalog-card__sw-icon" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <div class="catalog-card__body">
+            <div class="catalog-card__sw-meta">
+              <span class="catalog-card__sw-version">v{{ sw.version }}</span>
+              <span class="catalog-card__sw-estado"
+                [class.catalog-card__sw-estado--active]="sw.estado === 'active' || sw.estado === 'activo'"
+              >{{ sw.estado }}</span>
+            </div>
+            <h3 class="catalog-card__name">{{ sw.nombre }}</h3>
+            <p class="catalog-card__desc" *ngIf="sw.descripcion">{{ sw.descripcion }}</p>
+            <div class="catalog-card__footer">
+              <span class="catalog-card__price">{{ formatPrice(sw.precio) }}</span>
+              <a routerLink="/login" class="catalog-card__btn">Iniciar sesión</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <button
+        type="button"
+        class="catalog-arrow catalog-arrow--next"
+        (click)="scrollSoftware(1)"
+        aria-label="Software siguiente"
+      >›</button>
+    </div>
   </section>
 
   <section id="documentacion" class="anchor-block">
@@ -133,5 +250,4 @@
     <h2>FAQ</h2>
     <p>Preguntas frecuentes para clientes y operarios.</p>
   </section>
-
 </div>
