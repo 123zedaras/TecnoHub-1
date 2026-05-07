@@ -11,7 +11,7 @@
 
       <div class="public-topnav__center">
         <nav class="public-topnav__desktop-nav" aria-label="Secciones principales">
-          <a routerLink="/productos" routerLinkActive="public-navlink--active" class="public-navlink">Productos</a>
+          <a routerLink="/" fragment="producto" class="public-navlink">Productos</a>
           <a routerLink="/" fragment="software" class="public-navlink">Software</a>
           <a routerLink="/" fragment="documentacion" class="public-navlink">Documentación</a>
           <a routerLink="/" fragment="faq" class="public-navlink">FAQ</a>
@@ -100,7 +100,7 @@
       class="public-mobile-dropdown"
       aria-label="Secciones principales"
     >
-      <a routerLink="/productos" routerLinkActive="public-mobile-dropdown__link--active" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
+      <a routerLink="/" fragment="producto" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
       <a routerLink="/cesta" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Cesta</a>
       <a routerLink="/" fragment="software" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Software</a>
       <a routerLink="/" fragment="documentacion" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Documentación</a>

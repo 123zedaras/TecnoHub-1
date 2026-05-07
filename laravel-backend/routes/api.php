@@ -11,14 +11,14 @@ use App\Http\Controllers\TicketMessageController;
 use App\Http\Controllers\SoftwareController;
 use Illuminate\Support\Facades\Route;
 
-// ── Autenticación (pública) ──────────────────────────────────────────────────
+// Autenticación (pública) 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login',    [AuthController::class, 'login']);
 
-// ── Webhook Stripe (sin autenticación) ──────────────────────────────────────
+// Webhook Stripe (sin autenticación)
 Route::post('/webhooks/stripe', [PaymentController::class, 'handleWebhook']);
 
-// ── Rutas protegidas con Sanctum ─────────────────────────────────────────────
+// Rutas protegidas con Sanctum
 Route::middleware('auth:sanctum')->group(function () {
 
     // Cerrar sesión
@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
 
     // Catálogo de productos
-    Route::get('/products',          [ProductController::class, 'index']);
+    Route::get('/products',           [ProductController::class, 'index']);
     Route::get('/products/{product}', [ProductController::class, 'show']);
 
     // Carrito
