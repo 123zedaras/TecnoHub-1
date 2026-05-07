@@ -146,6 +146,11 @@
 }
 
 @media (max-width: 768px) {
+  .public-brand__logo {
+    height: 30px;
+    max-width: 160px;
+  }
+
   .public-topnav__desktop-nav {
     display: none;
   }
@@ -309,16 +314,23 @@
 }
 
 .public-brand {
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #e7efff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
   text-decoration: none;
 
-  &:hover {
-    color: #ffffff;
+  &:hover .public-brand__logo {
+    filter: brightness(1.06);
   }
+}
+
+.public-brand__logo {
+  display: block;
+  height: 34px;
+  width: auto;
+  max-width: 190px;
+  object-fit: contain;
+  transition: filter 0.15s ease;
 }
 
 .public-navlink {

@@ -54,7 +54,7 @@
       <a routerLink="/" fragment="producto" class="home-navcard">
         <div class="home-navcard__text">
           <span class="home-navcard__label">Sección</span>
-          <span class="home-navcard__title">Producto</span>
+          <span class="home-navcard__title">Productos más vendidos</span>
           <span class="home-navcard__hint">Hardware y servicios</span>
         </div>
         <div class="home-navcard__iconwrap" aria-hidden="true">
@@ -69,7 +69,7 @@
       <a routerLink="/" fragment="software" class="home-navcard">
         <div class="home-navcard__text">
           <span class="home-navcard__label">Sección</span>
-          <span class="home-navcard__title">Software</span>
+          <span class="home-navcard__title">Softwares destacados</span>
           <span class="home-navcard__hint">Apps e integraciones</span>
         </div>
         <div class="home-navcard__iconwrap" aria-hidden="true">
@@ -114,24 +114,322 @@
     </div>
   </nav>
 
-  <section id="producto" class="anchor-block">
-    <h2>Producto</h2>
-    <p>Describe aquí tu oferta de hardware o servicios.</p>
+  <section id="producto" class="anchor-block anchor-block--wide">
+    <div class="product-showcase">
+      <h2 class="product-showcase__title">Nuestros productos destacados</h2>
+      <p class="product-showcase__intro">
+        Explora nuestra selección de recambios y componentes para automatización industrial, compatibles con PLC, SCADA y sistemas hidráulicos. ¡Todos disponibles para compra con envío rápido garantizado!.
+      </p>
+      <p class="product-showcase__intro">
+        Nuestro productos más destacados suelen ser sensores de proximidad, contactores, fuentes de alimentación y PLC compactos, por su uso esencial para el mantenimiento diario y nuevas instalaciones.
+      </p>
+
+      <div class="product-showcase__grid">
+        <article class="product-card">
+          <h3>Sensores y Encoders</h3>
+          <p>Detección precisa para monitoreo de máquinas. Ideales para líneas de producción.</p>
+          <div class="product-highlight">
+            <img
+              class="product-highlight__image"
+              src="https://m.media-amazon.com/images/I/61ic6wPyW1L._AC_UF894,1000_QL80_.jpg"
+              alt="Heschen M18 Sensor de proximidad capacitivo"
+              loading="lazy"
+            />
+            <p class="product-highlight__name">Heschen M18 Sensor de proximidad capacitivo</p>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <h3>PLC y Módulos de Expansión</h3>
+          <p>Controladores lógicos para automatización fiable.</p>
+          <div class="product-highlight">
+            <img
+              class="product-highlight__image"
+              src="https://www.solucionesyservicios.biz/WebRoot/StoreES2/Shops/64466233/588F/90D2/0938/94E1/20FC/C0A8/2BBA/7A17/6ES7212-1AE40-0XB0_P_ST70_XX_04509P.png"
+              alt="Controlador S7-1200, CPU 1212C, 8DI/6DO/2AI"
+              loading="lazy"
+            />
+            <p class="product-highlight__name">Controlador S7-1200, CPU 1212C, 8DI/6DO/2AI</p>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <h3>Contactores, Relés y Protección</h3>
+          <p>Elementos para control de potencia y seguridad.</p>
+          <div class="product-highlight">
+            <img
+              class="product-highlight__image"
+              src="https://media.rs-online.com/Y2109871-01.jpg"
+              alt="LC1D32Q7 Contactor Schneider Electric TeSyS D de 3 Polos"
+              loading="lazy"
+            />
+            <p class="product-highlight__name">LC1D32Q7 | Contactor Schneider Electric TeSyS D de 3 Polos</p>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <h3>Fuentes, Motores y Variadores</h3>
+          <p>Alimentación y movimiento preciso.</p>
+          <div class="product-highlight">
+            <img
+              class="product-highlight__image"
+              src="https://variometrum.hu/image/cache/catalog/ac_servo/driver/el7/leadshine-el7-rs750p-03-800x800.jpg"
+              alt="Variometrum Leadshine AC servo drive EL7 series 400W"
+              loading="lazy"
+            />
+            <p class="product-highlight__name">Variometrum Leadshine AC servo drive EL7 series 400W</p>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <h3>HMI, Switches y Redes</h3>
+          <p>Interfaces y conectividad industrial.</p>
+          <div class="product-highlight">
+            <img
+              class="product-highlight__image"
+              src="https://res.cloudinary.com/rsc/image/upload/b_rgb:FFFFFF,c_pad,dpr_2.625,f_auto,h_214,q_auto,w_380/c_pad,h_214,w_380/Y0634720-01?pgw=1"
+              alt="Pantalla táctil HMI Display Visions HMI de 7 pulgadas"
+              loading="lazy"
+            />
+            <p class="product-highlight__name">Pantalla táctil HMI Display Visions HMI de 7 plg, TFT, 1024 x 600 pixel, USB y Ethernet</p>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <h3>Componentes Mecánicos e Hidráulicos</h3>
+          <p>Mantenimiento y transmisión.</p>
+          <div class="product-highlight">
+            <img
+              class="product-highlight__image"
+              src="https://images.wiautomation.com/public/images/landing/anticipa/product/26_01_2023_15_11_03_936601Q_Parker.jpg"
+              alt="Elemento del filtro hidráulico de recambio Parker 930190Q"
+              loading="lazy"
+            />
+            <p class="product-highlight__name">Elemento del filtro hidráulico de recambio Parker 930190Q</p>
+          </div>
+        </article>
+      </div>
+    </div>
   </section>
 
-  <section id="software" class="anchor-block">
-    <h2>Software</h2>
-    <p>Detalle de aplicaciones, licencias o integraciones.</p>
+  <section id="software" class="anchor-block anchor-block--wide">
+    <div class="software-showcase">
+      <h2 class="software-showcase__title">Softwares destacados</h2>
+      <p class="software-showcase__intro">
+        Descubre nuestra suite de software especializada en automatización industrial, diseñada para integrarse con hardware como PLC y sensores. Cada herramienta ofrece licencias flexibles (por tags o usuarios) y soporte para protocolos estándar como OPC UA y Modbus, optimizando procesos en tiempo real.
+      </p>
+
+      <div class="software-showcase__grid">
+        <article class="software-card">
+          <img
+            class="software-card__image"
+            src="https://static01.galaxus.com/productimages/5/9/0/0/6/0/9/6/7/4/0/1/1/2/7/8/7/0/9/019a394e-9e06-7ed7-b046-745d34b86b5f_720.jpeg"
+            alt="Panel HMI para diseño y configuración de interfaces"
+            loading="lazy"
+          />
+          <div class="software-card__body">
+            <h3>Software para Diseño y Configuración de Interfaces HMI</h3>
+            <p>
+              Este software permite crear interfaces gráficas intuitivas para operadores, conectando humanos y máquinas en entornos Industry 4.0. Incluye bibliotecas de componentes (botones, gráficos, alarmas) y herramientas de arrastrar-soltar para diseños responsive en paneles o web.
+            </p>
+            <p class="software-card__list-title">Características clave:</p>
+            <ul>
+              <li>Visualización de datos en diagramas y esquemas.</li>
+              <li>Soporte multiplataforma (Windows/Linux, móviles).</li>
+              <li>Integración con PLC y SCADA para control remoto.</li>
+              <li>Licencias desde 500 tags; prueba gratuita disponible tras registro.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="software-card">
+          <img
+            class="software-card__image"
+            src="https://kwoco-plc.com/wp-content/uploads/2024/09/siemens-hmi.webp"
+            alt="Entorno de programación para controladores PLC"
+            loading="lazy"
+          />
+          <div class="software-card__body">
+            <h3>Software de Programación para Controladores Lógicos Programables (PLC)</h3>
+            <p>
+              Entorno completo para desarrollar lógica industrial con lenguajes IEC 61131-3 (ladder, FBD, ST). Compatible con marcas como Siemens, Allen-Bradley y nuestro hardware, incluye simulación y depuración.
+            </p>
+            <p class="software-card__list-title">Características clave:</p>
+            <ul>
+              <li>Bibliotecas PLCopen para funciones básicas y safety.</li>
+              <li>Gestión de E/S analógicas y digitales.</li>
+              <li>Exportación a hardware real para despliegue rápido.</li>
+              <li>Ideal para líneas de producción; licencias perpetuas o suscripción.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="software-card">
+          <img
+            class="software-card__image"
+            src="https://edikal.es/wp-content/uploads/2024/09/sistemas-SCADA-2.png"
+            alt="Plataforma SCADA para supervisión y control industrial"
+            loading="lazy"
+          />
+          <div class="software-card__body">
+            <h3>Plataforma SCADA para Supervisión y Control Industrial</h3>
+            <p>
+              Nuestra plataforma estrella ofrece monitoreo remoto de máquinas conectadas, con ingesta de datos en tiempo real y dashboards personalizables. Reduce downtime mediante alarmas predictivas y análisis OEE.
+            </p>
+            <p class="software-card__list-title">Características clave:</p>
+            <ul>
+              <li>Recolección de datos vía MQTT/PROFINET.</li>
+              <li>HMI integrada para control y visualización global.</li>
+              <li>Almacenamiento histórico y reportes para optimización.</li>
+              <li>Escalable por etiquetas (hasta 10.000+); acceso web seguro post-registro.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
   </section>
 
-  <section id="documentacion" class="anchor-block">
-    <h2>Documentación</h2>
-    <p>Manuales, APIs y guías de despliegue.</p>
+  <section id="documentacion" class="anchor-block anchor-block--wide">
+    <div class="document-showcase">
+      <h2 class="document-showcase__title">Documentación</h2>
+      <p class="document-showcase__intro">
+        Accede a manuales técnicos, guías de instalación y documentación exclusiva de tus productos y software comprados.
+        Todo organizado por compra, con búsqueda rápida y actualizaciones automáticas para mantener tus sistemas al día.
+      </p>
+
+      <article class="document-panel">
+        <h3>Manuales de Productos</h3>
+        <p>
+          Guías detalladas para instalación, configuración y mantenimiento de cada componente industrial.
+        </p>
+        <p class="document-panel__list-title">Contenido disponible:</p>
+        <div class="document-panel__grid">
+          <article class="document-card">
+            <h4>PLC y Controladores</h4>
+            <ul>
+              <li>Programación paso a paso.</li>
+              <li>Diagramas de cableado.</li>
+              <li>Troubleshooting por código de error.</li>
+            </ul>
+          </article>
+          <article class="document-card">
+            <h4>Sensores y Encoders</h4>
+            <ul>
+              <li>Especificaciones técnicas completas.</li>
+              <li>Distancias de detección por modelo.</li>
+              <li>Compatibilidad de protocolos.</li>
+            </ul>
+          </article>
+          <article class="document-card">
+            <h4>HMI y Hardware</h4>
+            <ul>
+              <li>Configuración Ethernet/IP.</li>
+              <li>Calibración táctil.</li>
+              <li>Integración con SCADA.</li>
+            </ul>
+          </article>
+          <article class="document-card">
+            <h4>Componentes Mecánicos</h4>
+            <ul>
+              <li>Catálogos de repuestos.</li>
+              <li>Par de apriete recomendado.</li>
+              <li>Ciclos de mantenimiento.</li>
+            </ul>
+          </article>
+        </div>
+      </article>
+
+      <article class="document-panel">
+        <h3>Documentación de Software</h3>
+        <p>Recursos específicos para cada licencia activada en tu cuenta.</p>
+        <p class="document-panel__list-title">Por aplicación:</p>
+        <div class="document-table-wrap">
+          <table class="document-table">
+            <thead>
+              <tr>
+                <th scope="col">Software</th>
+                <th scope="col">Documentación incluida</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Diseño HMI</td>
+                <td>Tutoriales arrastrar-soltar, librerías de objetos y exportación runtime.</td>
+              </tr>
+              <tr>
+                <td>Programación PLC</td>
+                <td>Lenguajes IEC 61131-3, simulación offline y drivers por marca.</td>
+              </tr>
+              <tr>
+                <td>Plataforma SCADA</td>
+                <td>APIs REST para integración, configuración MQTT/OPC UA y dashboards personalizados.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <p class="document-showcase__cta">
+        Regístrate para acceder a toda la documentación técnica de tus compras.
+        Toda la información está disponible inmediatamente tras la compra, sin esperas.
+      </p>
+    </div>
   </section>
+
+  <!-- menu faq -->
 
   <section id="faq" class="anchor-block">
-    <h2>FAQ</h2>
-    <p>Preguntas frecuentes para clientes y operarios.</p>
+    <div class="faq">
+      <h2 class="faq__title">FAQ</h2>
+      <p class="faq__intro">Preguntas frecuentes para clientes y operarios.</p>
+
+      <label class="faq__search-wrap" for="faq-search">
+        <span class="faq__search-label">Buscador interno</span>
+        <input
+          id="faq-search"
+          type="search"
+          class="faq__search-input"
+          placeholder="Buscar por tema o palabra clave"
+          [value]="faqSearch"
+          (input)="onFaqSearch($any($event.target).value)"
+        />
+      </label>
+
+      <div class="faq__list" *ngIf="filteredFaqs.length > 0; else faqNoResults">
+        <article class="faq__item" *ngFor="let faq of filteredFaqs">
+          <button
+            type="button"
+            class="faq__question"
+            [class.faq__question--open]="isFaqOpen(faq.id)"
+            (click)="toggleFaq(faq.id)"
+            [attr.aria-expanded]="isFaqOpen(faq.id)"
+            [attr.aria-controls]="'faq-answer-' + faq.id"
+          >
+            <span class="faq__meta">{{ faq.category }}</span>
+            <span class="faq__text">{{ faq.question }}</span>
+            <span class="faq__icon" aria-hidden="true">{{ isFaqOpen(faq.id) ? '−' : '+' }}</span>
+          </button>
+
+          <div
+            class="faq__answer"
+            [id]="'faq-answer-' + faq.id"
+            [class.faq__answer--open]="isFaqOpen(faq.id)"
+            [attr.aria-hidden]="!isFaqOpen(faq.id)"
+          >
+            <p>{{ faq.answer }}</p>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #faqNoResults>
+        <p class="faq__empty">No hay resultados para esa búsqueda.</p>
+      </ng-template>
+
+      <p class="faq__contact">
+        Si necesitas más ayuda, accede a
+        <a routerLink="/">Contacto</a>.
+      </p>
+    </div>
   </section>
 
 </div>
