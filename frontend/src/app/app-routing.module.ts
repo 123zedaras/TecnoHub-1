@@ -62,6 +62,11 @@ const routes: Routes = [
           import('./features/mis-datos/mis-datos.module').then(m => m.MisDatosModule),
       },
       {
+        path: 'mi-documentacion',
+        loadChildren: () =>
+          import('./features/mi-documentacion/mi-documentacion.module').then(m => m.MiDocumentacionModule),
+      },
+      {
         path: 'software',
         loadChildren: () =>
           import('./features/software-list/software.module').then(m => m.SoftwareModule),
@@ -70,6 +75,11 @@ const routes: Routes = [
         path: 'recambios',
         loadChildren: () =>
           import('./features/cart/cart.module').then(m => m.CartModule),
+      },
+      {
+        // Alias para enlaces públicos; con sesión activa lleva al catálogo autenticado.
+        path: 'productos',
+        redirectTo: 'recambios',
       },
       {
         path: 'incidencias',

@@ -1,0 +1,59 @@
+<div class="docs-page">
+  <div class="docs-header">
+    <h1 class="docs-title">Mi documentación</h1>
+    <p class="docs-subtitle">Documentación de los productos que ya has comprado.</p>
+  </div>
+
+  <div class="docs-toolbar" role="search" aria-label="Buscar documentación por nombre de producto">
+    <div class="docs-search">
+      <svg class="docs-search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="M21 21l-4.35-4.35"></path>
+      </svg>
+      <input
+        id="docs-search"
+        type="search"
+        class="docs-search__input"
+        placeholder="Buscar por nombre de producto..."
+        autocomplete="off"
+        [(ngModel)]="searchInput"
+      />
+    </div>
+    <button type="button" class="btn-clear-search" *ngIf="searchInput.trim()" (click)="clearSearch()">Limpiar</button>
+  </div>
+
+  <div class="alert-error" *ngIf="error">{{ error }}</div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando documentación…</p>
+  </div>
+
+  <div class="table-wrap" *ngIf="!loading && !error && filteredRows.length > 0">
+    <table class="docs-table">
+      <thead>
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of filteredRows">
+          <td>{{ row.productName }}</td>
+          <td>
+            <button type="button" class="btn-open-doc" (click)="openDocumentation(row.documentationUrl)">
+              Abrir documentación
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && !error && filteredRows.length === 0">
+    <p *ngIf="rows.length === 0; else emptySearch">Aún no tienes documentación disponible. Compra un producto para verla aquí.</p>
+    <ng-template #emptySearch>
+      <p>No hay resultados para «{{ searchInput.trim() }}».</p>
+    </ng-template>
+  </div>
+</div>
