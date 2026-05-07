@@ -6,14 +6,15 @@
   <header class="public-topnav">
     <div class="public-topnav__inner">
       <div class="public-topnav__left">
-        <a routerLink="/" class="public-brand">TecnoHub</a>
+        <a routerLink="/" class="public-brand" aria-label="Inicio TecnoHub">
+          <img src="assets/images/logo_dddd.jpg" alt="TecnoHub" class="public-brand__logo" />
+        </a>
       </div>
 
       <div class="public-topnav__center">
         <nav class="public-topnav__desktop-nav" aria-label="Secciones principales">
-          <a routerLink="/" fragment="producto" class="public-navlink">Productos</a>
+          <a routerLink="/productos" class="public-navlink">Productos</a>
           <a routerLink="/" fragment="software" class="public-navlink">Software</a>
-          <a routerLink="/" fragment="documentacion" class="public-navlink">Documentación</a>
           <a routerLink="/" fragment="faq" class="public-navlink">FAQ</a>
         </nav>
 
@@ -100,7 +101,7 @@
       class="public-mobile-dropdown"
       aria-label="Secciones principales"
     >
-      <a routerLink="/" fragment="producto" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
+      <a routerLink="/productos" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
       <a routerLink="/cesta" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Cesta</a>
       <a routerLink="/" fragment="software" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Software</a>
       <a routerLink="/" fragment="documentacion" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Documentación</a>
@@ -117,7 +118,7 @@
       <div class="public-footer__brand">
         <div class="public-footer__logo">TECNOHUB</div>
         <p class="public-footer__tagline">
-          Espacio para una breve descripción de marca o propuesta de valor.
+          Soluciones integrales en hardware, software y soporte para industrias
         </p>
         <div class="public-footer__visual" aria-hidden="true">
           <span class="public-footer__plate public-footer__plate--one"></span>
@@ -129,16 +130,16 @@
       <div class="public-footer__columns">
         <section class="public-footer__column">
           <h3>Contacto</h3>
-          <p>Tel: +34 XXX XXX XXX</p>
-          <p>WhatsApp: +34 XXX XXX XXX</p>
-          <p>Email: </p>
+          <p>Tel: +34 693 695 325</p>
+          <p>WhatsApp: +34 623 529 415</p>
+          <p>Email: soporte technohub.es</p>
         </section>
 
         <section class="public-footer__column">
           <h3>Horario</h3>
           <p>Lunes a Jueves: 08:00 - 18:00</p>
           <p>Viernes: 08:00 - 15:00</p>
-          <p>Soporte: 24/7 (placeholder)</p>
+          <p>Soporte online: 24/7 </p>
         </section>
 
         <section class="public-footer__column">
@@ -154,7 +155,7 @@
       <span>2026 © TecnoHub. Todos los derechos reservados.</span>
       <div class="public-footer__social" aria-label="Redes sociales">
         <a routerLink="/" aria-label="Instagram">IG</a>
-        <a routerLink="/" aria-label="LinkedIn">IN</a>
+        <a routerLink="/" aria-label="Twitter">TW</a>
         <a routerLink="/" aria-label="YouTube">YT</a>
       </div>
     </div>
