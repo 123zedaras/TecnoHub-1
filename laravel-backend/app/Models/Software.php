@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Software extends Model
 {
-    protected $table = 'software';
+    protected $table = 'sws';
 
     protected $fillable = [
         'nombre',

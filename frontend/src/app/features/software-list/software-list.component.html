@@ -1,36 +1,79 @@
-<div class="software-container">
-  <div *ngFor="let item of softwareList" class="card">
-    
-    <img [src]="item.imagen" alt="{{ item.nombre }}" class="card-img">
+<div class="catalog-page">
 
-    <h3>{{ item.nombre }}</h3>
-    <p>{{ item.descripcion }}</p>
-
-    <label>Versión:</label>
-    <select [(ngModel)]="item.selectedVersion">
-      <option value="">Selecciona una versión</option>
-      <option *ngFor="let v of item.version.split(',')" [value]="v">
-        {{ v }}
-      </option>
-    </select>
-
-    <div class="buttons">
-      <button 
-        (click)="comprar(item)" 
-        [disabled]="!isLogged()">
-        Comprar
-      </button>
-
-      <button 
-        (click)="descargar(item)" 
-        [disabled]="!isLogged()">
-        Descargar
-      </button>
-    </div>
-
-    <p *ngIf="!isLogged()" class="login-warning">
-      Debes iniciar sesión para comprar o descargar
-    </p>
-
+  <div class="catalog-header">
+    <h1 class="catalog-title">Catálogo de Software</h1>
+    <p class="catalog-subtitle">Licencias y soluciones tecnológicas para tu planta</p>
   </div>
+
+  <div class="search-toolbar">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Buscar software…"
+        [value]="searchInput"
+        (input)="onSearchInput($any($event.target).value)"
+        (keydown.enter)="flushSearch()"
+      />
+      <button *ngIf="searchInput" class="search-clear" (click)="clearSearch()" title="Limpiar búsqueda">✕</button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-banner">
+    <span>{{ error }}</span>
+    <button class="retry-btn" (click)="loadSoftware()">Reintentar</button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando catálogo…</p>
+  </div>
+
+  <div class="product-grid" *ngIf="!loading && !error && softwareList.length > 0">
+    <div class="product-card" *ngFor="let item of softwareList">
+      <div class="product-info">
+        <h3 class="product-name">{{ item.nombre }}</h3>
+        <p class="product-desc" *ngIf="item.descripcion">{{ item.descripcion }}</p>
+
+        <div class="product-footer">
+          <span class="product-price">{{ formatPrice(item.precio) }}</span>
+          <span class="stock-badge" [class]="estadoClass(item.estado)">{{ estadoLabel(item.estado) }}</span>
+        </div>
+
+        <label class="version-label">Versión</label>
+        <select class="version-select" [(ngModel)]="item.selectedVersion">
+          <option value="">Selecciona una versión</option>
+          <option *ngFor="let v of item.versions" [value]="v">{{ v }}</option>
+        </select>
+
+        <div class="card-buttons">
+          <button
+            class="btn-action btn-comprar"
+            [disabled]="!isLogged() || !item.selectedVersion"
+            (click)="comprar(item)">
+            Comprar
+          </button>
+          <button
+            class="btn-action btn-descargar"
+            [disabled]="!isLogged() || !item.selectedVersion"
+            (click)="descargar(item)">
+            Descargar
+          </button>
+        </div>
+
+        <p *ngIf="!isLogged()" class="login-warning">
+          Debes iniciar sesión para comprar o descargar
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error && softwareList.length === 0" class="empty-state">
+    <p *ngIf="lastSearchQuery">No hay resultados para "<strong>{{ lastSearchQuery }}</strong>".</p>
+    <p *ngIf="!lastSearchQuery">No hay software disponible en este momento.</p>
+  </div>
+
 </div>

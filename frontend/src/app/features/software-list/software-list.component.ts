@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SoftwareItem, SoftwareService } from '../../core/services/software.service';
+import { AuthService } from '../../core/services/auth.service';
+
+export interface SoftwareItemUI extends SoftwareItem {
+  selectedVersion: string;
+  versions: string[];
+}
 
 @Component({
   selector: 'app-software-list',
@@ -7,7 +13,7 @@ import { SoftwareItem, SoftwareService } from '../../core/services/software.serv
   styleUrls: ['./software-list.component.css'],
 })
 export class SoftwareListComponent implements OnInit, OnDestroy {
-  softwareList: SoftwareItem[] = [];
+  softwareList: SoftwareItemUI[] = [];
   loading = true;
   error: string | null = null;
 
@@ -18,7 +24,10 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
   private searchDebounceHandle: ReturnType<typeof setTimeout> | null = null;
   private readonly searchDebounceMs = 400;
 
-  constructor(private softwareService: SoftwareService) {}
+  constructor(
+    private softwareService: SoftwareService,
+    private auth: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.loadSoftware();
@@ -26,6 +35,10 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cancelSearchDebounce();
+  }
+
+  isLogged(): boolean {
+    return this.auth.isAuthenticated();
   }
 
   onSearchInput(rawValue: string): void {
@@ -66,7 +79,12 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
     this.softwareService.getAll(param).subscribe({
       next: (res) => {
         if (seq !== this.loadSeq) return;
-        this.softwareList = Array.isArray(res?.data) ? res.data : [];
+        const raw: SoftwareItem[] = Array.isArray(res?.data) ? res.data : [];
+        this.softwareList = raw.map(item => ({
+          ...item,
+          versions: item.version.split(',').map(v => v.trim()).filter(v => v),
+          selectedVersion: item.version.split(',')[0]?.trim() ?? '',
+        }));
         this.lastSearchQuery = param ?? '';
         this.loading = false;
       },
@@ -95,5 +113,17 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
 
   estadoClass(estado: string): string {
     return estado?.toLowerCase() === 'activo' ? '' : 'out';
+  }
+
+  comprar(item: SoftwareItemUI): void {
+    alert(`Compra de "${item.nombre}" v${item.selectedVersion} iniciada.`);
+  }
+
+  descargar(item: SoftwareItemUI): void {
+    if (item.instalador) {
+      window.open(item.instalador, '_blank');
+    } else {
+      alert(`No hay instalador disponible para "${item.nombre}".`);
+    }
   }
 }

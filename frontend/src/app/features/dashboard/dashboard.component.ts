@@ -118,10 +118,12 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadTicketsAbiertos(): void {
-    this.ticketsService.getTickets({ status: 'open' }).subscribe({
+    this.ticketsService.getTickets().subscribe({
       next: (res) => {
-        this.kpis[0].value = res.total;
-        this.kpis[0].sub = res.total === 1 ? '1 incidencia activa' : `${res.total} incidencias activas`;
+        const counts = res.status_counts ?? {};
+        const activas = (counts['open'] ?? 0) + (counts['in_process'] ?? 0);
+        this.kpis[0].value = activas;
+        this.kpis[0].sub = activas === 1 ? '1 incidencia activa' : `${activas} incidencias activas`;
       },
       error: () => {
         this.kpis[0].value = '—';
