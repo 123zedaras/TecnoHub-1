@@ -1,0 +1,128 @@
+<div class="create-page">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <button class="back-btn" (click)="cancel()">Incidencias</button>
+    <span class="sep">›</span>
+    <span class="crumb-active">Nueva Incidencia</span>
+  </nav>
+
+  <div class="create-layout">
+
+    <!-- Columna izquierda: formulario -->
+    <div class="form-col">
+
+      <div *ngIf="error" class="alert-error">{{ error }}</div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+        <!-- Máquina afectada -->
+        <div class="field-group">
+          <label class="field-label" for="machine_name">
+            Máquina afectada <span class="req">*</span>
+          </label>
+          <input
+            id="machine_name"
+            type="text"
+            class="field-input"
+            [class.invalid]="fieldError('machine_name')"
+            formControlName="machine_name"
+            placeholder="Nombre o referencia de la máquina"
+          />
+          <span *ngIf="fieldError('machine_name')" class="field-error">
+            Este campo es obligatorio.
+          </span>
+        </div>
+
+        <!-- Título -->
+        <div class="field-group">
+          <label class="field-label" for="title">
+            Título de la incidencia <span class="req">*</span>
+          </label>
+          <input
+            id="title"
+            type="text"
+            class="field-input"
+            [class.invalid]="fieldError('title')"
+            formControlName="title"
+            placeholder="Describe brevemente el problema"
+          />
+          <span *ngIf="fieldError('title')" class="field-error">
+            Mínimo 5 caracteres.
+          </span>
+        </div>
+
+        <!-- Descripción detallada -->
+        <div class="field-group">
+          <label class="field-label" for="description">
+            Descripción detallada <span class="req">*</span>
+          </label>
+          <textarea
+            id="description"
+            class="field-textarea"
+            [class.invalid]="fieldError('description')"
+            formControlName="description"
+            rows="5"
+            placeholder="Describe el problema con detalle: síntomas, cuándo ocurrió, qué medidas se han tomado…"
+          ></textarea>
+          <span *ngIf="fieldError('description')" class="field-error">
+            Mínimo 10 caracteres.
+          </span>
+        </div>
+
+        <!-- Prioridad (fila horizontal: Crítica | Alta | Normal) -->
+        <div class="field-group">
+          <label class="field-label">
+            Prioridad <span class="req">*</span>
+          </label>
+          <div class="priority-row">
+            <button
+              type="button"
+              *ngFor="let p of priorities"
+              class="prio-btn"
+              [class.selected]="form.get('priority')?.value === p.value"
+              [style.--p-color]="p.color"
+              [style.--p-bg]="p.bg"
+              [style.--p-border]="p.border"
+              (click)="setPriority(p.value)"
+            >
+              {{ p.emoji }} {{ p.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Adjuntar archivos -->
+        <div class="field-group">
+          <label class="field-label">Adjuntar archivos</label>
+          <div class="file-zone" (click)="fileInput.click()">
+            <span class="file-icon">⬆</span>
+            <span class="file-text">Arrastra archivos o haz clic para adjuntar</span>
+            <input #fileInput type="file" multiple hidden />
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="cancel()">Cancelar</button>
+          <button type="submit" class="btn-submit" [disabled]="loading">
+            <span *ngIf="loading" class="spinner"></span>
+            <span class="send-icon" *ngIf="!loading">✉</span>
+            {{ loading ? 'Creando…' : 'Crear Incidencia' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Columna derecha: imagen -->
+    <div class="right-col">
+
+      <!-- Placeholder máquina -->
+      <div class="machine-card machine-card--empty">
+        <p class="empty-hint">Indica el nombre o referencia de la máquina afectada.</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>

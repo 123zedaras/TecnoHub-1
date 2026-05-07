@@ -1,0 +1,122 @@
+<div class="tickets-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-titles">
+      <h1 class="page-title">Incidencias</h1>
+      <p class="page-subtitle">Gestión de tickets de soporte</p>
+    </div>
+    <button class="btn-new" (click)="newTicket()">+ Nueva Incidencia</button>
+  </div>
+
+  <!-- Barra de tabs (estilo píldoras sobre fondo #F1F5F9) -->
+  <div class="tabs-bar">
+    <button
+      *ngFor="let tab of tabs"
+      class="tab-pill"
+      [class.active]="activeFilter === tab.value"
+      (click)="setFilter(tab.value)"
+    >
+      {{ tab.label }}
+      <span class="tab-count" [class]="'cnt-' + (tab.value ?? 'all')">
+        {{ tab.value === null ? total : getCountForStatus(tab.value) }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="state-loading">
+    <div class="spinner"></div>
+    <p>Cargando incidencias…</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="state-error">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadTickets()">Reintentar</button>
+  </div>
+
+  <!-- Vacío -->
+  <div *ngIf="!loading && !error && tickets.length === 0" class="state-empty">
+    <span class="empty-icon">🎫</span>
+    <p>No hay tickets{{ activeFilter ? ' con este estado' : '' }}.</p>
+    <button class="btn-new" (click)="newTicket()">+ Nueva Incidencia</button>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!loading && !error && tickets.length > 0" class="table-card">
+
+    <!-- Cabecera -->
+    <div class="tbl-row tbl-header">
+      <div class="col-id">ID</div>
+      <div class="col-machine">MÁQUINA</div>
+      <div class="col-title">TÍTULO</div>
+      <div class="col-priority">PRIORIDAD</div>
+      <div class="col-status">ESTADO</div>
+      <div class="col-date">FECHA</div>
+      <div class="col-assigned">ASIGNADO</div>
+      <div class="col-actions">ACCIONES</div>
+    </div>
+
+    <!-- Filas -->
+    <div
+      class="tbl-row tbl-data"
+      *ngFor="let ticket of tickets; trackBy: trackById; let odd = odd"
+      [class.odd]="odd"
+      (click)="openTicket(ticket)"
+    >
+      <!-- ID -->
+      <div class="col-id ticket-id">{{ ticket.ticket_number }}</div>
+
+      <!-- Máquina -->
+      <div class="col-machine">
+        <span *ngIf="ticket.machine_name">{{ ticket.machine_name }}</span>
+        <span *ngIf="!ticket.machine_name" class="muted">—</span>
+      </div>
+
+      <!-- Título -->
+      <div class="col-title ticket-title-cell">{{ ticket.title }}</div>
+
+      <!-- Prioridad -->
+      <div class="col-priority">
+        <span class="prio-badge"
+              [style.background-color]="PRIORITY_BG[ticket.priority]"
+              [style.color]="PRIORITY_COLORS[ticket.priority]">
+          {{ PRIORITY_LABELS[ticket.priority] }}
+        </span>
+      </div>
+
+      <!-- Estado -->
+      <div class="col-status">
+        <span class="status-text" [style.color]="STATUS_COLORS[ticket.status]">
+          {{ STATUS_ICONS[ticket.status] }} {{ STATUS_LABELS[ticket.status] }}
+        </span>
+      </div>
+
+      <!-- Fecha -->
+      <div class="col-date muted">{{ formatDate(ticket.created_at) }}</div>
+
+      <!-- Asignado -->
+      <div class="col-assigned">
+        <span *ngIf="ticket.assigned_technician">{{ ticket.assigned_technician.name }}</span>
+        <span *ngIf="!ticket.assigned_technician" class="muted">Sin asignar</span>
+      </div>
+
+      <!-- Acciones -->
+      <div class="col-actions" (click)="$event.stopPropagation()">
+        <button class="btn-ver" (click)="openTicket(ticket)">Ver →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Paginación -->
+  <div *ngIf="lastPage > 1" class="pagination">
+    <button class="page-btn" [disabled]="currentPage === 1"
+            (click)="currentPage = currentPage - 1; loadTickets()">← Anterior</button>
+    <span class="page-info">Página {{ currentPage }} de {{ lastPage }}</span>
+    <button class="page-btn" [disabled]="currentPage === lastPage"
+            (click)="currentPage = currentPage + 1; loadTickets()">Siguiente →</button>
+  </div>
+
+</div>

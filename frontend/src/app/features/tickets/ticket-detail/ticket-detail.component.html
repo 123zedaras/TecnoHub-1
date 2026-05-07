@@ -1,0 +1,206 @@
+<div class="detail-page">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="state-loading">
+    <div class="spinner"></div>
+    <p>Cargando ticket…</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="state-error">
+    <p>{{ error }}</p>
+    <button class="btn-back" (click)="goBack()">← Volver</button>
+  </div>
+
+  <!-- Contenido -->
+  <ng-container *ngIf="ticket && !loading">
+
+    <!-- Header: breadcrumb + badge + acciones -->
+    <div class="page-header">
+      <div class="header-left">
+        <span class="arrow-icon">←</span>
+        <button class="breadcrumb-link" (click)="goBack()">Incidencias</button>
+        <span class="sep">/</span>
+        <span class="ticket-ref">Ticket #{{ ticket.ticket_number }}</span>
+        <span class="status-inline-badge"
+              [style.background-color]="STATUS_BG[ticket.status]"
+              [style.color]="STATUS_COLORS[ticket.status]">
+          ● {{ STATUS_LABELS[ticket.status] }}
+        </span>
+      </div>
+
+      <div class="header-actions">
+        <button
+          *ngIf="ticket.status !== 'closed'"
+          class="btn-close-ticket"
+          [disabled]="updatingStatus"
+          (click)="closeTicket()"
+        >
+          ✓ {{ updatingStatus ? 'Cerrando…' : 'Cerrar Ticket' }}
+        </button>
+        <span *ngIf="ticket.status === 'closed'" class="closed-tag">Ticket cerrado</span>
+      </div>
+    </div>
+
+    <!-- Layout: chat (fill) + panel info (360px) -->
+    <div class="detail-layout">
+
+      <!-- ── Columna chat ──────────────────────────────── -->
+      <div class="chat-col">
+
+        <!-- Encabezado "Conversación" -->
+        <div class="chat-heading">
+          <span class="chat-title">Conversación</span>
+        </div>
+
+        <!-- Lista de mensajes -->
+        <div class="msgs-area">
+
+          <!-- Descripción inicial como primer mensaje del operario -->
+          <div class="msg-row" *ngIf="ticket.user">
+            <div class="msg-avatar av-op">{{ userInitials(ticket.user.name) }}</div>
+            <div class="msg-body">
+              <div class="msg-meta">
+                <span class="msg-author">{{ ticket.user.name }} (Operario)</span>
+                <span class="msg-time">{{ formatTime(ticket.created_at) }}</span>
+              </div>
+              <div class="msg-bubble bubble-op">{{ ticket.description }}</div>
+            </div>
+          </div>
+
+          <!-- Mensajes del hilo -->
+          <ng-container *ngFor="let msg of ticket.messages">
+
+            <!-- Técnico (burbuja derecha / índigo claro) -->
+            <div class="msg-row msg-tech" *ngIf="!isOwnMessage(msg)">
+              <div class="msg-body-right">
+                <div class="msg-meta msg-meta-right">
+                  <span class="msg-author">{{ msg.user.name }} (Técnico)</span>
+                  <span class="msg-time">{{ formatTime(msg.created_at) }}</span>
+                </div>
+                <div class="msg-bubble bubble-tech">{{ msg.content }}</div>
+              </div>
+            </div>
+
+            <!-- Operario (burbuja izquierda) -->
+            <div class="msg-row" *ngIf="isOwnMessage(msg)">
+              <div class="msg-avatar av-op">{{ userInitials(msg.user.name) }}</div>
+              <div class="msg-body">
+                <div class="msg-meta">
+                  <span class="msg-author">{{ msg.user.name }} (Operario)</span>
+                  <span class="msg-time">{{ formatTime(msg.created_at) }}</span>
+                </div>
+                <div class="msg-bubble bubble-op">{{ msg.content }}</div>
+              </div>
+            </div>
+
+          </ng-container>
+
+          <div *ngIf="!ticket.messages || ticket.messages.length === 0" class="no-msgs">
+            Sé el primero en responder.
+          </div>
+
+          <div #messagesEnd></div>
+        </div>
+
+        <!-- Error de estado -->
+        <div *ngIf="statusError" class="alert-error">{{ statusError }}</div>
+
+        <!-- Input de mensaje -->
+        <div class="chat-input-bar" [class.disabled]="isClosed">
+          <div *ngIf="messageError" class="msg-err">{{ messageError }}</div>
+          <div class="input-row">
+            <input
+              class="chat-input"
+              type="text"
+              [(ngModel)]="newMessage"
+              (keydown.enter)="sendMessage()"
+              placeholder="{{ isClosed ? 'Ticket cerrado.' : 'Escribe un mensaje…' }}"
+              [disabled]="isClosed || sendingMessage"
+            />
+            <!-- Botón circular (cornerRadius:22 en el diseño) -->
+            <button
+              class="send-btn"
+              (click)="sendMessage()"
+              [disabled]="!newMessage.trim() || isClosed || sendingMessage"
+            >
+              <span *ngIf="!sendingMessage">✉</span>
+              <span *ngIf="sendingMessage" class="spinner-sm"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Panel info (360px) ──────────────────────── -->
+      <div class="info-panel">
+
+        <!-- Cabecera del panel -->
+        <div class="panel-heading">
+          <span class="panel-title">Información del Ticket</span>
+        </div>
+
+        <!-- Sección MÁQUINA -->
+        <div class="info-field">
+          <span class="info-label">MÁQUINA</span>
+          <span class="info-value">
+            {{ ticket.machine_name ? ticket.machine_name + ' · Nave A' : 'Sin máquina' }}
+          </span>
+        </div>
+
+        <!-- Sección PRIORIDAD -->
+        <div class="info-field">
+          <span class="info-label">PRIORIDAD</span>
+          <span class="prio-badge-panel"
+                [style.background-color]="PRIORITY_BG[ticket.priority]"
+                [style.color]="PRIORITY_COLORS[ticket.priority]">
+            🔴 {{ PRIORITY_LABELS[ticket.priority] }}
+          </span>
+        </div>
+
+        <!-- Sección ESTADO ACTUAL -->
+        <div class="info-field">
+          <span class="info-label">ESTADO ACTUAL</span>
+          <span class="status-field-badge"
+                [style.background-color]="STATUS_BG[ticket.status]"
+                [style.color]="STATUS_COLORS[ticket.status]">
+            ● {{ STATUS_LABELS[ticket.status] }}
+          </span>
+        </div>
+
+        <!-- Sección TÉCNICO ASIGNADO -->
+        <div class="info-field">
+          <span class="info-label">TÉCNICO ASIGNADO</span>
+          <span class="info-value">
+            {{ ticket.assigned_technician?.name ?? 'Sin asignar' }}
+          </span>
+        </div>
+
+        <!-- Botón Cambiar Estado -->
+        <div class="panel-action">
+          <div class="status-dropdown-wrapper">
+            <button class="btn-change-status" (click)="toggleStatusMenu()"
+                    [disabled]="updatingStatus || ticket.status === 'closed'">
+              Cambiar Estado ▼
+            </button>
+            <div *ngIf="showStatusMenu" class="status-menu">
+              <button *ngFor="let s of availableStatuses"
+                      class="smenu-item"
+                      [class.current]="ticket.status === s.value"
+                      (click)="changeStatus(s.value)">
+                <span class="s-dot" [style.background]="STATUS_COLORS[s.value]"></span>
+                {{ s.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>
+
+<!-- Overlay status menu -->
+<div *ngIf="showStatusMenu" class="overlay" (click)="showStatusMenu = false"></div>

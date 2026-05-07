@@ -1,0 +1,336 @@
+$primary:   #4F46E5;
+$bg:        #F8FAFC;
+$text-dark: #374151;
+$text-mid:  #64748B;
+$text-light:#94A3B8;
+$border:    #E2E8F0;
+$border-in: #D1D5DB;
+$white:     #FFFFFF;
+
+:host { display: block; }
+
+.create-page {
+  padding: 24px 32px;
+}
+
+// ── Breadcrumb ────────────────────────────────────────────
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: $text-mid;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover { color: $primary; }
+}
+
+.sep { color: #CBD5E1; }
+
+.crumb-active {
+  color: #0F172A;
+  font-weight: 500;
+}
+
+// ── Layout ────────────────────────────────────────────────
+.create-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 900px) { grid-template-columns: 1fr; }
+}
+
+// ── Formulario ────────────────────────────────────────────
+.form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.alert-error {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #DC2626;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: $text-dark;
+  margin-bottom: 6px;
+}
+
+.req { color: #EF4444; }
+
+// Select personalizado
+.select-wrapper {
+  position: relative;
+}
+
+.field-select {
+  width: 100%;
+  appearance: none;
+  border: 1px solid $border-in;
+  border-radius: 6px;
+  padding: 0 36px 0 12px;
+  height: 40px;
+  font-size: 14px;
+  color: #0F172A;
+  background: $white;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+
+  &:focus { outline: none; border-color: $primary; }
+}
+
+.select-chevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $text-mid;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.field-input,
+.field-textarea {
+  width: 100%;
+  border: 1px solid $border-in;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #0F172A;
+  background: $white;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  font-family: inherit;
+
+  &:focus { outline: none; border-color: $primary; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
+  &.invalid { border-color: #EF4444; }
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.field-error {
+  display: block;
+  font-size: 12px;
+  color: #EF4444;
+  margin-top: 4px;
+}
+
+// ── Prioridades en fila horizontal ────────────────────────
+.priority-row {
+  display: flex;
+  gap: 8px;
+}
+
+.prio-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $text-mid;
+  background: $white;
+  border: 1px solid $border-in;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: var(--p-border);
+    background: var(--p-bg);
+    color: var(--p-color);
+  }
+
+  &.selected {
+    background: var(--p-bg);
+    border-color: var(--p-border);
+    color: var(--p-color);
+    font-weight: 600;
+  }
+}
+
+// ── Zona de archivos ──────────────────────────────────────
+.file-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 72px;
+  border: 1px dashed #CBD5E1;
+  border-radius: 8px;
+  background: $bg;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+
+  &:hover { background: #EEF2FF; border-color: $primary; }
+}
+
+.file-icon { font-size: 18px; color: $text-light; }
+.file-text { font-size: 12px; color: $text-light; }
+
+// ── Acciones ──────────────────────────────────────────────
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.btn-cancel {
+  background: #F1F5F9;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $text-mid;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: $border; }
+}
+
+.btn-submit {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  background: $primary;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $white;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: #4338CA; }
+  &:disabled { opacity: 0.7; cursor: not-allowed; }
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: $white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// ── Panel derecho: máquina ────────────────────────────────
+.machine-card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &--empty {
+    height: 120px;
+    align-items: center;
+    justify-content: center;
+    background: $bg;
+    border-style: dashed;
+  }
+}
+
+.empty-hint {
+  font-size: 13px;
+  color: $text-light;
+  text-align: center;
+  margin: 0;
+}
+
+.mcard-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mcard-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.mcard-spacer { flex: 1; }
+
+.mcard-status {
+  font-size: 11px;
+  font-weight: 600;
+  color: #16A34A;
+  background: #F0FDF4;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.mcard-sub {
+  font-size: 12px;
+  color: $text-light;
+  margin: 0;
+}
+
+.mcard-divider {
+  height: 1px;
+  background: $border;
+}
+
+.mcard-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: $text-mid;
+}
+
+.metric-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: #0F172A;
+}
