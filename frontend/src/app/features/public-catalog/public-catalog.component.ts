@@ -87,7 +87,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     const query = search?.trim();
     const param = query && query.length > 0 ? query : undefined;
 
-    this.productService.getProducts(param).subscribe({
+    this.productService.getPublicProducts(param).subscribe({
       next: (res) => {
         if (seq !== this.loadSeq) {
           return;

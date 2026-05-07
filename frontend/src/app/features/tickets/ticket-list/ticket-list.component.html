@@ -19,7 +19,7 @@
     >
       {{ tab.label }}
       <span class="tab-count" [class]="'cnt-' + (tab.value ?? 'all')">
-        {{ tab.value === null ? total : getCountForStatus(tab.value) }}
+        {{ tab.value === null ? allCount : getCountForStatus(tab.value) }}
       </span>
     </button>
   </div>

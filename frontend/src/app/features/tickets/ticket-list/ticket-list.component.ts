@@ -99,6 +99,10 @@ export class TicketListComponent implements OnInit {
     this.loadTickets();
   }
 
+  get allCount(): number {
+    return Object.values(this.statusCounts).reduce((acc, n) => acc + (n ?? 0), 0);
+  }
+
   getCountForStatus(status: TicketStatus): number {
     return this.statusCounts[status] ?? 0;
   }
