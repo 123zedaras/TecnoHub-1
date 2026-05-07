@@ -23,8 +23,8 @@ class Product extends Model
         'active' => 'boolean',
     ];
 
-    public function sws()
+    public function software()
     {
-        return $this->hasMany(Sw::class);
+        return $this->hasMany(Software::class);
     }
 }
