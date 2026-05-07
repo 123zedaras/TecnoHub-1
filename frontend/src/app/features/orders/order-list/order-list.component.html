@@ -1,0 +1,66 @@
+<div class="orders-page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Mis Pedidos</h1>
+      <p class="page-subtitle">Historial de compras y recambios</p>
+    </div>
+    <a routerLink="/recambios" class="btn-shop">+ Seguir comprando</a>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="state-loading">
+    <div class="spinner"></div>
+    <p>Cargando pedidos…</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="state-error">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="ngOnInit()">Reintentar</button>
+  </div>
+
+  <!-- Vacío -->
+  <div *ngIf="!loading && !error && orders.length === 0" class="state-empty">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 01-8 0"/>
+    </svg>
+    <p>Aún no tienes pedidos.</p>
+    <a routerLink="/recambios" class="btn-shop">Ver catálogo de recambios</a>
+  </div>
+
+  <!-- Lista -->
+  <div *ngIf="!loading && !error && orders.length > 0" class="orders-list">
+    <div
+      class="order-card"
+      *ngFor="let order of orders; trackBy: trackById"
+      (click)="openOrder(order)"
+    >
+      <div class="order-card__main">
+        <div class="order-card__id">Pedido #{{ order.id }}</div>
+        <div class="order-card__date">{{ formatDate(order.created_at) }}</div>
+      </div>
+
+      <div class="order-card__meta">
+        <span
+          class="order-status-badge"
+          [style.background]="STATUS_BG[order.status]"
+          [style.color]="STATUS_COLORS[order.status]"
+        >{{ STATUS_LABELS[order.status] }}</span>
+
+        <span class="order-card__items">
+          {{ order.items.length }} {{ order.items.length === 1 ? 'artículo' : 'artículos' }}
+        </span>
+      </div>
+
+      <div class="order-card__total">
+        {{ formatPrice(order.total) }}
+      </div>
+
+      <button class="btn-ver" (click)="openOrder(order); $event.stopPropagation()">Ver →</button>
+    </div>
+  </div>
+
+</div>

@@ -77,6 +77,11 @@ const routes: Routes = [
           import('./features/cart/cart.module').then(m => m.CartModule),
       },
       {
+        path: 'pedidos',
+        loadChildren: () =>
+          import('./features/orders/orders.module').then(m => m.OrdersModule),
+      },
+      {
         // Alias para enlaces públicos; con sesión activa lleva al catálogo autenticado.
         path: 'productos',
         redirectTo: 'recambios',
