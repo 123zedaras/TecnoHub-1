@@ -1,7 +1,7 @@
 <div class="docs-page">
   <div class="docs-header">
     <h1 class="docs-title">Mi documentación</h1>
-    <p class="docs-subtitle">Documentación de los productos que ya has comprado.</p>
+    <p class="docs-subtitle">Documentación de los productos que ya has comprado o tienes en pedido.</p>
   </div>
 
   <div class="docs-toolbar" role="search" aria-label="Buscar documentación por nombre de producto">
@@ -29,29 +29,45 @@
     <p>Cargando documentación…</p>
   </div>
 
-  <div class="table-wrap" *ngIf="!loading && !error && filteredRows.length > 0">
-    <table class="docs-table">
-      <thead>
-        <tr>
-          <th scope="col">Producto</th>
-          <th scope="col">Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of filteredRows">
-          <td>{{ row.productName }}</td>
-          <td>
-            <button type="button" class="btn-open-doc" (click)="openDocumentation(row.documentationUrl)">
-              Abrir documentación
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="docs-grid" *ngIf="!loading && !error && filteredRows.length > 0">
+    <article class="doc-card" *ngFor="let row of filteredRows">
+      <div class="doc-card__img-wrap">
+        <img
+          *ngIf="row.image"
+          [src]="row.image"
+          [alt]="row.productName"
+          class="doc-card__img"
+        />
+        <div *ngIf="!row.image" class="doc-card__img-placeholder" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9l4-4 4 4 4-4 4 4"/>
+            <circle cx="8.5" cy="13.5" r="1.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="doc-card__body">
+        <h3 class="doc-card__name">{{ row.productName }}</h3>
+        <button
+          type="button"
+          class="btn-open-doc"
+          (click)="openDocumentation(row.documentationUrl)"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+          Ver documentación
+        </button>
+      </div>
+    </article>
   </div>
 
   <div class="empty-state" *ngIf="!loading && !error && filteredRows.length === 0">
-    <p *ngIf="rows.length === 0; else emptySearch">Aún no tienes documentación disponible. Compra un producto para verla aquí.</p>
+    <p *ngIf="rows.length === 0; else emptySearch">Aún no tienes documentación disponible. Los productos con documentación aparecerán aquí una vez que hayas realizado un pedido.</p>
     <ng-template #emptySearch>
       <p>No hay resultados para «{{ searchInput.trim() }}».</p>
     </ng-template>

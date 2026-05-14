@@ -117,7 +117,7 @@ export class ScadaDashboardComponent implements OnInit, OnDestroy {
     return `${min}:${seg}`;
   }
 
-  // ─── Comandos (alineados con tags de v1.1) ────────────────────────────────
+  // Comandos (alineados con tags de v1.1)
 
   private send(tag: string, valor: boolean | number): void {
     this.sendingCommand = true;
@@ -144,7 +144,7 @@ export class ScadaDashboardComponent implements OnInit, OnDestroy {
   marcha():               void { this.send('Marcha_B', true); }
   paro():                 void { this.send('Paro_B', true); }
 
-  // ─── Helpers ──────────────────────────────────────────────────────────────
+  // Helpers
 
   /** Normaliza distintos formatos booleanos que puede enviar Node-RED */
   isActive(val: boolean | number | string | undefined): boolean {

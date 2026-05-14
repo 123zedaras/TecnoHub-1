@@ -38,10 +38,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Cancela cualquier búsqueda pendiente al salir del componente
     this.cancelSearchDebounce();
   }
 
   onSearchInput(rawValue: string): void {
+    // Actualiza el valor del input y reinicia el debounce para evitar búsquedas excesivas mientras el usuario escribe
     this.searchInput = rawValue;
     this.cancelSearchDebounce();
     this.searchDebounceHandle = setTimeout(() => {
@@ -51,18 +53,21 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }, this.searchDebounceMs);
   }
 
+  // Permite forzar la búsqueda inmediata, por ejemplo al pulsar Enter, sin esperar al debounce
   flushSearch(): void {
     this.cancelSearchDebounce();
     const term = this.searchInput.trim();
     this.loadProducts(term.length > 0 ? term : undefined);
   }
 
+  // Limpia el campo de búsqueda y recarga el catálogo completo
   clearSearch(): void {
     this.cancelSearchDebounce();
     this.searchInput = '';
     this.loadProducts();
   }
 
+  // Cancela cualquier búsqueda pendiente para evitar que se ejecute después de que el componente haya sido destruido
   private cancelSearchDebounce(): void {
     if (this.searchDebounceHandle !== null) {
       clearTimeout(this.searchDebounceHandle);
@@ -70,6 +75,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Carga los productos desde la API, aplicando un filtro de búsqueda si se proporciona. 
+   * Utiliza un contador de secuencia para evitar que respuestas antiguas sobrescriban datos más recientes.
+   */
   loadProducts(search?: string): void {
     const seq = ++this.loadSeq;
     this.loading = true;

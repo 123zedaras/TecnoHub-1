@@ -5,7 +5,7 @@ $success:   #22C55E;
 $error:     #EF4444;
 $warning:   #F59E0B;
 
-// Dark HMI theme (alineado con v1.1 PHP)
+// Dark HMI theme
 $hmi-bg:       #0F172A;
 $panel-bg:     #1E293B;
 $panel-border: #334155;
@@ -13,7 +13,7 @@ $text-mid:     #94A3B8;
 $water:        #38BDF8;
 $on-solid:     #22C55E;
 
-// ─── Layout ───────────────────────────────────────────────────────────────
+// Layout
 
 .scada-dashboard {
   padding: 24px;
@@ -26,7 +26,7 @@ $on-solid:     #22C55E;
   align-items: center;
 }
 
-// ─── Header ───────────────────────────────────────────────────────────────
+// Header
 
 .dashboard-header {
   width: 100%;
@@ -69,7 +69,7 @@ $on-solid:     #22C55E;
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
-// ─── Alerts ───────────────────────────────────────────────────────────────
+// Alerts
 
 .alert-error {
   width: 100%;
@@ -105,7 +105,7 @@ $on-solid:     #22C55E;
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-// ─── Process View ──────────────────────────────────────────────────────────
+// Process View
 
 .process-view {
   background: $panel-bg;
@@ -231,7 +231,7 @@ $on-solid:     #22C55E;
   50%       { opacity: 0.2; }
 }
 
-// ─── Reloj digital ─────────────────────────────────────────────────────────
+// Reloj digital
 
 .clock-container {
   background: #000;
@@ -258,7 +258,7 @@ $on-solid:     #22C55E;
   line-height: 1.1;
 }
 
-// ─── Panel de control ─────────────────────────────────────────────────────
+// Panel de control
 
 .control-panel {
   display: grid;
@@ -319,7 +319,7 @@ $on-solid:     #22C55E;
   }
 }
 
-// ─── Último comando ────────────────────────────────────────────────────────
+// Último comando
 
 .last-command {
   background: $panel-bg;
