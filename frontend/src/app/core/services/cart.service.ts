@@ -6,12 +6,17 @@ import { Cart, AddToCartRequest, UpdateCartItemRequest } from '../../shared/mode
 import { environment } from '../../../environments/environment';
 import { GuestCartStorageService } from './guest-cart-storage.service';
 
+/**
+ * Carrito del usuario autenticado con el API Laravel
+ * Mantiene itemCount y `artTotal en signals para el header y vistas de cesta autenticada.
+ */
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private readonly apiUrl = `${environment.apiUrl}/cart`;
 
-  // Signal reactivo para el contador del carrito (ícono del header)
+  /** Unidades distintas o total de líneas según devuelva el backend en item_count (para badge). */
   readonly itemCount = signal<number>(0);
+  /** Total monetario del carrito según última respuesta del servidor. */
   readonly cartTotal = signal<number>(0);
 
   constructor(
@@ -19,7 +24,9 @@ export class CartService {
     private guestCartStorage: GuestCartStorageService,
   ) {}
 
-  // GET /api/cart
+  /**
+   * GET /api/cart — Obtiene el carrito del usuario y sincroniza signals de contador y total.
+   */
   getCart(): Observable<{ data: Cart }> {
     return this.http.get<{ data: Cart }>(this.apiUrl).pipe(
       tap(res => {
@@ -29,7 +36,9 @@ export class CartService {
     );
   }
 
-  // POST /api/cart/items
+  /**
+   * POST /api/cart/items — Añade cantidad de un producto. El servidor suma si ya existía la misma referencia.
+   */
   addItem(request: AddToCartRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/items`, request).pipe(
       tap((res: any) => {
@@ -40,9 +49,9 @@ export class CartService {
   }
 
   /**
-   * Tras guardar el token de Sanctum: recorre la cesta invitado y llama a POST /cart/items
-   * una vez por línea (en serie). El backend ya fusiona por product_id si existía en el carrito del usuario.
-   * Solo borra localStorage si todas las peticiones terminan bien.
+   * Tras el login: lee líneas guardadas como invitado (`GuestCartStorageService`) y por cada una
+   * llama a `addItem` en serie (`concatMap`). Si una petición falla, no se vacía el localStorage
+   * (el usuario puede reintentar). Si todas OK, `guestCartStorage.clear()` elimina la cesta local.
    */
   mergeGuestCartFromStorage(): Observable<{ mergedCount: number }> {
     const lines = this.guestCartStorage.getLines();
@@ -51,23 +60,22 @@ export class CartService {
     }
     const mergedCount = lines.length;
     return from(lines).pipe(
-      // concatMap = una petición tras otra; si una falla, se corta el flujo y NO se ejecuta el tap siguiente.
+      // Una petición tras otra; si una falla, se corta el flujo y NO se ejecuta el tap de clear.
       concatMap((line) => this.addItem(line)),
-      // Emite solo la última respuesta HTTP cuando ya se añadió todo (sirve para disparar un solo tap).
       last(),
       tap(() => {
-        // Aquí ya sabemos que todas las líneas se enviaron correctamente.
         this.guestCartStorage.clear();
       }),
       map(() => ({ mergedCount })),
       catchError((err) => {
-        // Dejamos los datos en localStorage para que el usuario pueda reintentar tras corregir stock/login.
         return throwError(() => err);
       })
     );
   }
 
-  // PUT /api/cart/items/{id}
+  /**
+   * PUT /api/cart/items/{id} — Cambia la cantidad de una línea ya existente en el carrito remoto.
+   */
   updateItem(itemId: number, request: UpdateCartItemRequest): Observable<any> {
     return this.http.put(`${this.apiUrl}/items/${itemId}`, request).pipe(
       tap((res: any) => {
@@ -79,7 +87,9 @@ export class CartService {
     );
   }
 
-  // DELETE /api/cart/items/{id}
+  /**
+   * DELETE /api/cart/items/{id} — Elimina una línea del carrito en servidor.
+   */
   removeItem(itemId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/items/${itemId}`).pipe(
       tap((res: any) => {
@@ -91,7 +101,9 @@ export class CartService {
     );
   }
 
-  // DELETE /api/cart
+  /**
+   * DELETE /api/cart — Vacía todo el carrito del usuario y pone contadores a cero en cliente.
+   */
   clearCart(): Observable<any> {
     return this.http.delete(this.apiUrl).pipe(
       tap(() => {
@@ -101,12 +113,16 @@ export class CartService {
     );
   }
 
-  // POST /api/payments/create-intent
+  /**
+   * POST /api/payments/create-intent — Crea intención de pago Stripe antes de confirmar el pedido.
+   */
   createPaymentIntent(): Observable<any> {
     return this.http.post(`${environment.apiUrl}/payments/create-intent`, {});
   }
 
-  // POST /api/orders
+  /**
+   * POST /api/orders — Confirma pedido tras pago; el backend suele vaciar el carrito (aquí se resetean signals).
+   */
   createOrder(paymentIntentId: string, shippingAddress?: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/orders`, {
       payment_intent_id: paymentIntentId,
@@ -119,12 +135,16 @@ export class CartService {
     );
   }
 
-  // GET /api/orders
+  /**
+   * GET /api/orders — Lista pedidos del usuario (p. ej. histórico o «mis compras»).
+   */
   getOrders(): Observable<{ data: any[] }> {
     return this.http.get<{ data: any[] }>(`${environment.apiUrl}/orders`);
   }
 
-  // GET /api/orders/{id}
+  /**
+   * GET /api/orders/{id} — Detalle de un pedido concreto.
+   */
   getOrder(id: number): Observable<{ data: any }> {
     return this.http.get<{ data: any }>(`${environment.apiUrl}/orders/${id}`);
   }

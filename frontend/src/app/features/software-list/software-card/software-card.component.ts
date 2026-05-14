@@ -30,7 +30,7 @@ export class SoftwareCardComponent {
     }
 
     console.log('Comprando:', this.software.nombre, 'Versión:', this.selectedVersion);
-    // Aquí integras Stripe, PayPal o tu backend de compra
+    
   }
 
   descargar() {

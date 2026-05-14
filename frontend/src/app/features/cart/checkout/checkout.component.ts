@@ -11,9 +11,10 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
+//componente para el checkout
 export class CheckoutComponent implements OnInit, OnDestroy {
   @ViewChild('cardElement') cardElementRef!: ElementRef;
-
+  //carrito para el checkout
   cart: Cart | null = null;
   loading = true;
   paymentLoading = false;
@@ -21,10 +22,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   successMessage: string | null = null;
   shippingAddress = '';
 
+  //stripe para el checkout
   private stripe: Stripe | null = null;
+  //elements para el checkout
   private elements: StripeElements | null = null;
+  //cardElement para el checkout
   private cardElement: StripeCardElement | null = null;
+  //clientSecret para el checkout
   private clientSecret: string | null = null;
+  //paymentIntentId para el checkout
   private paymentIntentId: string | null = null;
 
   constructor(
@@ -33,10 +39,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
+  //carga el carrito y inicializa el stripe
   async ngOnInit(): Promise<void> {
     await this.loadCartAndInitStripe();
   }
 
+  //destruye el cardElement
   ngOnDestroy(): void {
     this.cardElement?.destroy();
   }
@@ -47,6 +55,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       next: async (res) => {
         this.cart = res.data;
 
+        //si el carrito no tiene items, navega a la página de carrito
         if (this.cart.items.length === 0) {
           this.router.navigate(['/recambios/carrito']);
           return;
@@ -96,7 +105,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
+  //envia el pago
   async submitPayment(): Promise<void> {
+    //si no hay stripe, cardElement o clientSecret, no se envía el pago
     if (!this.stripe || !this.cardElement || !this.clientSecret) return;
 
     this.paymentLoading = true;
@@ -138,6 +149,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
+  //formatea el precio
   formatPrice(amount: number): string {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
@@ -145,6 +157,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }).format(amount);
   }
 
+  //navega a la página de carrito
   goBack(): void {
     this.router.navigate(['/recambios/carrito']);
   }

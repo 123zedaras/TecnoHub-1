@@ -8,6 +8,7 @@ type Section = 'nombre' | 'password';
   templateUrl: './mis-datos.component.html',
   styleUrls: ['./mis-datos.component.scss'],
 })
+//componente para los datos del usuario
 export class MisDatosComponent {
   user: AuthUser | null;
 
@@ -29,6 +30,7 @@ export class MisDatosComponent {
     this.user = this.auth.getUser();
   }
 
+  //abre la sección
   openSection(section: Section): void {
     this.activeSection = section;
     this.nameSuccess = null;
@@ -48,11 +50,13 @@ export class MisDatosComponent {
     this.activeSection = null;
   }
 
+  //devuelve si el nombre es válido
   get isNameFormValid(): boolean {
     const n = this.nameForm.name.trim();
     return n.length >= 2 && n !== (this.user?.name ?? '');
   }
 
+  //devuelve si la contraseña es válida
   get isPasswordFormValid(): boolean {
     return (
       this.passwordForm.current_password.length > 0 &&
@@ -61,6 +65,7 @@ export class MisDatosComponent {
     );
   }
 
+  //devuelve si las contraseñas no coinciden
   get passwordsDoNotMatch(): boolean {
     return (
       this.passwordSubmitted &&
@@ -69,6 +74,7 @@ export class MisDatosComponent {
     );
   }
 
+  //guarda el nombre
   onSaveName(): void {
     this.nameSubmitted = true;
     this.nameError = null;
@@ -89,6 +95,7 @@ export class MisDatosComponent {
     });
   }
 
+  //guarda la contraseña
   onSavePassword(): void {
     this.passwordSubmitted = true;
     this.passwordError = null;
@@ -113,6 +120,7 @@ export class MisDatosComponent {
     });
   }
 
+  //devuelve el rol del usuario
   roleLabel(role: string): string {
     const map: Record<string, string> = {
       admin: 'Administrador',

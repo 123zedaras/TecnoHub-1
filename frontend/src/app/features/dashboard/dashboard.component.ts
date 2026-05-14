@@ -4,6 +4,7 @@ import { TicketsService } from '../../core/services/tickets.service';
 import { CartService } from '../../core/services/cart.service';
 import { ScadaService } from '../../core/services/scada.service';
 
+//interface para las kpis
 interface KpiCard {
   label: string;
   value: string | number;
@@ -13,6 +14,7 @@ interface KpiCard {
   route: string;
 }
 
+//interface para las acciones rápidas
 interface QuickAction {
   label: string;
   description: string;
@@ -25,9 +27,12 @@ interface QuickAction {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
+//componente para el dashboard
 export class DashboardComponent implements OnInit {
 
+  //fecha actual
   today = new Date();
+  //hora actual
   currentHour = this.today.getHours();
 
   get todayLabel(): string {
@@ -36,12 +41,14 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  //devuelve el saludo
   get greeting(): string {
     if (this.currentHour < 12) return 'Buenos días';
     if (this.currentHour < 21) return 'Buenas tardes';
     return 'Buenas noches';
   }
 
+  //kpis para el dashboard
   kpis: KpiCard[] = [
     {
       label: 'Tickets Abiertos',
@@ -77,6 +84,7 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
+  //acciones rápidas para el dashboard
   quickActions: QuickAction[] = [
     {
       label: 'Nueva Incidencia',
@@ -117,6 +125,7 @@ export class DashboardComponent implements OnInit {
     this.loadScadaEstado();
   }
 
+  //carga los tickets abiertos
   private loadTicketsAbiertos(): void {
     this.ticketsService.getTickets().subscribe({
       next: (res) => {
@@ -131,6 +140,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  //carga los pedidos pendientes
   private loadPedidosPendientes(): void {
     this.cartService.getOrders().subscribe({
       next: (res) => {
@@ -152,6 +162,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  //carga el estado de la scada
   private loadScadaEstado(): void {
     this.scadaService.getDashboard().subscribe({
       next: (state) => {

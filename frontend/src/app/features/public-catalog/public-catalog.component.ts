@@ -51,6 +51,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     this.cancelSearchDebounce();
   }
 
+  //busca los productos
   onSearchInput(rawValue: string): void {
     this.searchInput = rawValue;
     this.cancelSearchDebounce();
@@ -61,12 +62,14 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     }, this.searchDebounceMs);
   }
 
+  //cancela la búsqueda
   flushSearch(): void {
     this.cancelSearchDebounce();
     const term = this.searchInput.trim();
     this.loadProducts(term.length > 0 ? term : undefined);
   }
 
+  //limpia la búsqueda
   clearSearch(): void {
     this.cancelSearchDebounce();
     this.searchInput = '';
@@ -80,6 +83,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     }
   }
 
+  //carga los productos
   loadProducts(search?: string): void {
     const seq = ++this.loadSeq;
     this.loading = true;
@@ -110,6 +114,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     });
   }
 
+  //añade un producto al carrito
   addToCart(product: Product): void {
     if (product.stock === 0) {
       return;
@@ -118,7 +123,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
 
     if (!this.auth.isAuthenticated()) {
       // Sin token no existe carrito en API: guardamos en localStorage. Nombre y precio permiten
-      // mostrar el resumen en el header y en /cesta sin volver a pedir el catálogo al servidor.
+      // mostrar el resumen en el header y en cesta sin volver a pedir el catálogo al servidor.
       this.guestCart.addOrMergeLine({
         product_id: product.id,
         quantity: 1,
@@ -126,11 +131,12 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
         unit_price: product.price,
       });
       this.addingProductId = null;
-      this.successMessage = `"${product.name}" guardado en tu cesta (inicia sesión para sincronizar).`;
+      this.successMessage = `"${product.name}" guardado en tu cesta (inicia sesión para completar el pedido).`;
       setTimeout(() => (this.successMessage = null), 3000);
       return;
     }
 
+    //si hay sesión, añade el producto al carrito
     this.cartService.addItem({ product_id: product.id, quantity: 1 }).subscribe({
       next: () => {
         this.addingProductId = null;
@@ -145,11 +151,12 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** El botón cesta lleva a la vista de cesta pública (misma que el icono del header). */
+  /** El botón cesta lleva a la vista de cesta pública */
   goToCart(): void {
     void this.router.navigate(['/cesta']);
   }
 
+  //formatea el precio
   formatPrice(amount: number): string {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
@@ -157,6 +164,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     }).format(amount);
   }
 
+  //devuelve el label de stock
   stockLabel(stock: number): string {
     if (stock === 0) {
       return 'Sin stock';
@@ -167,6 +175,7 @@ export class PublicCatalogComponent implements OnInit, OnDestroy {
     return 'Disponible';
   }
 
+  //devuelve la clase de stock
   stockClass(stock: number): string {
     if (stock === 0) {
       return 'out';

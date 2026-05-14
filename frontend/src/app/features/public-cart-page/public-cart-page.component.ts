@@ -3,9 +3,8 @@ import { GuestCartLine } from '../../shared/models/cart.model';
 import { GuestCartStorageService } from '../../core/services/guest-cart-storage.service';
 
 /**
- * Ruta pública `/cesta`: revisión del pedido antes de login.
- * No usa CartService (requiere sesión); lee y edita solo la cesta invitado en el navegador.
- * Sustituye el flujo de checkout por un CTA a login, alineado con el requisito de negocio.
+ * Ruta pública de la cesta: revisión del pedido antes de login.
+ * lee y edita solo la cesta invitado en el navegador.
  */
 @Component({
   selector: 'app-public-cart-page',
@@ -19,7 +18,7 @@ export class PublicCartPageComponent {
     return this.guestCart.guestLines();
   }
 
-  /** Subtotal por línea; si falta precio en datos antiguos, devolvemos 0 para no inventar importes. */
+  /** Subtotal por línea; si falta precio en datos antiguos, devolvemos 0 */
   lineSubtotal(line: GuestCartLine): number {
     if (line.unit_price == null) {
       return 0;
@@ -27,11 +26,12 @@ export class PublicCartPageComponent {
     return line.unit_price * line.quantity;
   }
 
+  //devuelve el subtotal
   subtotal(): number {
     return this.lines().reduce((sum, l) => sum + this.lineSubtotal(l), 0);
   }
 
-  /** Misma lógica de IVA que la cesta autenticada (21 %) para coherencia visual con /recambios. */
+  /** Misma lógica de IVA que la cesta autenticada */
   tax(): number {
     return Math.round(this.subtotal() * 0.21 * 100) / 100;
   }
@@ -49,6 +49,7 @@ export class PublicCartPageComponent {
     return this.lines().some((l) => l.unit_price == null);
   }
 
+  //actualiza la cantidad de una línea
   updateQuantity(line: GuestCartLine, newQty: number): void {
     if (newQty < 1 || newQty > 99) {
       return;
@@ -56,10 +57,12 @@ export class PublicCartPageComponent {
     this.guestCart.setLineQuantity(line.product_id, newQty);
   }
 
+  //elimina una línea
   removeLine(line: GuestCartLine): void {
     this.guestCart.removeLine(line.product_id);
   }
 
+  //formatea el precio
   formatPrice(amount: number): string {
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
@@ -67,7 +70,7 @@ export class PublicCartPageComponent {
     }).format(amount);
   }
 
-  /** Fallback amigable si el JSON antiguo no tenía nombre de producto. */
+  /** Fallback si el JSON antiguo no tenía el nombre del producto. */
   displayName(line: GuestCartLine): string {
     return line.product_name?.trim() || `Producto #${line.product_id}`;
   }

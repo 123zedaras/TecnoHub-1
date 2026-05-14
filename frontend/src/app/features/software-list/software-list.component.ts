@@ -93,8 +93,8 @@ export class SoftwareListComponent implements OnInit, OnDestroy {
         this.softwareList = [];
         this.error =
           err.status === 0
-            ? 'No hay conexión con el servidor. Comprueba que la API esté en marcha.'
-            : 'No se pudo cargar el catálogo de software. Inténtalo de nuevo.';
+            ? 'No hay conexión con el servidor'
+            : 'No se pudo cargar el catálogo de software';
         this.loading = false;
       },
     });

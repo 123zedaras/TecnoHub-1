@@ -2,44 +2,47 @@ import { Injectable, signal } from '@angular/core';
 import { AddToCartRequest, GuestCartLine } from '../../shared/models/cart.model';
 
 /**
- * Cesta del usuario no autenticada: solo existe en el navegador (localStorage).
- * Tras el login, CartService.mergeGuestCartFromStorage() enviará estas líneas al API
- * y aquí se vaciará el almacenamiento si todo va bien.
+ * Cesta del usuario no autenticada: solo existe en el navegado
+ * Tras el login mergeGuestCartFromStorage envía estas líneas al API y, si todo va bien,
+ * llama a clear para vaciar aquí
  *
- * guestLines, como signal para que el menú público y cesta se actualicen al añadir o
- * editar líneas sin recargar la página.
+ * Los signal permiten que el layout público (header, mini-cesta) se actualicen al añadir o editar líneas
+ * sin recargar la página.
  */
 @Injectable({ providedIn: 'root' })
 export class GuestCartStorageService {
-  /** Clave única para no chocar con auth_token. */
+  /** Clave JSON en localStorage; distinta de `auth_token` para no pisar la sesión. */
   private readonly storageKey = 'tecnohub_guest_cart';
 
   /**
-   * Signal con el total de unidades en la cesta invitado (suma de cantidades).
-   * Sirve para mostrar el badge del carrito en el catálogo sin llamar al backend.
+   * Suma de cantidades de todas las líneas (badge del carrito en zona pública sin llamar al API).
    */
   readonly guestUnitCount = signal(0);
 
-  /** Copia en memoria de lo guardado en localStorage; la plantilla lee guestLines() para listar la cesta. */
+  /**
+   * Líneas actuales en memoria; la plantilla usa guestLines para listar productos y cantidades.
+   */
   readonly guestLines = signal<GuestCartLine[]>([]);
 
+  /**
+   * Al crear el servicio: hidrata signals desde lo guardado en disco para persistir la cesta entre visitas.
+   */
   constructor() {
-    // Al arrancar la app, se setea el signal con lo que hubiera en disco (cesta persistente entre visitas).
     const lines = this.parseStored(localStorage.getItem(this.storageKey));
     this.guestLines.set(lines);
     this.syncUnitCount(lines);
   }
 
   /**
-   * Devuelve líneas listas para POST /api/cart/items (solo product_id y quantity).
+   * Devuelve copias mínimas,product_id, quantity, listas para el body de POST /api/cart/items.
    */
   getLines(): AddToCartRequest[] {
     return this.guestLines().map(({ product_id, quantity }) => ({ product_id, quantity }));
   }
 
   /**
-   * Añade o suma cantidad si ya existía el mismo id.
-   * Opcionalmente guarda nombre y precio unitario para mostrar la cesta sin llamar al backen.
+   * Inserta línea o suma cantidad si el product_id ya existía
+   * Opcionalmente guarda nombre y precio para mostrar subtotales en UI sin consultar el backend.
    */
   addOrMergeLine(line: GuestCartLine): void {
     const lines = [...this.guestLines()];
@@ -58,7 +61,9 @@ export class GuestCartStorageService {
     this.persist(lines);
   }
 
-  /** Usado en la página /cesta: ajusta unidades respetando 1–99; cantidad 0 elimina la línea. */
+  /**
+   * Ajusta cantidad de una línea. Si quantity es 0 o negativo, delega en removeLine
+   */
   setLineQuantity(productId: number, quantity: number): void {
     if (quantity < 1) {
       this.removeLine(productId);
@@ -74,38 +79,46 @@ export class GuestCartStorageService {
     this.persist(lines);
   }
 
-  /** Quita un producto de la cesta invitado (botón eliminar en /cesta). */
+  /**
+   * Elimina la línea con ese product_id del array
+   */
   removeLine(productId: number): void {
     const lines = this.guestLines().filter((l) => l.product_id !== productId);
     this.persist(lines);
   }
 
-  /** Elimina la cesta invitado y pone el contador a 0. */
+  /**
+   * Borra la clave en localStorage y reinicia signals (tras merge exitoso o si quieres reset manual).
+   */
   clear(): void {
     localStorage.removeItem(this.storageKey);
     this.guestLines.set([]);
     this.guestUnitCount.set(0);
   }
 
-  /** Suma de cantidad de todas las líneas */
+  /**
+   * Suma de quantity de todas las líneas 
+   */
   getTotalQuantity(): number {
     return this.guestLines().reduce((sum, l) => sum + l.quantity, 0);
   }
 
-  /** Serializa a localStorage y refresca signals para que Angular repinte el header y las páginas. */
+  /**
+   * Escribe JSON en localStorage y actualiza signals para disparar detección de cambios de Angular.
+   */
   private persist(lines: GuestCartLine[]): void {
     localStorage.setItem(this.storageKey, JSON.stringify(lines));
     this.guestLines.set(lines);
     this.syncUnitCount(lines);
   }
 
+  /** Recalcula guestUnitCount a partir del array dado. */
   private syncUnitCount(lines: GuestCartLine[]): void {
     this.guestUnitCount.set(lines.reduce((sum, l) => sum + l.quantity, 0));
   }
 
   /**
-   * Lee el JSON guardado de forma tolerante a datos viejos (solo id+cantidad) o corruptos.
-   * Se usa notación r['campo'] porque TypeScript exige acceso por índice en Record<string, unknown>.
+   * Parsea el string de localStorage: tolera JSON corrupto, no-array o filas sin id/cantidad válidos.
    */
   private parseStored(raw: string | null): GuestCartLine[] {
     if (!raw) {

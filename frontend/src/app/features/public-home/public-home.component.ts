@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Router, Scroll } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
 
 export interface PublicSlide {
   imageUrl: string;
@@ -13,13 +16,22 @@ interface FaqItem {
   answer: string;
 }
 
-/** Portada pública: carrusel y anclas a las que apunta el menú del PublicLayout. */
+/** Portada pública: carrusel y menu. */
 @Component({
   selector: 'app-public-home',
   templateUrl: './public-home.component.html',
   styleUrls: ['./public-home.component.scss'],
 })
-export class PublicHomeComponent {
+//componente para la portada pública
+export class PublicHomeComponent implements OnInit, AfterViewInit, OnDestroy {
+  private fragmentScrollSub?: Subscription;
+
+  constructor(
+    private router: Router,
+    private viewportScroller: ViewportScroller,
+  ) {}
+
+  //slides para el carrusel
   readonly slides: PublicSlide[] = [
     {
       imageUrl: 'https://xolertic.com/wp-content/uploads/2026/02/Soluciones-de-final-de-linea-personalizadas.webp',
@@ -47,6 +59,26 @@ export class PublicHomeComponent {
   faqSearch = '';
   openFaqId: number | null = null;
 
+  ngOnInit(): void {
+    this.fragmentScrollSub = this.router.events
+      .pipe(filter((e): e is Scroll => e instanceof Scroll && !!e.anchor))
+      .subscribe((e) => {
+        setTimeout(() => this.viewportScroller.scrollToAnchor(e.anchor!));
+      });
+  }
+
+  ngAfterViewInit(): void {
+    const fragment = this.router.parseUrl(this.router.url).fragment;
+    if (fragment) {
+      setTimeout(() => this.viewportScroller.scrollToAnchor(fragment));
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.fragmentScrollSub?.unsubscribe();
+  }
+
+  //faqs para el menu
   readonly faqs: FaqItem[] = [
     {
       id: 1,
@@ -120,6 +152,7 @@ export class PublicHomeComponent {
     },
   ];
 
+  //devuelve las faqs filtradas
   get filteredFaqs(): FaqItem[] {
     const term = this.faqSearch.trim().toLowerCase();
     if (!term) {
@@ -131,22 +164,27 @@ export class PublicHomeComponent {
     );
   }
 
+  //busca las faqs
   onFaqSearch(value: string): void {
     this.faqSearch = value;
   }
 
+  //abre la faq
   toggleFaq(itemId: number): void {
     this.openFaqId = this.openFaqId === itemId ? null : itemId;
   }
 
+  //devuelve si la faq está abierta
   isFaqOpen(itemId: number): boolean {
     return this.openFaqId === itemId;
   }
 
+  //va a la slide anterior
   prevSlide(): void {
     this.slideIndex = (this.slideIndex - 1 + this.slides.length) % this.slides.length;
   }
 
+  //va a la slide siguiente
   nextSlide(): void {
     this.slideIndex = (this.slideIndex + 1) % this.slides.length;
   }
