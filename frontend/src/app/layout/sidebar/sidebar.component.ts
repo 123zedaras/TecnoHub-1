@@ -23,6 +23,7 @@ export class SidebarComponent {
     { label: 'Mi documentación', route: '/mi-documentacion', icon: 'docs' },
     { label: 'Software',    route: '/software',   icon: 'software' },
     { label: 'Recambios',   route: '/recambios',   icon: 'cart' },
+    { label: 'Mis Pedidos', route: '/pedidos',     icon: 'orders' },
     { label: 'Incidencias', route: '/incidencias', icon: 'ticket' },
     { label: 'SCADA',       route: '/scada',       icon: 'scada', roles: ['technician', 'admin'] },
   ];

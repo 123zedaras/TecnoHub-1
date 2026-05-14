@@ -77,6 +77,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     }, this.searchDebounceMs);
   }
 
+  // Permite forzar la búsqueda inmediata, por ejemplo al pulsar Enter, sin esperar al debounce
   flushSearch(): void {
     //cancela la búsqueda
     this.cancelSearchDebounce();
@@ -86,6 +87,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.loadProducts(term.length > 0 ? term : undefined);
   }
 
+  // Limpia el campo de búsqueda y recarga el catálogo completo
   clearSearch(): void {
     //cancela la búsqueda
     this.cancelSearchDebounce();
@@ -94,6 +96,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.loadProducts();
   }
 
+  // Cancela cualquier búsqueda pendiente para evitar que se ejecute después de que el componente haya sido destruido
   private cancelSearchDebounce(): void {
     if (this.searchDebounceHandle !== null) {
       clearTimeout(this.searchDebounceHandle);

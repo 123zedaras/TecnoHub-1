@@ -1,0 +1,88 @@
+<div class="order-detail-page">
+
+  <!-- Éxito tras pago -->
+  <div class="success-banner" *ngIf="isNewOrder && !loading">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span>¡Pago completado! Tu pedido ha sido confirmado. Recibirás un email de confirmación.</span>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="state-loading">
+    <div class="spinner"></div>
+    <p>Cargando pedido…</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="state-error">
+    <p>{{ error }}</p>
+    <button class="btn-back" (click)="goBack()">← Volver a mis pedidos</button>
+  </div>
+
+  <ng-container *ngIf="!loading && !error && order">
+
+    <!-- Cabecera -->
+    <div class="detail-header">
+      <button class="btn-back" (click)="goBack()">← Mis Pedidos</button>
+      <div class="detail-header__info">
+        <h1 class="detail-title">Pedido #{{ order.id }}</h1>
+        <span class="detail-date">{{ formatDate(order.created_at) }}</span>
+      </div>
+      <span
+        class="order-status-badge"
+        [style.background]="STATUS_BG[order.status]"
+        [style.color]="STATUS_COLORS[order.status]"
+      >{{ STATUS_LABELS[order.status] }}</span>
+    </div>
+
+    <!-- Artículos -->
+    <div class="detail-card">
+      <h2 class="detail-card__title">Artículos</h2>
+
+      <div class="items-table">
+        <div class="items-table__head">
+          <span>Producto</span>
+          <span class="col-right">Precio u.</span>
+          <span class="col-right">Cantidad</span>
+          <span class="col-right">Subtotal</span>
+        </div>
+        <div class="items-table__row" *ngFor="let item of order.items">
+          <div class="item-name">
+            <span class="item-name__text">{{ item.product_name }}</span>
+            <span class="item-name__sku" *ngIf="item.product_sku">{{ item.product_sku }}</span>
+          </div>
+          <span class="col-right">{{ formatPrice(item.unit_price) }}</span>
+          <span class="col-right">×{{ item.quantity }}</span>
+          <span class="col-right item-subtotal">{{ formatPrice(item.subtotal) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen -->
+    <div class="detail-card detail-summary">
+      <h2 class="detail-card__title">Resumen</h2>
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span>{{ formatPrice(order.subtotal) }}</span>
+      </div>
+      <div class="summary-row">
+        <span>IVA (21%)</span>
+        <span>{{ formatPrice(order.tax) }}</span>
+      </div>
+      <div class="summary-row summary-row--total">
+        <span>Total</span>
+        <span>{{ formatPrice(order.total) }}</span>
+      </div>
+    </div>
+
+    <!-- Dirección de envío -->
+    <div class="detail-card" *ngIf="order.shipping_address">
+      <h2 class="detail-card__title">Dirección de envío</h2>
+      <p class="shipping-address">{{ order.shipping_address }}</p>
+    </div>
+
+  </ng-container>
+
+</div>

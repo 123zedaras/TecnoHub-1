@@ -188,4 +188,18 @@ export class PublicHomeComponent implements OnInit, AfterViewInit, OnDestroy {
   nextSlide(): void {
     this.slideIndex = (this.slideIndex + 1) % this.slides.length;
   }
+
+  scrollProducts(dir: 1 | -1): void {
+    this.productTrack?.nativeElement.scrollBy({ left: dir * 320, behavior: 'smooth' });
+  }
+
+  scrollSoftware(dir: 1 | -1): void {
+    this.softwareTrack?.nativeElement.scrollBy({ left: dir * 320, behavior: 'smooth' });
+  }
+
+  formatPrice(price: number): string {
+    return price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+  }
+
+  trackById(_: number, item: { id: number }): number { return item.id; }
 }

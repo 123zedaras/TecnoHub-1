@@ -8,6 +8,7 @@ interface DocumentationRow {
   productId: number;
   productName: string;
   documentationUrl: string;
+  image: string | null;
 }
 
 @Component({
@@ -74,7 +75,8 @@ export class MiDocumentacionComponent implements OnInit {
           .map((p) => ({
             productId: p.id,
             productName: p.name,
-            documentationUrl: p.documentacion!.trim(),
+            documentationUrl: p.documentation!.trim(),
+            image: p.image ?? null,
           }))
           .sort((a, b) => a.productName.localeCompare(b.productName, 'es'));
 
@@ -90,7 +92,7 @@ export class MiDocumentacionComponent implements OnInit {
 
   //devuelve si el producto tiene documentación
   private hasDocumentationUrl(product: Product): boolean {
-    return typeof product.documentacion === 'string' && product.documentacion.trim().length > 0;
+    return typeof product.documentation === 'string' && product.documentation.trim().length > 0;
   }
 
   //normaliza la url

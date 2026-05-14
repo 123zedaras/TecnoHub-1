@@ -65,7 +65,7 @@
             aria-label="Resumen de la cesta"
             (click)="$event.stopPropagation()"
           >
-            <!-- stopPropagation: clics dentro del panel no deben disparar document:click del layout y cerrarlo -->
+            <!-- stopPropagation: clicks dentro del panel no deben disparar document:click del layout y cerrarlo -->
             <div class="public-cart-panel__inner">
               <p class="public-cart-empty" *ngIf="guestCart.guestLines().length === 0">
                 No has añadido ningún artículo aún.
@@ -103,7 +103,7 @@
       class="public-mobile-dropdown"
       aria-label="Secciones principales"
     >
-      <a routerLink="/productos" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
+      <a routerLink="/" fragment="productos" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Productos</a>
       <a routerLink="/cesta" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Cesta</a>
       <a routerLink="/" fragment="software" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Software</a>
       <a routerLink="/" fragment="documentacion" class="public-mobile-dropdown__link" (click)="closeMobileNav()">Documentación</a>

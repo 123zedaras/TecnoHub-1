@@ -24,7 +24,7 @@
 
   <!-- Dashboard Content -->
   <ng-container *ngIf="dashboardState">
-    <!-- Vista de proceso (replica el layout del PHP v1.1) -->
+    <!-- Vista de proceso (replica el layout del PHP de Adrián v1.1) -->
     <div class="process-view">
       <!-- Depósito 1 -->
       <div class="component">
@@ -67,7 +67,7 @@
 
       <div class="pipe"></div>
 
-      <!-- Depósito 2 + Lámpara (lado derecho, igual que v1.1) -->
+      <!-- Depósito 2 + Lámpara -->
       <div class="component">
         <div class="lamp"
              [class.on]="isActive(dashboardState.O_LAMP)"
@@ -81,13 +81,13 @@
       </div>
     </div>
 
-    <!-- Reloj digital (cronómetro client-side de v1.1) -->
+    <!-- Reloj digital (cronómetro client-side) -->
     <div class="clock-container">
       <div class="clock-label">TIEMPO OPERATIVO</div>
       <div class="digital-clock">{{ tiempoDisplay }}</div>
     </div>
 
-    <!-- Panel de control — 5 columnas, 10 botones (igual que v1.1) -->
+    <!-- Panel de control — 5 columnas, 10 botones -->
     <div class="control-panel">
       <button class="btn btn-auto"      (click)="modoAuto()"      [disabled]="sendingCommand">MODO AUTO</button>
       <button class="btn btn-emergency" (click)="emergencia()"    [disabled]="sendingCommand">EMERGENCIA</button>
